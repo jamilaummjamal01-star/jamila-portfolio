@@ -1,7 +1,3 @@
-"use client";
-
-import { useEffect } from "react";
-
 const services = [
   {
     number: "01",
@@ -49,23 +45,6 @@ const process = [
 ];
 
 export default function Home() {
-  useEffect(() => {
-    const root = document.documentElement;
-    const onPointerMove = (event: PointerEvent) => {
-      root.style.setProperty("--pointer-x", `${event.clientX / window.innerWidth - 0.5}`);
-      root.style.setProperty("--pointer-y", `${event.clientY / window.innerHeight - 0.5}`);
-    };
-    const onScroll = () => {
-      root.style.setProperty("--page-scroll", `${window.scrollY}`);
-    };
-    window.addEventListener("pointermove", onPointerMove, { passive: true });
-    window.addEventListener("scroll", onScroll, { passive: true });
-    return () => {
-      window.removeEventListener("pointermove", onPointerMove);
-      window.removeEventListener("scroll", onScroll);
-    };
-  }, []);
-
   return (
     <main>
       <header className="site-header">
