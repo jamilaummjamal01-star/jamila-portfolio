@@ -1090,7 +1090,8 @@ footer > span {
   .site-header { padding: 0 16px; }
   .header-cta { padding: 9px 12px; font-size: 0.72rem; }
   .hero { padding: 110px 16px 44px; }
-  .hero h1 { font-size: clamp(2.65rem, 13vw, 4rem); line-height: 0.96; overflow-wrap: anywhere; }
+  .hero-copy { min-width: 0; }
+  .hero h1 { font-size: clamp(2.55rem, 12.5vw, 3.85rem); line-height: 1; letter-spacing: -0.045em; overflow-wrap: normal; word-break: normal; }
   .hero-lead { font-size: 0.92rem; line-height: 1.65; }
   .hero-art { min-height: 340px; }
   .orb-main { right: 4%; width: 82vw; }
