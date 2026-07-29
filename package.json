@@ -6,15 +6,12 @@
     "node": ">=22.13.0"
   },
   "scripts": {
-    "install:ci": "bash scripts/install-ci.sh",
-    "dev": "WRANGLER_LOG_PATH=.wrangler/wrangler.log vite",
-    "build": "bash scripts/build-verified.sh",
+    "dev": "vite",
+    "build": "vinext build",
     "deploy": "npm run build && wrangler deploy",
-    "start": "WRANGLER_LOG_PATH=.wrangler/wrangler.log vinext start",
+    "start": "vinext start",
     "test": "npm run build && node --test tests/rendered-html.test.mjs",
-    "validate:artifact": "bash scripts/validate-artifact.sh",
-    "lint": "bash scripts/sites-env.sh -- eslint . --ignore-pattern dist --ignore-pattern .next",
-    "db:generate": "bash scripts/sites-env.sh -- drizzle-kit generate"
+    "lint": "eslint . --ignore-pattern dist --ignore-pattern .next"
   },
   "dependencies": {
     "drizzle-orm": "0.45.2",
@@ -41,5 +38,5 @@
     "wrangler": "4.92.0"
   },
   "type": "module",
-  "displayName": "\u0414\u0436\u0430\u043c\u0438\u043b\u044f \u0428\u0430\u043a\u0443\u0440\u043e\u0432\u0430 \u2014 AI-\u043a\u0440\u0435\u0430\u0442\u043e\u0440"
+  "displayName": "Джамиля Шакурова — AI-креатор"
 }
