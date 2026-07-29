@@ -1082,3 +1082,35 @@ footer > span {
     transform: none !important;
   }
 }
+
+
+/* Mobile hardening */
+@media (max-width: 480px) {
+  html, body, main { width: 100%; max-width: 100%; overflow-x: hidden; }
+  .site-header { padding: 0 16px; }
+  .header-cta { padding: 9px 12px; font-size: 0.72rem; }
+  .hero { padding: 110px 16px 44px; }
+  .hero h1 { font-size: clamp(2.65rem, 13vw, 4rem); line-height: 0.96; overflow-wrap: anywhere; }
+  .hero-lead { font-size: 0.92rem; line-height: 1.65; }
+  .hero-art { min-height: 340px; }
+  .orb-main { right: 4%; width: 82vw; }
+  .orb-back, .orbit { right: -2%; width: 90vw; }
+  .floating-card { max-width: 56vw; padding: 12px 14px; font-size: 0.67rem; }
+  .statement, .services-section, .constructor-section, .approach-section { padding: 64px 16px; }
+  .statement h2 { font-size: 2.05rem; }
+  .section-heading h2, .constructor-copy h2 { font-size: 2.25rem; }
+  .service-card:nth-child(n) { min-height: 235px; padding: 24px; }
+  .service-card h3 { font-size: 1.65rem; }
+  .window-bar { padding: 12px 14px; }
+  .window-bar p { max-width: 60%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .window-body { padding: 20px 16px; }
+  .quiz-copy h3 { font-size: 1.65rem; }
+  .quiz-options span { padding: 13px; font-size: 0.78rem; }
+  .process-list article { grid-template-columns: 42px minmax(0, 1fr); }
+  .process-list h3 { font-size: 1.25rem; overflow-wrap: anywhere; }
+  .contact-section { min-height: 540px; padding: 82px 16px; }
+  .contact-section h2 { font-size: 2.5rem; }
+  footer { grid-template-columns: 1fr; padding: 24px 16px; }
+  footer > span { justify-self: start; }
+  a, button { touch-action: manipulation; }
+}
