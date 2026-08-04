@@ -1,0 +1,10 @@
+# Локальная разработка конструктора.
+# Файл нужно скопировать в .dev.vars и не коммитить реальные значения.
+
+CONSTRUCTOR_DEV_BYPASS=true
+CONSTRUCTOR_AUTH_ENABLED=false
+
+# Заполняются перед подключением Cloudflare Access.
+TEAM_DOMAIN=https://your-team.cloudflareaccess.com
+POLICY_AUD=replace-with-access-audience-tag
+CONSTRUCTOR_ALLOWED_EMAIL=replace-with-owner-email
