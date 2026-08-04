@@ -1,0 +1,72 @@
+name: Constructor checks
+
+on:
+  pull_request:
+    paths:
+      - "app/constructor/**"
+      - "worker/**"
+      - "migrations/**"
+      - "docs/constructor/**"
+      - "package.json"
+      - ".github/workflows/constructor-checks.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  verify:
+    name: Build and verify D1 migrations
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: package.json
+
+      - name: Install dependencies
+        run: npm install --no-audit --no-fund
+
+      - name: Build application
+        run: npm run build
+
+      - name: Validate constructor migrations
+        shell: python
+        run: |
+          import pathlib
+          import sqlite3
+
+          connection = sqlite3.connect(":memory:")
+          connection.execute("PRAGMA foreign_keys = ON")
+
+          for migration in sorted(pathlib.Path("migrations").glob("*.sql")):
+              connection.executescript(migration.read_text(encoding="utf-8"))
+
+          expected = {
+              "niches": 22,
+              "stages": 14,
+              "knowledge_items": 40,
+          }
+
+          for table, minimum in expected.items():
+              actual = connection.execute(f"SELECT COUNT(*) FROM {table}").fetchone()[0]
+              assert actual >= minimum, f"{table}: expected at least {minimum}, got {actual}"
+
+          universal_links = connection.execute(
+              "SELECT COUNT(*) FROM knowledge_item_niches WHERE knowledge_item_id LIKE 'ki-univ-%'"
+          ).fetchone()[0]
+          assert universal_links >= 30 * 22, universal_links
+
+          cosmetics_links = connection.execute(
+              "SELECT COUNT(*) FROM knowledge_item_niches WHERE knowledge_item_id LIKE 'ki-cos-%' AND niche_id = 'niche-cosmetics'"
+          ).fetchone()[0]
+          assert cosmetics_links == 10, cosmetics_links
+
+          print("Constructor migrations are valid")
