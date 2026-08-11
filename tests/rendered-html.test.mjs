@@ -56,5 +56,7 @@ test("renders the protected constructor navigation locally", async () => {
   assert.equal(response.status, 200);
   assert.equal(response.headers.get("cache-control"), "private, no-store, max-age=0");
   assert.equal(response.headers.get("x-robots-tag"), "noindex, nofollow, noarchive");
-  assert.match(await response.text(), /Подготовиться к клиенту/);
+  const html = await response.text();
+  assert.match(html, /Подготовиться к клиенту/);
+  assert.match(html, /Клиент задал вопрос/);
 });

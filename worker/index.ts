@@ -85,8 +85,41 @@ interface PreparationItem {
   riskLevel: string;
 }
 
+interface AnswerKnowledgeRow {
+  id: string;
+  item_type: string;
+  category: string;
+  title: string;
+  prompt_text: string | null;
+  short_text: string | null;
+  full_text: string | null;
+  soft_text: string | null;
+  firm_text: string | null;
+  clarification_text: string | null;
+  next_action_text: string | null;
+  avoid_text: string | null;
+  red_flag_text: string | null;
+  risk_level: string;
+  channel: string;
+  niche_names: string | null;
+}
+
 const jwksCache = new Map<string, ReturnType<typeof createRemoteJWKSet>>();
 const listDelimiter = "|||";
+const answerCategoryKeywords: Record<string, string[]> = {
+  price: ["цена", "стоимость", "дорого", "дешевле", "бюджет", "скидка", "стоит"],
+  timeline: ["срок", "срочно", "быстро", "дедлайн", "время", "когда", "занимает"],
+  revisions: ["правка", "правки", "исправить", "переделать", "изменения"],
+  ai: ["ai", "ии", "нейросеть", "нейросети", "генерация", "искусственный интеллект"],
+  guarantees: ["гарантия", "гарантировать", "продажи", "охват", "заявки", "вирусный", "результат"],
+  rights: ["права", "реклама", "использовать", "публиковать", "передавать"],
+  privacy: ["конфиденциальность", "портфолио", "секрет", "публикация", "закрытый"],
+  sources: ["исходник", "исходники", "фотография", "фото", "материалы", "телефон"],
+  quality: ["понравится", "качество", "не понравится", "ожидания"],
+  trust: ["опыт", "портфолио", "кейс", "кейсы", "ниша", "работали"],
+  accuracy: ["точность", "этикетка", "логотип", "надпись", "упаковка", "искажение"],
+};
+const answerStopWords = new Set(["или", "это", "как", "что", "если", "для", "мне", "вам", "ваш", "наша", "можно", "будет", "так", "всё"]);
 
 function json(data: unknown, init: ResponseInit = {}): Response {
   const headers = new Headers(init.headers);
@@ -230,6 +263,170 @@ function groupPreparationItems(rows: PreparationKnowledgeRow[]) {
   }
 
   return groups;
+}
+
+function normalizeSearchText(value: string): string {
+  return value
+    .toLocaleLowerCase("ru")
+    .replace(/ё/g, "е")
+    .replace(/[^a-zа-я0-9]+/gi, " ")
+    .trim();
+}
+
+function searchTokens(value: string): string[] {
+  return [...new Set(normalizeSearchText(value).split(" ").filter((token) => token.length >= 3 && !answerStopWords.has(token)))];
+}
+
+function detectAnswerCategory(value: string): string | null {
+  const normalized = normalizeSearchText(value);
+  let bestCategory: string | null = null;
+  let bestScore = 0;
+
+  for (const [category, keywords] of Object.entries(answerCategoryKeywords)) {
+    const score = keywords.reduce((total, keyword) => total + (normalized.includes(normalizeSearchText(keyword)) ? 1 : 0), 0);
+    if (score > bestScore) {
+      bestCategory = category;
+      bestScore = score;
+    }
+  }
+
+  return bestCategory;
+}
+
+function textMatchesToken(text: string, token: string): boolean {
+  return text.split(" ").some((word) => (
+    word === token
+    || (word.length >= 5 && token.length >= 5 && (word.startsWith(token) || token.startsWith(word)))
+  ));
+}
+
+function answerMatchScore(row: AnswerKnowledgeRow, query: string, tokens: string[], category: string | null): number {
+  const prompt = normalizeSearchText(`${row.title} ${row.prompt_text || ""}`);
+  const allText = normalizeSearchText([
+    row.title,
+    row.prompt_text,
+    row.short_text,
+    row.full_text,
+    row.soft_text,
+    row.firm_text,
+    row.clarification_text,
+  ].filter(Boolean).join(" "));
+  const normalizedQuery = normalizeSearchText(query);
+  let score = 0;
+
+  if (category && row.category === category) score += 80;
+  if (normalizedQuery && prompt.includes(normalizedQuery)) score += 120;
+  for (const token of tokens) {
+    if (textMatchesToken(prompt, token)) score += 16;
+    else if (textMatchesToken(allText, token)) score += 6;
+  }
+  if (row.item_type === "question_from_client") score += 8;
+  if (row.risk_level === "normal") score += 2;
+
+  return score;
+}
+
+async function handleAnswerSearch(request: Request, env: Env): Promise<Response> {
+  const db = requireDatabase(env);
+  if (db instanceof Response) return db;
+
+  const url = new URL(request.url);
+  const query = (url.searchParams.get("q") || "").trim().slice(0, 1200);
+  const selectedCategory = (url.searchParams.get("category") || "").trim().slice(0, 80);
+  const niche = (url.searchParams.get("niche") || "").trim().slice(0, 120);
+  const channel = (url.searchParams.get("channel") || "").trim().slice(0, 80);
+
+  if (!query && !selectedCategory) {
+    return constructorError(422, "ANSWER_QUERY_REQUIRED", "Вставьте вопрос клиента или выберите тему.");
+  }
+
+  const detectedCategory = selectedCategory || detectAnswerCategory(query);
+  const filters = [
+    "ki.status = 'approved'",
+    "ki.item_type IN ('question_from_client', 'objection', 'objection_response', 'answer')",
+  ];
+  const bindings: string[] = [];
+
+  if (selectedCategory) {
+    filters.push("ki.category = ?");
+    bindings.push(selectedCategory);
+  }
+
+  if (niche) {
+    filters.push(`(
+      NOT EXISTS (SELECT 1 FROM knowledge_item_niches all_kin WHERE all_kin.knowledge_item_id = ki.id)
+      OR EXISTS (
+        SELECT 1
+        FROM knowledge_item_niches kin
+        JOIN niches n ON n.id = kin.niche_id
+        WHERE kin.knowledge_item_id = ki.id AND n.slug = ?
+      )
+    )`);
+    bindings.push(niche);
+  }
+
+  if (channel) {
+    filters.push("ki.channel IN ('any', ?)");
+    bindings.push(channel);
+  }
+
+  const result = await db.prepare(`
+    SELECT
+      ki.id,
+      ki.item_type,
+      ki.category,
+      ki.title,
+      ki.prompt_text,
+      ki.short_text,
+      ki.full_text,
+      ki.soft_text,
+      ki.firm_text,
+      ki.clarification_text,
+      ki.next_action_text,
+      ki.avoid_text,
+      ki.red_flag_text,
+      ki.risk_level,
+      ki.channel,
+      (
+        SELECT GROUP_CONCAT(n.name, '${listDelimiter}')
+        FROM knowledge_item_niches kin
+        JOIN niches n ON n.id = kin.niche_id
+        WHERE kin.knowledge_item_id = ki.id
+      ) AS niche_names
+    FROM knowledge_items ki
+    WHERE ${filters.join(" AND ")}
+    ORDER BY
+      CASE ki.required_level WHEN 'required' THEN 0 WHEN 'recommended' THEN 1 ELSE 2 END,
+      ki.title
+    LIMIT 120
+  `).bind(...bindings).all<AnswerKnowledgeRow>();
+
+  const tokens = searchTokens(query);
+  const rows = (result.results ?? [])
+    .map((row) => ({ row, score: answerMatchScore(row, query, tokens, detectedCategory) }))
+    .filter(({ score }) => Boolean(selectedCategory) || score > 15)
+    .sort((left, right) => right.score - left.score || left.row.title.localeCompare(right.row.title, "ru"))
+    .slice(0, 10)
+    .map(({ row, score }) => ({
+      id: row.id,
+      itemType: row.item_type,
+      category: row.category,
+      title: row.title,
+      question: row.prompt_text,
+      shortText: row.short_text,
+      fullText: row.full_text,
+      softText: row.soft_text,
+      firmText: row.firm_text,
+      clarificationText: row.clarification_text,
+      nextActionText: row.next_action_text,
+      avoidText: row.avoid_text,
+      redFlagText: row.red_flag_text,
+      riskLevel: row.risk_level,
+      niches: splitList(row.niche_names),
+      score,
+    }));
+
+  return json({ query, recognizedCategory: detectedCategory, items: rows });
 }
 
 async function handleBootstrap(env: Env, identity: ConstructorIdentity): Promise<Response> {
@@ -702,6 +899,10 @@ async function handleConstructorApi(request: Request, env: Env, identity: Constr
 
   if (url.pathname === "/api/constructor/knowledge" && request.method === "POST") {
     return handleKnowledgeCreate(request, env, identity);
+  }
+
+  if (url.pathname === "/api/constructor/answers" && request.method === "GET") {
+    return handleAnswerSearch(request, env);
   }
 
   if (url.pathname === "/api/constructor/preparations" && request.method === "POST") {

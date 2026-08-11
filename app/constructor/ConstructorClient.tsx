@@ -2,6 +2,7 @@
 
 import { FormEvent, useCallback, useEffect, useMemo, useState } from "react";
 import PreparationWorkspace from "./PreparationWorkspace";
+import QuestionAnswerWorkspace from "./QuestionAnswerWorkspace";
 import styles from "./constructor.module.css";
 
 type Niche = { slug: string; name: string; priority: string };
@@ -103,7 +104,7 @@ const statusLabels: Record<string, string> = {
 const navigation = [
   ["База знаний", "knowledge", true],
   ["Подготовиться к клиенту", "prepare", true],
-  ["Клиент задал вопрос", "answer", false],
+  ["Клиент задал вопрос", "answer", true],
   ["Диагностика", "diagnostic", false],
   ["Клиенты", "clients", false],
   ["Калькулятор", "pricing", false],
@@ -134,7 +135,7 @@ function displayDate(value: string | null): string {
 }
 
 export default function ConstructorClient() {
-  const [activeSection, setActiveSection] = useState<"knowledge" | "prepare">("knowledge");
+  const [activeSection, setActiveSection] = useState<"knowledge" | "prepare" | "answer">("knowledge");
   const [bootstrap, setBootstrap] = useState<BootstrapData | null>(null);
   const [items, setItems] = useState<KnowledgeItem[]>([]);
   const [pagination, setPagination] = useState<KnowledgeResponse["pagination"]>({ page: 1, limit: 30, total: 0, pages: 1 });
@@ -318,7 +319,7 @@ export default function ConstructorClient() {
               type="button"
               disabled={!enabled}
               onClick={() => {
-                if (key === "knowledge" || key === "prepare") {
+                if (key === "knowledge" || key === "prepare" || key === "answer") {
                   setActiveSection(key);
                   setSelected(null);
                   setShowAdd(false);
@@ -495,8 +496,10 @@ export default function ConstructorClient() {
           </div>
         )}
           </>
-        ) : (
+        ) : activeSection === "prepare" ? (
           <PreparationWorkspace bootstrap={bootstrap} onToast={setToast} />
+        ) : (
+          <QuestionAnswerWorkspace bootstrap={bootstrap} onToast={setToast} />
         )}
       </section>
 
