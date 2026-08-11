@@ -95,6 +95,14 @@
   box-shadow: inset 0 0 0 1px rgba(238, 205, 214, 0.14);
 }
 
+.navAvailable {
+  cursor: pointer;
+}
+
+.navAvailable:hover {
+  background: rgba(255, 255, 255, 0.06);
+}
+
 .navDisabled {
   opacity: 0.43;
   cursor: default;
@@ -262,14 +270,16 @@
 }
 
 .filters label,
-.modal label {
+.modal label,
+.preparationForm label {
   display: grid;
   gap: 7px;
   min-width: 0;
 }
 
 .filters label > span,
-.modal label > span {
+.modal label > span,
+.preparationForm label > span {
   color: rgba(44, 32, 29, 0.62);
   font-size: 0.65rem;
   font-weight: 750;
@@ -281,7 +291,10 @@
 .filters select,
 .modal input,
 .modal select,
-.modal textarea {
+.modal textarea,
+.preparationForm input,
+.preparationForm select,
+.preparationForm textarea {
   width: 100%;
   min-height: 42px;
   border: 1px solid rgba(74, 46, 43, 0.16);
@@ -297,11 +310,14 @@
 .filters input,
 .filters select,
 .modal input,
-.modal select {
+.modal select,
+.preparationForm input,
+.preparationForm select {
   padding: 0 11px;
 }
 
-.modal textarea {
+.modal textarea,
+.preparationForm textarea {
   min-height: 88px;
   padding: 11px;
   resize: vertical;
@@ -312,7 +328,10 @@
 .filters select:focus,
 .modal input:focus,
 .modal select:focus,
-.modal textarea:focus {
+.modal textarea:focus,
+.preparationForm input:focus,
+.preparationForm select:focus,
+.preparationForm textarea:focus {
   border-color: rgba(118, 127, 48, 0.65);
   box-shadow: 0 0 0 3px rgba(118, 127, 48, 0.1);
 }
@@ -703,6 +722,253 @@
   margin-top: 5px;
 }
 
+.preparationLayout {
+  display: grid;
+  grid-template-columns: minmax(360px, 0.8fr) minmax(460px, 1.2fr);
+  gap: 18px;
+  align-items: start;
+}
+
+.preparationForm,
+.preparationResults {
+  min-width: 0;
+  padding: 22px;
+  border: 1px solid var(--constructor-line);
+  border-radius: 22px;
+  background: rgba(255, 253, 248, 0.88);
+  box-shadow: 0 14px 40px rgba(74, 46, 43, 0.05);
+}
+
+.preparationForm {
+  display: grid;
+  gap: 15px;
+  position: sticky;
+  top: 24px;
+}
+
+.preparationForm > .primaryButton {
+  justify-self: start;
+  margin-top: 3px;
+}
+
+.panelHeading {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  margin-bottom: 4px;
+}
+
+.panelHeading > span {
+  display: grid;
+  place-items: center;
+  flex: 0 0 36px;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: var(--constructor-brown);
+  color: #fff9f2;
+  font-size: 0.65rem;
+  font-weight: 800;
+}
+
+.panelHeading h2,
+.preparationSection h3,
+.preparationItem h4 {
+  margin: 0;
+  color: var(--constructor-brown);
+}
+
+.panelHeading h2 {
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 1.45rem;
+  font-weight: 400;
+}
+
+.panelHeading p,
+.preparationSectionTitle p,
+.preparationPlaceholder p {
+  margin: 5px 0 0;
+  color: rgba(44, 32, 29, 0.58);
+  font-size: 0.72rem;
+  line-height: 1.5;
+}
+
+.preparationPlaceholder {
+  display: grid;
+  place-items: center;
+  min-height: 340px;
+  margin-top: 18px;
+  padding: 38px;
+  border: 1px dashed rgba(74, 46, 43, 0.2);
+  border-radius: 18px;
+  text-align: center;
+}
+
+.preparationPlaceholder strong {
+  color: var(--constructor-brown);
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 1.45rem;
+  font-weight: 400;
+}
+
+.savedPreparation {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  margin: 18px 0 14px;
+  padding: 15px 17px;
+  border-radius: 16px;
+  background: rgba(118, 127, 48, 0.1);
+  color: var(--constructor-brown);
+}
+
+.savedPreparation div,
+.savedPreparation span,
+.savedPreparation strong,
+.savedPreparation small {
+  display: block;
+}
+
+.savedPreparation span {
+  color: var(--constructor-olive);
+  font-size: 0.61rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.savedPreparation strong {
+  margin-top: 4px;
+  font-size: 0.92rem;
+}
+
+.savedPreparation small {
+  margin-top: 3px;
+  color: rgba(44, 32, 29, 0.58);
+  font-size: 0.67rem;
+}
+
+.savedPreparation b {
+  display: grid;
+  place-items: center;
+  flex: 0 0 42px;
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  background: var(--constructor-olive);
+  color: white;
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 1.1rem;
+  font-weight: 400;
+}
+
+.preparationSection {
+  margin-top: 12px;
+  padding-top: 16px;
+  border-top: 1px solid var(--constructor-line);
+}
+
+.preparationSectionTitle {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 14px;
+}
+
+.preparationSectionTitle h3 {
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 1.18rem;
+  font-weight: 400;
+}
+
+.preparationSectionTitle > span {
+  display: grid;
+  place-items: center;
+  min-width: 27px;
+  height: 27px;
+  padding: 0 7px;
+  border-radius: 999px;
+  background: rgba(238, 205, 214, 0.58);
+  color: var(--constructor-brown);
+  font-size: 0.65rem;
+  font-weight: 800;
+}
+
+.preparationItemList {
+  display: grid;
+  gap: 8px;
+  margin-top: 11px;
+}
+
+.preparationItem {
+  padding: 14px;
+  border: 1px solid rgba(74, 46, 43, 0.11);
+  border-radius: 14px;
+  background: #fffdfa;
+}
+
+.preparationItem > div {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.preparationItem > div > span {
+  color: var(--constructor-olive);
+  font-size: 0.58rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.preparationItem button {
+  border: 0;
+  background: transparent;
+  color: var(--constructor-coffee);
+  font: inherit;
+  font-size: 0.63rem;
+  font-weight: 750;
+  cursor: pointer;
+}
+
+.preparationItem h4 {
+  margin-top: 8px;
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 1rem;
+  font-weight: 400;
+}
+
+.preparationItem p,
+.preparationItem blockquote,
+.preparationItem small {
+  white-space: pre-wrap;
+  font-size: 0.73rem;
+  line-height: 1.55;
+}
+
+.preparationItem p {
+  margin: 7px 0 0;
+  color: rgba(44, 32, 29, 0.76);
+}
+
+.preparationItem blockquote {
+  margin: 9px 0 0;
+  padding: 10px 12px;
+  border-left: 3px solid var(--constructor-gold);
+  border-radius: 0 10px 10px 0;
+  background: rgba(198, 167, 94, 0.1);
+  color: var(--constructor-brown);
+}
+
+.preparationItem small {
+  display: block;
+  margin-top: 8px;
+  color: var(--constructor-olive);
+  font-weight: 650;
+}
+
 .toast {
   position: fixed;
   z-index: 200;
@@ -723,6 +989,14 @@
 
   .cardGrid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .preparationLayout {
+    grid-template-columns: 1fr;
+  }
+
+  .preparationForm {
+    position: static;
   }
 }
 
@@ -805,6 +1079,15 @@
 
   .modal {
     padding: 25px 16px;
+  }
+
+  .preparationForm,
+  .preparationResults {
+    padding: 18px 14px;
+  }
+
+  .preparationForm > .primaryButton {
+    width: 100%;
   }
 
   .modalActions {

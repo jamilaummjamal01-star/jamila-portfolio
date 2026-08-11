@@ -60,6 +60,31 @@ interface KnowledgeRow {
   stage_names: string | null;
 }
 
+interface PreparationKnowledgeRow {
+  id: string;
+  item_type: string;
+  category: string;
+  title: string;
+  prompt_text: string | null;
+  short_text: string | null;
+  full_text: string | null;
+  next_action_text: string | null;
+  red_flag_text: string | null;
+  risk_level: string;
+  required_level: string;
+}
+
+interface PreparationItem {
+  id: string;
+  itemType: string;
+  category: string;
+  title: string;
+  text: string;
+  answer: string | null;
+  nextAction: string | null;
+  riskLevel: string;
+}
+
 const jwksCache = new Map<string, ReturnType<typeof createRemoteJWKSet>>();
 const listDelimiter = "|||";
 
@@ -148,6 +173,63 @@ function parsePositiveInteger(value: string | null, fallback: number, maximum: n
   const parsed = Number.parseInt(value ?? "", 10);
   if (!Number.isFinite(parsed) || parsed < 1) return fallback;
   return Math.min(parsed, maximum);
+}
+
+function readText(body: Record<string, unknown>, key: string, maximum: number): string {
+  const value = typeof body[key] === "string" ? body[key].trim() : "";
+  return value.slice(0, maximum);
+}
+
+function isHttpUrl(value: string): boolean {
+  if (!value) return true;
+  try {
+    const url = new URL(value);
+    return url.protocol === "http:" || url.protocol === "https:";
+  } catch {
+    return false;
+  }
+}
+
+function preparationText(row: PreparationKnowledgeRow): string {
+  return row.prompt_text || row.short_text || row.full_text || row.red_flag_text || row.title;
+}
+
+function toPreparationItem(row: PreparationKnowledgeRow): PreparationItem {
+  return {
+    id: row.id,
+    itemType: row.item_type,
+    category: row.category,
+    title: row.title,
+    text: preparationText(row),
+    answer: row.short_text || row.full_text,
+    nextAction: row.next_action_text,
+    riskLevel: row.risk_level,
+  };
+}
+
+function groupPreparationItems(rows: PreparationKnowledgeRow[]) {
+  const groups = {
+    auditChecks: [] as PreparationItem[],
+    questionsToAsk: [] as PreparationItem[],
+    likelyClientQuestions: [] as PreparationItem[],
+    firstMessages: [] as PreparationItem[],
+    risks: [] as PreparationItem[],
+    packages: [] as PreparationItem[],
+    nextActions: [] as PreparationItem[],
+  };
+
+  for (const row of rows) {
+    const item = toPreparationItem(row);
+    if (row.item_type === "audit_check") groups.auditChecks.push(item);
+    if (["question_to_client", "clarifying_question", "diagnostic_hint"].includes(row.item_type)) groups.questionsToAsk.push(item);
+    if (["question_from_client", "objection", "objection_response"].includes(row.item_type)) groups.likelyClientQuestions.push(item);
+    if (["first_message", "follow_up"].includes(row.item_type)) groups.firstMessages.push(item);
+    if (["red_flag", "ethical_rule", "refusal_reason"].includes(row.item_type) || ["high", "refusal"].includes(row.risk_level)) groups.risks.push(item);
+    if (["package", "proposal_block"].includes(row.item_type)) groups.packages.push(item);
+    if (row.item_type === "next_action") groups.nextActions.push(item);
+  }
+
+  return groups;
 }
 
 async function handleBootstrap(env: Env, identity: ConstructorIdentity): Promise<Response> {
@@ -435,6 +517,169 @@ async function handleKnowledgeCreate(request: Request, env: Env, identity: Const
   return json({ id, status: "draft" }, { status: 201 });
 }
 
+async function handlePreparationCreate(request: Request, env: Env, identity: ConstructorIdentity): Promise<Response> {
+  const db = requireDatabase(env);
+  if (db instanceof Response) return db;
+
+  let body: Record<string, unknown>;
+  try {
+    body = (await request.json()) as Record<string, unknown>;
+  } catch {
+    return constructorError(400, "INVALID_JSON", "Не удалось прочитать данные подготовки.");
+  }
+
+  const clientName = readText(body, "clientName", 160);
+  const accountUrl = readText(body, "accountUrl", 500);
+  const nicheSlug = readText(body, "nicheSlug", 120);
+  const stageSlug = readText(body, "stageSlug", 120);
+  const businessModel = readText(body, "businessModel", 160);
+  const productSummary = readText(body, "productSummary", 1200);
+  const audienceSummary = readText(body, "audienceSummary", 1200);
+  const commercialGoal = readText(body, "commercialGoal", 1200);
+  const salesChannel = readText(body, "salesChannel", 160);
+  const messageChannel = readText(body, "messageChannel", 80) || "other";
+  const notes = readText(body, "notes", 2000);
+
+  if (!clientName || !nicheSlug || !stageSlug || !productSummary || !commercialGoal) {
+    return constructorError(422, "VALIDATION_FAILED", "Заполните клиента, нишу, этап, продукт и коммерческую задачу.");
+  }
+
+  if (!isHttpUrl(accountUrl)) {
+    return constructorError(422, "INVALID_ACCOUNT_URL", "Ссылка на клиента должна начинаться с http:// или https://.");
+  }
+
+  const [nicheResult, stageResult] = await db.batch([
+    db.prepare("SELECT id, name FROM niches WHERE slug = ? AND is_active = 1 LIMIT 1").bind(nicheSlug),
+    db.prepare("SELECT slug, name FROM stages WHERE slug = ? AND is_active = 1 LIMIT 1").bind(stageSlug),
+  ]);
+
+  const niche = nicheResult.results?.[0] as { id?: string; name?: string } | undefined;
+  const stage = stageResult.results?.[0] as { slug?: string; name?: string } | undefined;
+  if (!niche?.id || !niche.name || !stage?.slug || !stage.name) {
+    return constructorError(422, "REFERENCE_NOT_FOUND", "Выбранная ниша или этап больше недоступны. Обновите страницу и попробуйте снова.");
+  }
+
+  const knowledgeResult = await db.prepare(`
+    SELECT
+      ki.id,
+      ki.item_type,
+      ki.category,
+      ki.title,
+      ki.prompt_text,
+      ki.short_text,
+      ki.full_text,
+      ki.next_action_text,
+      ki.red_flag_text,
+      ki.risk_level,
+      ki.required_level
+    FROM knowledge_items ki
+    WHERE ki.status = 'approved'
+      AND (
+        NOT EXISTS (
+          SELECT 1 FROM knowledge_item_niches universal_niche
+          WHERE universal_niche.knowledge_item_id = ki.id
+        )
+        OR EXISTS (
+          SELECT 1
+          FROM knowledge_item_niches kin
+          JOIN niches n ON n.id = kin.niche_id
+          WHERE kin.knowledge_item_id = ki.id AND n.slug = ?
+        )
+      )
+      AND (
+        NOT EXISTS (
+          SELECT 1 FROM knowledge_item_stages universal_stage
+          WHERE universal_stage.knowledge_item_id = ki.id
+        )
+        OR EXISTS (
+          SELECT 1
+          FROM knowledge_item_stages kis
+          JOIN stages s ON s.id = kis.stage_id
+          WHERE kis.knowledge_item_id = ki.id AND s.slug = ?
+        )
+      )
+    ORDER BY
+      CASE ki.required_level WHEN 'required' THEN 0 WHEN 'recommended' THEN 1 ELSE 2 END,
+      CASE ki.risk_level WHEN 'refusal' THEN 0 WHEN 'high' THEN 1 WHEN 'elevated' THEN 2 ELSE 3 END,
+      ki.title
+    LIMIT 60
+  `).bind(nicheSlug, stageSlug).all<PreparationKnowledgeRow>();
+
+  const rows = knowledgeResult.results ?? [];
+  const clientId = crypto.randomUUID();
+  const sessionId = crypto.randomUUID();
+  const now = new Date().toISOString();
+  const statements = [
+    db.prepare(`
+      INSERT INTO clients (
+        id, name, account_url, business_model, product_summary, audience_summary,
+        commercial_goal, desired_action, sales_channel, crm_status, internal_notes,
+        created_at, updated_at
+      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, 'found', ?, ?, ?)
+    `).bind(
+      clientId,
+      clientName,
+      accountUrl || null,
+      businessModel || null,
+      productSummary,
+      audienceSummary || null,
+      commercialGoal,
+      commercialGoal,
+      salesChannel || null,
+      notes || null,
+      now,
+      now,
+    ),
+    db.prepare(`
+      INSERT INTO client_niches (client_id, niche_id, relation_type)
+      VALUES (?, ?, 'primary')
+    `).bind(clientId, niche.id),
+    db.prepare(`
+      INSERT INTO diagnostic_sessions (
+        id, client_id, format, status, channel, stage_slug, goal,
+        ethical_decision, created_at, updated_at
+      ) VALUES (?, ?, 'express', 'draft', ?, ?, ?, 'not_checked', ?, ?)
+    `).bind(sessionId, clientId, messageChannel, stageSlug, commercialGoal, now, now),
+  ];
+
+  rows.forEach((row, index) => {
+    statements.push(
+      db.prepare(`
+        INSERT INTO diagnostic_session_items (
+          id, session_id, knowledge_item_id, sort_order, created_at, updated_at
+        ) VALUES (?, ?, ?, ?, ?, ?)
+      `).bind(crypto.randomUUID(), sessionId, row.id, index + 1, now, now),
+    );
+  });
+
+  statements.push(
+    db.prepare(`
+      INSERT INTO audit_log (id, actor_email, action, entity_type, entity_id, new_value_json, created_at)
+      VALUES (?, ?, 'create', 'client_preparation', ?, ?, ?)
+    `).bind(
+      crypto.randomUUID(),
+      identity.email,
+      sessionId,
+      JSON.stringify({ clientId, clientName, nicheSlug, stageSlug, selectedItems: rows.length }),
+      now,
+    ),
+  );
+
+  await db.batch(statements);
+
+  return json({
+    preparation: {
+      clientId,
+      sessionId,
+      clientName,
+      nicheName: niche.name,
+      stageName: stage.name,
+      createdAt: now,
+    },
+    sections: groupPreparationItems(rows),
+  }, { status: 201 });
+}
+
 async function handleConstructorApi(request: Request, env: Env, identity: ConstructorIdentity): Promise<Response> {
   const url = new URL(request.url);
 
@@ -457,6 +702,10 @@ async function handleConstructorApi(request: Request, env: Env, identity: Constr
 
   if (url.pathname === "/api/constructor/knowledge" && request.method === "POST") {
     return handleKnowledgeCreate(request, env, identity);
+  }
+
+  if (url.pathname === "/api/constructor/preparations" && request.method === "POST") {
+    return handlePreparationCreate(request, env, identity);
   }
 
   return constructorError(404, "NOT_FOUND", "Раздел конструктора не найден.");

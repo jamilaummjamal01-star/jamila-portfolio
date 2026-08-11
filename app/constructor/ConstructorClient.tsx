@@ -1,6 +1,7 @@
 "use client";
 
 import { FormEvent, useCallback, useEffect, useMemo, useState } from "react";
+import PreparationWorkspace from "./PreparationWorkspace";
 import styles from "./constructor.module.css";
 
 type Niche = { slug: string; name: string; priority: string };
@@ -101,7 +102,7 @@ const statusLabels: Record<string, string> = {
 
 const navigation = [
   ["База знаний", "knowledge", true],
-  ["Подготовиться к клиенту", "prepare", false],
+  ["Подготовиться к клиенту", "prepare", true],
   ["Клиент задал вопрос", "answer", false],
   ["Диагностика", "diagnostic", false],
   ["Клиенты", "clients", false],
@@ -133,6 +134,7 @@ function displayDate(value: string | null): string {
 }
 
 export default function ConstructorClient() {
+  const [activeSection, setActiveSection] = useState<"knowledge" | "prepare">("knowledge");
   const [bootstrap, setBootstrap] = useState<BootstrapData | null>(null);
   const [items, setItems] = useState<KnowledgeItem[]>([]);
   const [pagination, setPagination] = useState<KnowledgeResponse["pagination"]>({ page: 1, limit: 30, total: 0, pages: 1 });
@@ -161,13 +163,12 @@ export default function ConstructorClient() {
   const [newRisk, setNewRisk] = useState("normal");
 
   useEffect(() => {
-    const timeout = window.setTimeout(() => setDebouncedQuery(query.trim()), 250);
+    const timeout = window.setTimeout(() => {
+      setDebouncedQuery(query.trim());
+      setPage(1);
+    }, 250);
     return () => window.clearTimeout(timeout);
   }, [query]);
-
-  useEffect(() => {
-    setPage(1);
-  }, [debouncedQuery, niche, stage, itemType, risk, status]);
 
   const loadBootstrap = useCallback(async () => {
     const response = await fetch("/api/constructor/bootstrap", {
@@ -202,10 +203,14 @@ export default function ConstructorClient() {
 
   useEffect(() => {
     let cancelled = false;
-    setLoading(true);
-    setError("");
 
-    Promise.all([bootstrap ? Promise.resolve() : loadBootstrap(), loadItems()])
+    Promise.resolve()
+      .then(() => {
+        if (cancelled) return undefined;
+        setLoading(true);
+        setError("");
+        return Promise.all([bootstrap ? Promise.resolve() : loadBootstrap(), loadItems()]);
+      })
       .catch((reason: unknown) => {
         if (!cancelled) setError(reason instanceof Error ? reason.message : "Не удалось загрузить конструктор.");
       })
@@ -306,10 +311,22 @@ export default function ConstructorClient() {
         </div>
 
         <nav className={styles.navigation} aria-label="Разделы конструктора">
-          {navigation.map(([label, key, active]) => (
-            <button className={active ? styles.navActive : styles.navDisabled} key={key} type="button" disabled={!active}>
+          {navigation.map(([label, key, enabled]) => (
+            <button
+              className={activeSection === key ? styles.navActive : enabled ? styles.navAvailable : styles.navDisabled}
+              key={key}
+              type="button"
+              disabled={!enabled}
+              onClick={() => {
+                if (key === "knowledge" || key === "prepare") {
+                  setActiveSection(key);
+                  setSelected(null);
+                  setShowAdd(false);
+                }
+              }}
+            >
               <span>{label}</span>
-              {!active && <small>скоро</small>}
+              {!enabled && <small>скоро</small>}
             </button>
           ))}
         </nav>
@@ -321,6 +338,8 @@ export default function ConstructorClient() {
       </aside>
 
       <section className={styles.workspace}>
+        {activeSection === "knowledge" ? (
+          <>
         <header className={styles.topbar}>
           <div>
             <p className={styles.eyebrow}>База знаний</p>
@@ -358,7 +377,7 @@ export default function ConstructorClient() {
 
           <label>
             <span>Ниша</span>
-            <select value={niche} onChange={(event) => setNiche(event.target.value)}>
+            <select value={niche} onChange={(event) => { setNiche(event.target.value); setPage(1); }}>
               <option value="">Все ниши</option>
               {bootstrap?.niches.map((option) => (
                 <option key={option.slug} value={option.slug}>{option.name}</option>
@@ -368,7 +387,7 @@ export default function ConstructorClient() {
 
           <label>
             <span>Этап</span>
-            <select value={stage} onChange={(event) => setStage(event.target.value)}>
+            <select value={stage} onChange={(event) => { setStage(event.target.value); setPage(1); }}>
               <option value="">Все этапы</option>
               {bootstrap?.stages.map((option) => (
                 <option key={option.slug} value={option.slug}>{option.name}</option>
@@ -378,7 +397,7 @@ export default function ConstructorClient() {
 
           <label>
             <span>Тип записи</span>
-            <select value={itemType} onChange={(event) => setItemType(event.target.value)}>
+            <select value={itemType} onChange={(event) => { setItemType(event.target.value); setPage(1); }}>
               <option value="">Все типы</option>
               {Object.entries(itemTypeLabels).map(([value, label]) => (
                 <option key={value} value={value}>{label}</option>
@@ -388,7 +407,7 @@ export default function ConstructorClient() {
 
           <label>
             <span>Риск</span>
-            <select value={risk} onChange={(event) => setRisk(event.target.value)}>
+            <select value={risk} onChange={(event) => { setRisk(event.target.value); setPage(1); }}>
               <option value="">Любой риск</option>
               {Object.entries(riskLabels).map(([value, label]) => (
                 <option key={value} value={value}>{label}</option>
@@ -398,7 +417,7 @@ export default function ConstructorClient() {
 
           <label>
             <span>Статус</span>
-            <select value={status} onChange={(event) => setStatus(event.target.value)}>
+            <select value={status} onChange={(event) => { setStatus(event.target.value); setPage(1); }}>
               <option value="approved">Утверждено</option>
               <option value="review">На проверке</option>
               <option value="draft">Черновики</option>
@@ -474,6 +493,10 @@ export default function ConstructorClient() {
             <span>{page} / {pagination.pages}</span>
             <button type="button" disabled={page >= pagination.pages || loading} onClick={() => setPage((value) => Math.min(pagination.pages, value + 1))}>Дальше</button>
           </div>
+        )}
+          </>
+        ) : (
+          <PreparationWorkspace bootstrap={bootstrap} onToast={setToast} />
         )}
       </section>
 
