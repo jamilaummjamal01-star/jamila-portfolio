@@ -7,6 +7,14 @@
     "directory": "dist/client",
     "binding": "ASSETS"
   },
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "jamila-constructor",
+      "database_id": "d8558d57-d0be-4fc4-a377-fdf8cac5368c",
+      "migrations_dir": "migrations"
+    }
+  ],
   "observability": {
     "enabled": true
   }
