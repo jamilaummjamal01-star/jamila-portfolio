@@ -620,4 +620,3 @@ function DetailBlock({ title, text, warning = false, onCopy }: { title: string; 
     </section>
   );
 }
-

@@ -576,7 +576,166 @@ async function handleKnowledgeList(request: Request, env: Env): Promise<Response
         FROM knowledge_item_niches kin
         JOIN niches n ON n.id = kin.niche_id
         WHERE kin.knowledge_item_id = ki.id
-      ) AS niche_…1432 tokens truncated…ь данные подготовки.");
+      ) AS niche_names,
+      (
+        SELECT GROUP_CONCAT(s.slug, '${listDelimiter}')
+        FROM knowledge_item_stages kis
+        JOIN stages s ON s.id = kis.stage_id
+        WHERE kis.knowledge_item_id = ki.id
+      ) AS stage_slugs,
+      (
+        SELECT GROUP_CONCAT(s.name, '${listDelimiter}')
+        FROM knowledge_item_stages kis
+        JOIN stages s ON s.id = kis.stage_id
+        WHERE kis.knowledge_item_id = ki.id
+      ) AS stage_names
+    FROM knowledge_items ki
+    WHERE ${where}
+    ORDER BY
+      CASE ki.required_level WHEN 'required' THEN 0 WHEN 'recommended' THEN 1 ELSE 2 END,
+      CASE ki.risk_level WHEN 'refusal' THEN 0 WHEN 'high' THEN 1 WHEN 'elevated' THEN 2 ELSE 3 END,
+      ki.updated_at DESC,
+      ki.title
+    LIMIT ? OFFSET ?
+  `;
+
+  const countSql = `SELECT COUNT(*) AS total FROM knowledge_items ki WHERE ${where}`;
+  const [itemsResult, countResult] = await db.batch([
+    db.prepare(selectSql).bind(...bindings, limit, offset),
+    db.prepare(countSql).bind(...bindings),
+  ]);
+
+  const items = ((itemsResult.results ?? []) as unknown as KnowledgeRow[]).map((row) => ({
+    ...row,
+    niches: splitList(row.niche_names),
+    nicheSlugs: splitList(row.niche_slugs),
+    stages: splitList(row.stage_names),
+    stageSlugs: splitList(row.stage_slugs),
+    niche_names: undefined,
+    niche_slugs: undefined,
+    stage_names: undefined,
+    stage_slugs: undefined,
+  }));
+
+  const total = Number((countResult.results?.[0] as { total?: number } | undefined)?.total ?? 0);
+
+  return json({
+    items,
+    pagination: {
+      page,
+      limit,
+      total,
+      pages: Math.max(1, Math.ceil(total / limit)),
+    },
+  });
+}
+
+async function handleKnowledgeCreate(request: Request, env: Env, identity: ConstructorIdentity): Promise<Response> {
+  const db = requireDatabase(env);
+  if (db instanceof Response) return db;
+
+  let body: Record<string, unknown>;
+  try {
+    body = (await request.json()) as Record<string, unknown>;
+  } catch {
+    return constructorError(400, "INVALID_JSON", "Не удалось прочитать данные новой записи.");
+  }
+
+  const title = typeof body.title === "string" ? body.title.trim() : "";
+  const category = typeof body.category === "string" ? body.category.trim() : "";
+  const itemType = typeof body.itemType === "string" ? body.itemType.trim() : "";
+  const promptText = typeof body.promptText === "string" ? body.promptText.trim() : null;
+  const shortText = typeof body.shortText === "string" ? body.shortText.trim() : null;
+  const nicheSlugs = Array.isArray(body.nicheSlugs) ? body.nicheSlugs.filter((value): value is string => typeof value === "string") : [];
+  const stageSlugs = Array.isArray(body.stageSlugs) ? body.stageSlugs.filter((value): value is string => typeof value === "string") : [];
+
+  const allowedTypes = new Set([
+    "question_to_client",
+    "question_from_client",
+    "answer",
+    "objection",
+    "objection_response",
+    "clarifying_question",
+    "first_message",
+    "follow_up",
+    "diagnostic_hint",
+    "audit_check",
+    "red_flag",
+    "ethical_rule",
+    "proposal_block",
+    "package",
+    "next_action",
+    "refusal_reason",
+  ]);
+
+  if (!title || !category || !allowedTypes.has(itemType)) {
+    return constructorError(422, "VALIDATION_FAILED", "Укажите название, категорию и корректный тип записи.");
+  }
+
+  const id = crypto.randomUUID();
+  const now = new Date().toISOString();
+  const statements = [
+    db.prepare(`
+      INSERT INTO knowledge_items (
+        id, item_type, speaker, category, title, prompt_text, short_text,
+        channel, tone, required_level, risk_level, source_kind, status,
+        version, created_at, updated_at
+      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'manual', 'draft', 1, ?, ?)
+    `).bind(
+      id,
+      itemType,
+      typeof body.speaker === "string" ? body.speaker : "system",
+      category,
+      title,
+      promptText,
+      shortText,
+      typeof body.channel === "string" ? body.channel : "any",
+      typeof body.tone === "string" ? body.tone : "neutral",
+      typeof body.requiredLevel === "string" ? body.requiredLevel : "recommended",
+      typeof body.riskLevel === "string" ? body.riskLevel : "normal",
+      now,
+      now,
+    ),
+  ];
+
+  for (const slug of nicheSlugs) {
+    statements.push(
+      db.prepare(`
+        INSERT OR IGNORE INTO knowledge_item_niches (knowledge_item_id, niche_id, relevance)
+        SELECT ?, id, 'primary' FROM niches WHERE slug = ?
+      `).bind(id, slug),
+    );
+  }
+
+  for (const slug of stageSlugs) {
+    statements.push(
+      db.prepare(`
+        INSERT OR IGNORE INTO knowledge_item_stages (knowledge_item_id, stage_id)
+        SELECT ?, id FROM stages WHERE slug = ?
+      `).bind(id, slug),
+    );
+  }
+
+  statements.push(
+    db.prepare(`
+      INSERT INTO audit_log (id, actor_email, action, entity_type, entity_id, new_value_json, created_at)
+      VALUES (?, ?, 'create', 'knowledge_item', ?, ?, ?)
+    `).bind(crypto.randomUUID(), identity.email, id, JSON.stringify({ title, category, itemType }), now),
+  );
+
+  await db.batch(statements);
+  return json({ id, status: "draft" }, { status: 201 });
+}
+
+async function handlePreparationCreate(request: Request, env: Env, identity: ConstructorIdentity): Promise<Response> {
+  const db = requireDatabase(env);
+  if (db instanceof Response) return db;
+
+  let body: Record<string, unknown>;
+  try {
+    body = (await request.json()) as Record<string, unknown>;
+  } catch {
+    return constructorError(400, "INVALID_JSON", "Не удалось прочитать данные подготовки.");
   }
 
   const clientName = readText(body, "clientName", 160);
@@ -1080,4 +1239,3 @@ const worker = {
 };
 
 export default worker;
-

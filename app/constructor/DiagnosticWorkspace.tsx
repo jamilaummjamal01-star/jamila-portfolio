@@ -401,4 +401,3 @@ export default function DiagnosticWorkspace({ bootstrap, onToast }: DiagnosticWo
     </>
   );
 }
-
