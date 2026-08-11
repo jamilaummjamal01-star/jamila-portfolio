@@ -117,6 +117,61 @@ interface DiagnosticKnowledgeRow {
   risk_level: string;
 }
 
+interface ClientListRow {
+  id: string;
+  name: string;
+  account_url: string | null;
+  contact_name: string | null;
+  contact_channel: string | null;
+  contact_value: string | null;
+  crm_status: string;
+  priority: string;
+  ethical_status: string;
+  next_action: string | null;
+  next_contact_at: string | null;
+  created_at: string;
+  updated_at: string;
+  niche_name: string | null;
+  session_count: number;
+  latest_session_status: string | null;
+  latest_session_at: string | null;
+  search_text?: string | null;
+}
+
+interface ClientDetailRow extends ClientListRow {
+  city: string | null;
+  geography: string | null;
+  business_model: string | null;
+  product_summary: string | null;
+  audience_summary: string | null;
+  commercial_goal: string | null;
+  desired_action: string | null;
+  sales_channel: string | null;
+  budget_min: number | null;
+  budget_max: number | null;
+  main_objection: string | null;
+  internal_notes: string | null;
+}
+
+interface ClientSessionRow {
+  id: string;
+  format: string;
+  status: string;
+  channel: string | null;
+  stage_slug: string | null;
+  stage_name: string | null;
+  goal: string | null;
+  strong_side: string | null;
+  main_barrier: string | null;
+  main_diagnosis: string | null;
+  missing_data: string | null;
+  next_action: string | null;
+  ethical_decision: string;
+  selected_items: number;
+  created_at: string;
+  updated_at: string;
+}
+
 const jwksCache = new Map<string, ReturnType<typeof createRemoteJWKSet>>();
 const listDelimiter = "|||";
 const answerCategoryKeywords: Record<string, string[]> = {
@@ -1153,6 +1208,301 @@ async function handleDiagnosticCreate(request: Request, env: Env, identity: Cons
   }, { status: 201 });
 }
 
+function toClientListItem(row: ClientListRow) {
+  return {
+    id: row.id,
+    name: row.name,
+    accountUrl: row.account_url,
+    contactName: row.contact_name,
+    contactChannel: row.contact_channel,
+    contactValue: row.contact_value,
+    crmStatus: row.crm_status,
+    priority: row.priority,
+    ethicalStatus: row.ethical_status,
+    nextAction: row.next_action,
+    nextContactAt: row.next_contact_at,
+    nicheName: row.niche_name,
+    sessionCount: Number(row.session_count ?? 0),
+    latestSessionStatus: row.latest_session_status,
+    latestSessionAt: row.latest_session_at,
+    createdAt: row.created_at,
+    updatedAt: row.updated_at,
+  };
+}
+
+function parseMissingData(value: string | null): string[] {
+  if (!value) return [];
+  try {
+    const parsed = JSON.parse(value) as unknown;
+    return Array.isArray(parsed) ? parsed.filter((item): item is string => typeof item === "string") : [value];
+  } catch {
+    return [value];
+  }
+}
+
+async function handleClientList(request: Request, env: Env): Promise<Response> {
+  const db = requireDatabase(env);
+  if (db instanceof Response) return db;
+
+  const url = new URL(request.url);
+  const query = (url.searchParams.get("q") || "").trim().toLocaleLowerCase("ru").slice(0, 160);
+  const status = (url.searchParams.get("status") || "").trim().slice(0, 40);
+  const priority = (url.searchParams.get("priority") || "").trim().slice(0, 4);
+  const filters = ["1 = 1"];
+  const bindings: string[] = [];
+
+  if (status) {
+    filters.push("c.crm_status = ?");
+    bindings.push(status);
+  }
+
+  if (priority && ["A", "B", "C"].includes(priority)) {
+    filters.push("c.priority = ?");
+    bindings.push(priority);
+  }
+
+  const where = filters.join(" AND ");
+  const [clientsResult, countResult, statusResult] = await db.batch([
+    db.prepare(`
+      SELECT
+        c.id,
+        c.name,
+        c.account_url,
+        c.contact_name,
+        c.contact_channel,
+        c.contact_value,
+        c.crm_status,
+        c.priority,
+        c.ethical_status,
+        c.next_action,
+        c.next_contact_at,
+        c.created_at,
+        c.updated_at,
+        COALESCE(c.name, '') || ' ' ||
+          COALESCE(c.contact_name, '') || ' ' ||
+          COALESCE(c.contact_value, '') || ' ' ||
+          COALESCE(c.product_summary, '') || ' ' ||
+          COALESCE(c.commercial_goal, '') AS search_text,
+        (
+          SELECT n.name
+          FROM client_niches cn
+          JOIN niches n ON n.id = cn.niche_id
+          WHERE cn.client_id = c.id
+          ORDER BY CASE cn.relation_type WHEN 'primary' THEN 0 ELSE 1 END, n.name
+          LIMIT 1
+        ) AS niche_name,
+        (SELECT COUNT(*) FROM diagnostic_sessions ds WHERE ds.client_id = c.id) AS session_count,
+        (
+          SELECT ds.status FROM diagnostic_sessions ds
+          WHERE ds.client_id = c.id
+          ORDER BY ds.updated_at DESC LIMIT 1
+        ) AS latest_session_status,
+        (
+          SELECT ds.updated_at FROM diagnostic_sessions ds
+          WHERE ds.client_id = c.id
+          ORDER BY ds.updated_at DESC LIMIT 1
+        ) AS latest_session_at
+      FROM clients c
+      WHERE ${where}
+      ORDER BY
+        CASE c.priority WHEN 'A' THEN 0 WHEN 'B' THEN 1 ELSE 2 END,
+        CASE WHEN c.next_contact_at IS NULL THEN 1 ELSE 0 END,
+        c.next_contact_at,
+        c.updated_at DESC
+      LIMIT 500
+    `).bind(...bindings),
+    db.prepare(`SELECT COUNT(*) AS total FROM clients c WHERE ${where}`).bind(...bindings),
+    db.prepare(`
+      SELECT crm_status AS status, COUNT(*) AS total
+      FROM clients
+      GROUP BY crm_status
+      ORDER BY total DESC, crm_status
+    `),
+  ]);
+
+  const clientRows = (clientsResult.results ?? []) as unknown as ClientListRow[];
+  const matchingRows = query
+    ? clientRows.filter((row) => (row.search_text || "").toLocaleLowerCase("ru").includes(query))
+    : clientRows;
+
+  return json({
+    items: matchingRows.slice(0, 100).map(toClientListItem),
+    total: query ? matchingRows.length : Number((countResult.results?.[0] as { total?: number } | undefined)?.total ?? 0),
+    statusCounts: statusResult.results ?? [],
+  });
+}
+
+async function handleClientDetail(clientId: string, env: Env): Promise<Response> {
+  const db = requireDatabase(env);
+  if (db instanceof Response) return db;
+
+  const [clientResult, sessionsResult] = await db.batch([
+    db.prepare(`
+      SELECT
+        c.*,
+        (
+          SELECT n.name
+          FROM client_niches cn
+          JOIN niches n ON n.id = cn.niche_id
+          WHERE cn.client_id = c.id
+          ORDER BY CASE cn.relation_type WHEN 'primary' THEN 0 ELSE 1 END, n.name
+          LIMIT 1
+        ) AS niche_name,
+        (SELECT COUNT(*) FROM diagnostic_sessions ds WHERE ds.client_id = c.id) AS session_count,
+        (
+          SELECT ds.status FROM diagnostic_sessions ds
+          WHERE ds.client_id = c.id
+          ORDER BY ds.updated_at DESC LIMIT 1
+        ) AS latest_session_status,
+        (
+          SELECT ds.updated_at FROM diagnostic_sessions ds
+          WHERE ds.client_id = c.id
+          ORDER BY ds.updated_at DESC LIMIT 1
+        ) AS latest_session_at
+      FROM clients c
+      WHERE c.id = ?
+      LIMIT 1
+    `).bind(clientId),
+    db.prepare(`
+      SELECT
+        ds.id,
+        ds.format,
+        ds.status,
+        ds.channel,
+        ds.stage_slug,
+        s.name AS stage_name,
+        ds.goal,
+        ds.strong_side,
+        ds.main_barrier,
+        ds.main_diagnosis,
+        ds.missing_data,
+        ds.next_action,
+        ds.ethical_decision,
+        (SELECT COUNT(*) FROM diagnostic_session_items dsi WHERE dsi.session_id = ds.id) AS selected_items,
+        ds.created_at,
+        ds.updated_at
+      FROM diagnostic_sessions ds
+      LEFT JOIN stages s ON s.slug = ds.stage_slug
+      WHERE ds.client_id = ?
+      ORDER BY ds.updated_at DESC
+      LIMIT 50
+    `).bind(clientId),
+  ]);
+
+  const row = clientResult.results?.[0] as unknown as ClientDetailRow | undefined;
+  if (!row?.id) return constructorError(404, "CLIENT_NOT_FOUND", "Карточка клиента не найдена.");
+
+  return json({
+    client: {
+      ...toClientListItem(row),
+      city: row.city,
+      geography: row.geography,
+      businessModel: row.business_model,
+      productSummary: row.product_summary,
+      audienceSummary: row.audience_summary,
+      commercialGoal: row.commercial_goal,
+      desiredAction: row.desired_action,
+      salesChannel: row.sales_channel,
+      budgetMin: row.budget_min,
+      budgetMax: row.budget_max,
+      mainObjection: row.main_objection,
+      internalNotes: row.internal_notes,
+    },
+    sessions: ((sessionsResult.results ?? []) as unknown as ClientSessionRow[]).map((session) => ({
+      id: session.id,
+      format: session.format,
+      status: session.status,
+      channel: session.channel,
+      stageSlug: session.stage_slug,
+      stageName: session.stage_name,
+      goal: session.goal,
+      strongSide: session.strong_side,
+      mainBarrier: session.main_barrier,
+      mainDiagnosis: session.main_diagnosis,
+      missing: parseMissingData(session.missing_data),
+      nextAction: session.next_action,
+      ethicalDecision: session.ethical_decision,
+      selectedItems: Number(session.selected_items ?? 0),
+      createdAt: session.created_at,
+      updatedAt: session.updated_at,
+    })),
+  });
+}
+
+async function handleClientUpdate(request: Request, clientId: string, env: Env, identity: ConstructorIdentity): Promise<Response> {
+  const db = requireDatabase(env);
+  if (db instanceof Response) return db;
+
+  let body: Record<string, unknown>;
+  try {
+    body = (await request.json()) as Record<string, unknown>;
+  } catch {
+    return constructorError(400, "INVALID_JSON", "Не удалось прочитать изменения карточки клиента.");
+  }
+
+  const existing = await db.prepare("SELECT id FROM clients WHERE id = ? LIMIT 1").bind(clientId).first<{ id: string }>();
+  if (!existing?.id) return constructorError(404, "CLIENT_NOT_FOUND", "Карточка клиента не найдена.");
+
+  const crmStatus = readText(body, "crmStatus", 40);
+  const priority = readText(body, "priority", 4);
+  const contactName = readText(body, "contactName", 160);
+  const contactChannel = readText(body, "contactChannel", 80);
+  const contactValue = readText(body, "contactValue", 320);
+  const nextAction = readText(body, "nextAction", 1000);
+  const nextContactAt = readText(body, "nextContactAt", 80);
+  const internalNotes = readText(body, "internalNotes", 3000);
+  const allowedStatuses = new Set(["found", "diagnostic", "qualified", "proposal", "negotiation", "won", "paused", "lost", "archived"]);
+
+  if (!allowedStatuses.has(crmStatus) || !["A", "B", "C"].includes(priority)) {
+    return constructorError(422, "VALIDATION_FAILED", "Выберите корректный статус и приоритет клиента.");
+  }
+
+  if (nextContactAt && Number.isNaN(Date.parse(nextContactAt))) {
+    return constructorError(422, "INVALID_NEXT_CONTACT", "Укажите корректную дату следующего контакта.");
+  }
+
+  const now = new Date().toISOString();
+  await db.batch([
+    db.prepare(`
+      UPDATE clients
+      SET
+        crm_status = ?,
+        priority = ?,
+        contact_name = ?,
+        contact_channel = ?,
+        contact_value = ?,
+        next_action = ?,
+        next_contact_at = ?,
+        internal_notes = ?,
+        updated_at = ?
+      WHERE id = ?
+    `).bind(
+      crmStatus,
+      priority,
+      contactName || null,
+      contactChannel || null,
+      contactValue || null,
+      nextAction || null,
+      nextContactAt || null,
+      internalNotes || null,
+      now,
+      clientId,
+    ),
+    db.prepare(`
+      INSERT INTO audit_log (id, actor_email, action, entity_type, entity_id, new_value_json, created_at)
+      VALUES (?, ?, 'update', 'client', ?, ?, ?)
+    `).bind(
+      crypto.randomUUID(),
+      identity.email,
+      clientId,
+      JSON.stringify({ crmStatus, priority, contactName, contactChannel, nextAction, nextContactAt }),
+      now,
+    ),
+  ]);
+
+  return handleClientDetail(clientId, env);
+}
+
 async function handleConstructorApi(request: Request, env: Env, identity: ConstructorIdentity): Promise<Response> {
   const url = new URL(request.url);
 
@@ -1187,6 +1537,17 @@ async function handleConstructorApi(request: Request, env: Env, identity: Constr
 
   if (url.pathname === "/api/constructor/diagnostics" && request.method === "POST") {
     return handleDiagnosticCreate(request, env, identity);
+  }
+
+  if (url.pathname === "/api/constructor/clients" && request.method === "GET") {
+    return handleClientList(request, env);
+  }
+
+  const clientMatch = url.pathname.match(/^\/api\/constructor\/clients\/([^/]+)$/);
+  if (clientMatch) {
+    const clientId = clientMatch[1].slice(0, 80);
+    if (request.method === "GET") return handleClientDetail(clientId, env);
+    if (request.method === "PATCH") return handleClientUpdate(request, clientId, env, identity);
   }
 
   return constructorError(404, "NOT_FOUND", "Раздел конструктора не найден.");

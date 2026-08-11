@@ -1377,6 +1377,381 @@
   font-size: 0.75rem;
 }
 
+.clientWorkspace {
+  display: grid;
+  gap: 22px;
+}
+
+.clientIntro {
+  margin: 8px 0 0;
+  color: var(--constructor-muted);
+  font-size: 0.86rem;
+}
+
+.clientTotal {
+  display: grid;
+  min-width: 110px;
+  padding: 14px 18px;
+  border: 1px solid var(--constructor-line);
+  border-radius: 18px;
+  background: rgba(255, 253, 248, 0.7);
+  text-align: right;
+}
+
+.clientTotal strong {
+  color: var(--constructor-brown);
+  font-family: var(--font-cormorant), Georgia, serif;
+  font-size: 2rem;
+  line-height: 1;
+}
+
+.clientTotal span,
+.clientUpdated span {
+  margin-top: 4px;
+  color: var(--constructor-muted);
+  font-size: 0.68rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.clientLayout {
+  display: grid;
+  grid-template-columns: minmax(300px, 0.78fr) minmax(0, 1.9fr);
+  gap: 20px;
+  align-items: start;
+}
+
+.clientListPanel,
+.clientDetailPanel {
+  border: 1px solid var(--constructor-line);
+  border-radius: 24px;
+  background: rgba(255, 253, 248, 0.76);
+  box-shadow: 0 18px 55px rgba(61, 39, 31, 0.06);
+  overflow: hidden;
+}
+
+.clientListPanel {
+  position: sticky;
+  top: 22px;
+}
+
+.clientFilters {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  padding: 18px;
+  border-bottom: 1px solid var(--constructor-line);
+}
+
+.clientFilters label,
+.clientEditForm label {
+  display: grid;
+  gap: 7px;
+  color: var(--constructor-muted);
+  font-size: 0.7rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.clientFilters input,
+.clientFilters select,
+.clientEditForm input,
+.clientEditForm select,
+.clientEditForm textarea {
+  width: 100%;
+  border: 1px solid var(--constructor-line);
+  border-radius: 12px;
+  background: #fffdf9;
+  color: var(--constructor-text);
+  font: inherit;
+  font-size: 0.82rem;
+  font-weight: 500;
+  letter-spacing: 0;
+  text-transform: none;
+}
+
+.clientFilters input,
+.clientFilters select,
+.clientEditForm input,
+.clientEditForm select {
+  min-height: 42px;
+  padding: 0 12px;
+}
+
+.clientEditForm textarea {
+  padding: 11px 12px;
+  resize: vertical;
+}
+
+.clientFilters input:focus,
+.clientFilters select:focus,
+.clientEditForm input:focus,
+.clientEditForm select:focus,
+.clientEditForm textarea:focus {
+  outline: 2px solid rgba(118, 127, 48, 0.2);
+  border-color: var(--constructor-olive);
+}
+
+.clientSearch {
+  grid-column: 1 / -1;
+}
+
+.clientList {
+  display: grid;
+  max-height: calc(100vh - 280px);
+  overflow-y: auto;
+}
+
+.clientListItem,
+.clientListActive {
+  display: grid;
+  gap: 7px;
+  padding: 17px 18px;
+  border: 0;
+  border-bottom: 1px solid var(--constructor-line);
+  background: transparent;
+  color: var(--constructor-text);
+  text-align: left;
+  cursor: pointer;
+}
+
+.clientListActive {
+  background: linear-gradient(110deg, rgba(118, 127, 48, 0.13), rgba(255, 253, 248, 0.9));
+  box-shadow: inset 3px 0 var(--constructor-olive);
+}
+
+.clientListItem:hover {
+  background: rgba(118, 127, 48, 0.06);
+}
+
+.clientListHeading,
+.clientListMeta,
+.clientHistoryHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.clientListHeading strong {
+  font-size: 0.94rem;
+}
+
+.clientListHeading b {
+  display: grid;
+  place-items: center;
+  width: 25px;
+  height: 25px;
+  border-radius: 50%;
+  background: rgba(118, 127, 48, 0.13);
+  color: var(--constructor-olive-dark);
+  font-size: 0.67rem;
+}
+
+.clientListHeading b[data-priority="A"] {
+  background: rgba(145, 72, 55, 0.13);
+  color: #8c3f30;
+}
+
+.clientListItem > span:not(.clientListHeading):not(.clientListMeta),
+.clientListActive > span:not(.clientListHeading):not(.clientListMeta) {
+  color: var(--constructor-muted);
+  font-size: 0.76rem;
+}
+
+.clientListMeta em {
+  color: var(--constructor-olive-dark);
+  font-size: 0.7rem;
+  font-style: normal;
+  font-weight: 700;
+}
+
+.clientListMeta small {
+  color: var(--constructor-muted);
+  font-size: 0.68rem;
+}
+
+.clientListItem p,
+.clientListActive p {
+  margin: 2px 0 0;
+  color: var(--constructor-text);
+  font-size: 0.77rem;
+  line-height: 1.45;
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+}
+
+.clientListSkeleton {
+  height: 116px;
+  border-bottom: 1px solid var(--constructor-line);
+  background: linear-gradient(100deg, rgba(241, 235, 223, 0.4) 20%, rgba(255, 253, 248, 0.9) 45%, rgba(241, 235, 223, 0.4) 70%);
+  background-size: 220% 100%;
+  animation: shimmer 1.4s infinite;
+}
+
+.clientEmpty,
+.clientDetailLoading,
+.clientHistoryEmpty {
+  padding: 42px 24px;
+  color: var(--constructor-muted);
+  text-align: center;
+}
+
+.clientEmpty strong {
+  display: block;
+  margin-bottom: 8px;
+  color: var(--constructor-text);
+}
+
+.clientEmpty p {
+  margin: 0;
+  font-size: 0.8rem;
+  line-height: 1.55;
+}
+
+.clientDetailPanel {
+  min-height: 560px;
+}
+
+.clientDetailHeader {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 24px;
+  padding: 26px 28px;
+  border-bottom: 1px solid var(--constructor-line);
+}
+
+.clientDetailHeader h2 {
+  margin: 13px 0 4px;
+  font-family: var(--font-cormorant), Georgia, serif;
+  font-size: clamp(1.9rem, 4vw, 2.65rem);
+  line-height: 0.95;
+}
+
+.clientDetailHeader p {
+  margin: 0;
+  color: var(--constructor-muted);
+  font-size: 0.82rem;
+}
+
+.clientUpdated {
+  display: grid;
+  flex: 0 0 auto;
+  text-align: right;
+}
+
+.clientUpdated strong {
+  margin-top: 3px;
+  font-size: 0.74rem;
+}
+
+.clientContextGrid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1px;
+  background: var(--constructor-line);
+  border-bottom: 1px solid var(--constructor-line);
+}
+
+.clientContextGrid article {
+  min-height: 130px;
+  padding: 20px;
+  background: #fffdf9;
+}
+
+.clientContextGrid span,
+.clientHistory article span {
+  color: var(--constructor-muted);
+  font-size: 0.64rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.clientContextGrid p,
+.clientHistory article p {
+  margin: 9px 0 0;
+  font-size: 0.82rem;
+  line-height: 1.55;
+}
+
+.clientEditForm,
+.clientHistory {
+  padding: 26px 28px;
+  border-bottom: 1px solid var(--constructor-line);
+}
+
+.clientEditForm .panelHeading,
+.clientHistory .panelHeading {
+  margin-bottom: 20px;
+}
+
+.clientFormGrid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px;
+}
+
+.clientWideField {
+  grid-column: 1 / -1;
+}
+
+.clientHistory {
+  display: grid;
+  gap: 14px;
+  border-bottom: 0;
+}
+
+.clientHistory .panelHeading > strong {
+  display: grid;
+  place-items: center;
+  min-width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  background: rgba(118, 127, 48, 0.13);
+  color: var(--constructor-olive-dark);
+}
+
+.clientHistory article {
+  display: grid;
+  gap: 14px;
+  padding: 19px;
+  border: 1px solid var(--constructor-line);
+  border-radius: 17px;
+  background: #fffdf9;
+}
+
+.clientHistoryHeader > div {
+  display: grid;
+  gap: 4px;
+}
+
+.clientHistoryHeader > div > span {
+  font-weight: 500;
+  letter-spacing: 0;
+  text-transform: none;
+}
+
+.clientHistoryHeader em {
+  padding: 5px 9px;
+  border-radius: 999px;
+  background: rgba(118, 127, 48, 0.12);
+  color: var(--constructor-olive-dark);
+  font-size: 0.65rem;
+  font-style: normal;
+  font-weight: 700;
+}
+
+.clientHistoryNext {
+  padding: 13px 14px;
+  border-radius: 12px;
+  background: rgba(118, 127, 48, 0.08);
+}
+
 @media (max-width: 1280px) {
   .filters {
     grid-template-columns: minmax(230px, 2fr) repeat(3, minmax(135px, 1fr));
@@ -1396,6 +1771,18 @@
 
   .answerWorkspace {
     grid-template-columns: 1fr;
+  }
+
+  .clientLayout {
+    grid-template-columns: 1fr;
+  }
+
+  .clientListPanel {
+    position: static;
+  }
+
+  .clientList {
+    max-height: 440px;
   }
 
   .preparationForm {
@@ -1509,6 +1896,30 @@
 
   .answerDetailHeader {
     flex-direction: column;
+  }
+
+  .clientContextGrid,
+  .clientFormGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .clientWideField {
+    grid-column: auto;
+  }
+
+  .clientDetailHeader,
+  .clientHistoryHeader {
+    flex-direction: column;
+  }
+
+  .clientUpdated {
+    text-align: left;
+  }
+
+  .clientEditForm,
+  .clientHistory,
+  .clientDetailHeader {
+    padding: 20px 16px;
   }
 
   .preparationForm > .primaryButton {
