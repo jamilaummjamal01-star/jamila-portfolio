@@ -59,4 +59,6 @@ test("renders the protected constructor navigation locally", async () => {
   const html = await response.text();
   assert.match(html, /Подготовиться к клиенту/);
   assert.match(html, /Клиент задал вопрос/);
+  assert.match(html, /Диагностика/);
 });
+

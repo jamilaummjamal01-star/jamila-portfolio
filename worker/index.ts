@@ -104,6 +104,19 @@ interface AnswerKnowledgeRow {
   niche_names: string | null;
 }
 
+interface DiagnosticKnowledgeRow {
+  id: string;
+  item_type: string;
+  category: string;
+  title: string;
+  prompt_text: string | null;
+  short_text: string | null;
+  full_text: string | null;
+  next_action_text: string | null;
+  red_flag_text: string | null;
+  risk_level: string;
+}
+
 const jwksCache = new Map<string, ReturnType<typeof createRemoteJWKSet>>();
 const listDelimiter = "|||";
 const answerCategoryKeywords: Record<string, string[]> = {
@@ -563,166 +576,7 @@ async function handleKnowledgeList(request: Request, env: Env): Promise<Response
         FROM knowledge_item_niches kin
         JOIN niches n ON n.id = kin.niche_id
         WHERE kin.knowledge_item_id = ki.id
-      ) AS niche_names,
-      (
-        SELECT GROUP_CONCAT(s.slug, '${listDelimiter}')
-        FROM knowledge_item_stages kis
-        JOIN stages s ON s.id = kis.stage_id
-        WHERE kis.knowledge_item_id = ki.id
-      ) AS stage_slugs,
-      (
-        SELECT GROUP_CONCAT(s.name, '${listDelimiter}')
-        FROM knowledge_item_stages kis
-        JOIN stages s ON s.id = kis.stage_id
-        WHERE kis.knowledge_item_id = ki.id
-      ) AS stage_names
-    FROM knowledge_items ki
-    WHERE ${where}
-    ORDER BY
-      CASE ki.required_level WHEN 'required' THEN 0 WHEN 'recommended' THEN 1 ELSE 2 END,
-      CASE ki.risk_level WHEN 'refusal' THEN 0 WHEN 'high' THEN 1 WHEN 'elevated' THEN 2 ELSE 3 END,
-      ki.updated_at DESC,
-      ki.title
-    LIMIT ? OFFSET ?
-  `;
-
-  const countSql = `SELECT COUNT(*) AS total FROM knowledge_items ki WHERE ${where}`;
-  const [itemsResult, countResult] = await db.batch([
-    db.prepare(selectSql).bind(...bindings, limit, offset),
-    db.prepare(countSql).bind(...bindings),
-  ]);
-
-  const items = ((itemsResult.results ?? []) as unknown as KnowledgeRow[]).map((row) => ({
-    ...row,
-    niches: splitList(row.niche_names),
-    nicheSlugs: splitList(row.niche_slugs),
-    stages: splitList(row.stage_names),
-    stageSlugs: splitList(row.stage_slugs),
-    niche_names: undefined,
-    niche_slugs: undefined,
-    stage_names: undefined,
-    stage_slugs: undefined,
-  }));
-
-  const total = Number((countResult.results?.[0] as { total?: number } | undefined)?.total ?? 0);
-
-  return json({
-    items,
-    pagination: {
-      page,
-      limit,
-      total,
-      pages: Math.max(1, Math.ceil(total / limit)),
-    },
-  });
-}
-
-async function handleKnowledgeCreate(request: Request, env: Env, identity: ConstructorIdentity): Promise<Response> {
-  const db = requireDatabase(env);
-  if (db instanceof Response) return db;
-
-  let body: Record<string, unknown>;
-  try {
-    body = (await request.json()) as Record<string, unknown>;
-  } catch {
-    return constructorError(400, "INVALID_JSON", "Не удалось прочитать данные новой записи.");
-  }
-
-  const title = typeof body.title === "string" ? body.title.trim() : "";
-  const category = typeof body.category === "string" ? body.category.trim() : "";
-  const itemType = typeof body.itemType === "string" ? body.itemType.trim() : "";
-  const promptText = typeof body.promptText === "string" ? body.promptText.trim() : null;
-  const shortText = typeof body.shortText === "string" ? body.shortText.trim() : null;
-  const nicheSlugs = Array.isArray(body.nicheSlugs) ? body.nicheSlugs.filter((value): value is string => typeof value === "string") : [];
-  const stageSlugs = Array.isArray(body.stageSlugs) ? body.stageSlugs.filter((value): value is string => typeof value === "string") : [];
-
-  const allowedTypes = new Set([
-    "question_to_client",
-    "question_from_client",
-    "answer",
-    "objection",
-    "objection_response",
-    "clarifying_question",
-    "first_message",
-    "follow_up",
-    "diagnostic_hint",
-    "audit_check",
-    "red_flag",
-    "ethical_rule",
-    "proposal_block",
-    "package",
-    "next_action",
-    "refusal_reason",
-  ]);
-
-  if (!title || !category || !allowedTypes.has(itemType)) {
-    return constructorError(422, "VALIDATION_FAILED", "Укажите название, категорию и корректный тип записи.");
-  }
-
-  const id = crypto.randomUUID();
-  const now = new Date().toISOString();
-  const statements = [
-    db.prepare(`
-      INSERT INTO knowledge_items (
-        id, item_type, speaker, category, title, prompt_text, short_text,
-        channel, tone, required_level, risk_level, source_kind, status,
-        version, created_at, updated_at
-      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'manual', 'draft', 1, ?, ?)
-    `).bind(
-      id,
-      itemType,
-      typeof body.speaker === "string" ? body.speaker : "system",
-      category,
-      title,
-      promptText,
-      shortText,
-      typeof body.channel === "string" ? body.channel : "any",
-      typeof body.tone === "string" ? body.tone : "neutral",
-      typeof body.requiredLevel === "string" ? body.requiredLevel : "recommended",
-      typeof body.riskLevel === "string" ? body.riskLevel : "normal",
-      now,
-      now,
-    ),
-  ];
-
-  for (const slug of nicheSlugs) {
-    statements.push(
-      db.prepare(`
-        INSERT OR IGNORE INTO knowledge_item_niches (knowledge_item_id, niche_id, relevance)
-        SELECT ?, id, 'primary' FROM niches WHERE slug = ?
-      `).bind(id, slug),
-    );
-  }
-
-  for (const slug of stageSlugs) {
-    statements.push(
-      db.prepare(`
-        INSERT OR IGNORE INTO knowledge_item_stages (knowledge_item_id, stage_id)
-        SELECT ?, id FROM stages WHERE slug = ?
-      `).bind(id, slug),
-    );
-  }
-
-  statements.push(
-    db.prepare(`
-      INSERT INTO audit_log (id, actor_email, action, entity_type, entity_id, new_value_json, created_at)
-      VALUES (?, ?, 'create', 'knowledge_item', ?, ?, ?)
-    `).bind(crypto.randomUUID(), identity.email, id, JSON.stringify({ title, category, itemType }), now),
-  );
-
-  await db.batch(statements);
-  return json({ id, status: "draft" }, { status: 201 });
-}
-
-async function handlePreparationCreate(request: Request, env: Env, identity: ConstructorIdentity): Promise<Response> {
-  const db = requireDatabase(env);
-  if (db instanceof Response) return db;
-
-  let body: Record<string, unknown>;
-  try {
-    body = (await request.json()) as Record<string, unknown>;
-  } catch {
-    return constructorError(400, "INVALID_JSON", "Не удалось прочитать данные подготовки.");
+      ) AS niche_…1432 tokens truncated…ь данные подготовки.");
   }
 
   const clientName = readText(body, "clientName", 160);
@@ -877,6 +731,269 @@ async function handlePreparationCreate(request: Request, env: Env, identity: Con
   }, { status: 201 });
 }
 
+async function handleDiagnosticCreate(request: Request, env: Env, identity: ConstructorIdentity): Promise<Response> {
+  const db = requireDatabase(env);
+  if (db instanceof Response) return db;
+
+  let body: Record<string, unknown>;
+  try {
+    body = (await request.json()) as Record<string, unknown>;
+  } catch {
+    return constructorError(400, "INVALID_JSON", "Не удалось прочитать данные диагностики.");
+  }
+
+  const clientName = readText(body, "clientName", 160);
+  const accountUrl = readText(body, "accountUrl", 500);
+  const nicheSlug = readText(body, "nicheSlug", 120);
+  const format = readText(body, "format", 40) === "full" ? "full" : "express";
+  const channel = readText(body, "channel", 80) || "other";
+  const goal = readText(body, "goal", 1200);
+  const product = readText(body, "product", 1200);
+  const audience = readText(body, "audience", 1200);
+  const materials = readText(body, "materials", 1200);
+  const deadline = readText(body, "deadline", 400);
+  const budget = readText(body, "budget", 400);
+  const approver = readText(body, "approver", 500);
+  const desiredAction = readText(body, "desiredAction", 800);
+  const constraints = readText(body, "constraints", 1500);
+  const rightsStatus = readText(body, "rightsStatus", 40);
+  const notes = readText(body, "notes", 2000);
+
+  if (!clientName || !nicheSlug || !goal) {
+    return constructorError(422, "VALIDATION_FAILED", "Заполните клиента, нишу и главную задачу диагностики.");
+  }
+
+  if (!isHttpUrl(accountUrl)) {
+    return constructorError(422, "INVALID_ACCOUNT_URL", "Ссылка на клиента должна начинаться с http:// или https://.");
+  }
+
+  if (!new Set(["confirmed", "unknown", "restricted"]).has(rightsStatus)) {
+    return constructorError(422, "INVALID_RIGHTS_STATUS", "Укажите, подтверждены ли права на исходные материалы.");
+  }
+
+  const stageSlug = format === "full" ? "full-diagnostic" : "express-diagnostic";
+  const [nicheResult, stageResult] = await db.batch([
+    db.prepare("SELECT id, name FROM niches WHERE slug = ? AND is_active = 1 LIMIT 1").bind(nicheSlug),
+    db.prepare("SELECT slug, name FROM stages WHERE slug = ? AND is_active = 1 LIMIT 1").bind(stageSlug),
+  ]);
+
+  const niche = nicheResult.results?.[0] as { id?: string; name?: string } | undefined;
+  const stage = stageResult.results?.[0] as { slug?: string; name?: string } | undefined;
+  if (!niche?.id || !niche.name || !stage?.slug || !stage.name) {
+    return constructorError(422, "REFERENCE_NOT_FOUND", "Выбранная ниша или формат диагностики недоступны. Обновите страницу и попробуйте снова.");
+  }
+
+  const diagnosticFields = [
+    { key: "goal", label: "коммерческая задача", value: goal },
+    { key: "product", label: "приоритетный продукт", value: product },
+    { key: "audience", label: "целевая аудитория", value: audience },
+    { key: "materials", label: "исходные материалы", value: materials },
+    { key: "deadline", label: "срок", value: deadline },
+    { key: "budget", label: "бюджетный ориентир", value: budget },
+    { key: "approver", label: "ответственный за согласование", value: approver },
+    { key: "desiredAction", label: "целевое действие аудитории", value: desiredAction },
+  ];
+  const missing = diagnosticFields.filter((field) => !field.value).map((field) => field.label);
+  if (rightsStatus !== "confirmed") missing.push("права на исходные материалы");
+
+  const completedWeight = diagnosticFields.reduce((total, field) => total + (field.value ? 1 : 0), 0) + (rightsStatus === "confirmed" ? 1 : 0);
+  const readiness = Math.round((completedWeight / 9) * 100);
+  const readinessLevel = readiness >= 80 ? "ready" : readiness >= 50 ? "clarify" : "early";
+  const status = readinessLevel === "ready" ? "ready_for_proposal" : "needs_clarification";
+  const ethicalDecision = rightsStatus === "restricted" ? "review" : rightsStatus === "confirmed" ? "approved" : "not_checked";
+  const strongSide = product && audience
+    ? "Определены приоритетный продукт и аудитория."
+    : goal
+      ? "Зафиксирована главная коммерческая задача."
+      : "Контекст требует уточнения.";
+  const mainBarrier = missing.length > 0 ? `Не хватает данных: ${missing.join(", ")}.` : "Критичных пробелов не выявлено.";
+  const mainDiagnosis = readinessLevel === "ready"
+    ? "Контекста достаточно, чтобы переходить к объёму работ и коммерческому предложению."
+    : readinessLevel === "clarify"
+      ? "Основа сформирована, но перед расчётом нужно закрыть несколько уточнений."
+      : "Пока рано предлагать решение: сначала нужно собрать базовый контекст задачи.";
+  const nextAction = readinessLevel === "ready"
+    ? "Согласовать объём, этапы и перейти к расчёту предложения."
+    : `Уточнить: ${missing.slice(0, 3).join(", ") || "оставшиеся детали проекта"}.`;
+
+  const knowledgeResult = await db.prepare(`
+    SELECT
+      ki.id,
+      ki.item_type,
+      ki.category,
+      ki.title,
+      ki.prompt_text,
+      ki.short_text,
+      ki.full_text,
+      ki.next_action_text,
+      ki.red_flag_text,
+      ki.risk_level
+    FROM knowledge_items ki
+    WHERE ki.status = 'approved'
+      AND ki.item_type IN (
+        'question_to_client', 'clarifying_question', 'diagnostic_hint',
+        'red_flag', 'ethical_rule', 'refusal_reason', 'next_action'
+      )
+      AND (
+        NOT EXISTS (
+          SELECT 1 FROM knowledge_item_niches universal_niche
+          WHERE universal_niche.knowledge_item_id = ki.id
+        )
+        OR EXISTS (
+          SELECT 1
+          FROM knowledge_item_niches kin
+          JOIN niches n ON n.id = kin.niche_id
+          WHERE kin.knowledge_item_id = ki.id AND n.slug = ?
+        )
+      )
+      AND (
+        NOT EXISTS (
+          SELECT 1 FROM knowledge_item_stages universal_stage
+          WHERE universal_stage.knowledge_item_id = ki.id
+        )
+        OR EXISTS (
+          SELECT 1
+          FROM knowledge_item_stages kis
+          JOIN stages s ON s.id = kis.stage_id
+          WHERE kis.knowledge_item_id = ki.id AND s.slug = ?
+        )
+      )
+    ORDER BY
+      CASE ki.required_level WHEN 'required' THEN 0 WHEN 'recommended' THEN 1 ELSE 2 END,
+      CASE ki.risk_level WHEN 'refusal' THEN 0 WHEN 'high' THEN 1 WHEN 'elevated' THEN 2 ELSE 3 END,
+      ki.title
+    LIMIT 30
+  `).bind(nicheSlug, stageSlug).all<DiagnosticKnowledgeRow>();
+
+  const rows = knowledgeResult.results ?? [];
+  const clientId = crypto.randomUUID();
+  const sessionId = crypto.randomUUID();
+  const now = new Date().toISOString();
+  const internalNotes = [
+    materials && `Исходники: ${materials}`,
+    deadline && `Срок: ${deadline}`,
+    budget && `Бюджет: ${budget}`,
+    approver && `Согласование: ${approver}`,
+    constraints && `Ограничения: ${constraints}`,
+    notes && `Заметки: ${notes}`,
+  ].filter(Boolean).join("\n");
+
+  const statements = [
+    db.prepare(`
+      INSERT INTO clients (
+        id, name, account_url, product_summary, audience_summary, commercial_goal,
+        desired_action, crm_status, ethical_status, next_action, internal_notes,
+        created_at, updated_at
+      ) VALUES (?, ?, ?, ?, ?, ?, ?, 'diagnostic', ?, ?, ?, ?, ?)
+    `).bind(
+      clientId,
+      clientName,
+      accountUrl || null,
+      product || null,
+      audience || null,
+      goal,
+      desiredAction || null,
+      ethicalDecision,
+      nextAction,
+      internalNotes || null,
+      now,
+      now,
+    ),
+    db.prepare(`
+      INSERT INTO client_niches (client_id, niche_id, relation_type)
+      VALUES (?, ?, 'primary')
+    `).bind(clientId, niche.id),
+    db.prepare(`
+      INSERT INTO diagnostic_sessions (
+        id, client_id, format, status, channel, stage_slug, started_at, completed_at,
+        goal, strong_side, main_barrier, main_diagnosis, missing_data, next_action,
+        ethical_decision, created_at, updated_at
+      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+    `).bind(
+      sessionId,
+      clientId,
+      format,
+      status,
+      channel,
+      stageSlug,
+      now,
+      readinessLevel === "ready" ? now : null,
+      goal,
+      strongSide,
+      mainBarrier,
+      mainDiagnosis,
+      missing.length > 0 ? JSON.stringify(missing) : null,
+      nextAction,
+      ethicalDecision,
+      now,
+      now,
+    ),
+  ];
+
+  rows.forEach((row, index) => {
+    const isRisk = ["red_flag", "ethical_rule", "refusal_reason"].includes(row.item_type) || ["high", "refusal"].includes(row.risk_level);
+    statements.push(
+      db.prepare(`
+        INSERT INTO diagnostic_session_items (
+          id, session_id, knowledge_item_id, sort_order, risk_detected,
+          include_in_summary, created_at, updated_at
+        ) VALUES (?, ?, ?, ?, ?, 1, ?, ?)
+      `).bind(crypto.randomUUID(), sessionId, row.id, index + 1, isRisk ? 1 : 0, now, now),
+    );
+  });
+
+  statements.push(
+    db.prepare(`
+      INSERT INTO audit_log (id, actor_email, action, entity_type, entity_id, new_value_json, created_at)
+      VALUES (?, ?, 'create', 'diagnostic_session', ?, ?, ?)
+    `).bind(
+      crypto.randomUUID(),
+      identity.email,
+      sessionId,
+      JSON.stringify({ clientId, clientName, nicheSlug, format, readiness, status, selectedItems: rows.length }),
+      now,
+    ),
+  );
+
+  await db.batch(statements);
+
+  const toResultItem = (row: DiagnosticKnowledgeRow) => ({
+    id: row.id,
+    category: row.category,
+    title: row.title,
+    text: row.prompt_text || row.short_text || row.full_text || row.red_flag_text || row.title,
+    nextAction: row.next_action_text,
+    riskLevel: row.risk_level,
+  });
+
+  return json({
+    diagnostic: {
+      clientId,
+      sessionId,
+      clientName,
+      nicheName: niche.name,
+      format,
+      stageName: stage.name,
+      readiness,
+      readinessLevel,
+      status,
+      strongSide,
+      mainBarrier,
+      mainDiagnosis,
+      nextAction,
+      ethicalDecision,
+      missing,
+      confirmed: diagnosticFields.filter((field) => field.value).map((field) => ({ label: field.label, value: field.value })),
+      createdAt: now,
+    },
+    sections: {
+      questions: rows.filter((row) => ["question_to_client", "clarifying_question", "diagnostic_hint"].includes(row.item_type)).map(toResultItem),
+      risks: rows.filter((row) => ["red_flag", "ethical_rule", "refusal_reason"].includes(row.item_type) || ["high", "refusal"].includes(row.risk_level)).map(toResultItem),
+      nextActions: rows.filter((row) => row.item_type === "next_action").map(toResultItem),
+    },
+  }, { status: 201 });
+}
+
 async function handleConstructorApi(request: Request, env: Env, identity: ConstructorIdentity): Promise<Response> {
   const url = new URL(request.url);
 
@@ -907,6 +1024,10 @@ async function handleConstructorApi(request: Request, env: Env, identity: Constr
 
   if (url.pathname === "/api/constructor/preparations" && request.method === "POST") {
     return handlePreparationCreate(request, env, identity);
+  }
+
+  if (url.pathname === "/api/constructor/diagnostics" && request.method === "POST") {
+    return handleDiagnosticCreate(request, env, identity);
   }
 
   return constructorError(404, "NOT_FOUND", "Раздел конструктора не найден.");
@@ -959,3 +1080,4 @@ const worker = {
 };
 
 export default worker;
+

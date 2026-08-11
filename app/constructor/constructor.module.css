@@ -1250,6 +1250,120 @@
   font-weight: 650;
 }
 
+.diagnosticScore {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  align-items: center;
+  gap: 18px;
+  margin-top: 18px;
+  padding: 18px;
+  border-radius: 18px;
+  background: rgba(118, 127, 48, 0.08);
+}
+
+.diagnosticScoreRing {
+  --diagnostic-score: 0deg;
+  display: grid;
+  place-items: center;
+  width: 86px;
+  height: 86px;
+  border-radius: 50%;
+  background: radial-gradient(circle at center, #fffdfa 56%, transparent 58%),
+    conic-gradient(var(--constructor-olive) var(--diagnostic-score), rgba(118, 127, 48, 0.14) 0);
+}
+
+.diagnosticScoreRing strong {
+  color: var(--constructor-brown);
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 1.3rem;
+  font-weight: 400;
+}
+
+.diagnosticScore span,
+.diagnosticSummaryGrid span,
+.diagnosticFacts span {
+  color: var(--constructor-olive);
+  font-size: 0.59rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.diagnosticScore h2 {
+  margin: 4px 0 0;
+  color: var(--constructor-brown);
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 1.25rem;
+  font-weight: 400;
+}
+
+.diagnosticScore p,
+.diagnosticSummaryGrid p,
+.diagnosticFacts p {
+  margin: 6px 0 0;
+  color: rgba(44, 32, 29, 0.72);
+  font-size: 0.72rem;
+  line-height: 1.55;
+  white-space: pre-wrap;
+}
+
+.diagnosticSummaryGrid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 9px;
+  margin-top: 12px;
+}
+
+.diagnosticSummaryGrid article,
+.diagnosticFacts article {
+  min-width: 0;
+  padding: 13px;
+  border: 1px solid rgba(74, 46, 43, 0.1);
+  border-radius: 14px;
+  background: #fffdfa;
+}
+
+.diagnosticFacts {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px;
+  margin-top: 11px;
+}
+
+.diagnosticMissing {
+  display: grid;
+  gap: 7px;
+  margin: 11px 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.diagnosticMissing li {
+  position: relative;
+  padding: 10px 12px 10px 32px;
+  border-radius: 12px;
+  background: rgba(238, 205, 214, 0.34);
+  color: var(--constructor-brown);
+  font-size: 0.72rem;
+  line-height: 1.45;
+}
+
+.diagnosticMissing li::before {
+  content: "?";
+  position: absolute;
+  top: 9px;
+  left: 11px;
+  display: grid;
+  place-items: center;
+  width: 15px;
+  height: 15px;
+  border-radius: 50%;
+  background: var(--constructor-coffee);
+  color: white;
+  font-size: 0.55rem;
+  font-weight: 800;
+}
+
 .toast {
   position: fixed;
   z-index: 200;
@@ -1273,6 +1387,10 @@
   }
 
   .preparationLayout {
+    grid-template-columns: 1fr;
+  }
+
+  .diagnosticSummaryGrid {
     grid-template-columns: 1fr;
   }
 
@@ -1377,6 +1495,14 @@
     padding: 18px 14px;
   }
 
+  .diagnosticScore {
+    grid-template-columns: 1fr;
+  }
+
+  .diagnosticFacts {
+    grid-template-columns: 1fr;
+  }
+
   .answerSearchForm > .primaryButton {
     width: 100%;
   }
@@ -1404,3 +1530,4 @@
     text-align: center;
   }
 }
+

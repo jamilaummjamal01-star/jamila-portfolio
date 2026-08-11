@@ -1,6 +1,7 @@
 "use client";
 
 import { FormEvent, useCallback, useEffect, useMemo, useState } from "react";
+import DiagnosticWorkspace from "./DiagnosticWorkspace";
 import PreparationWorkspace from "./PreparationWorkspace";
 import QuestionAnswerWorkspace from "./QuestionAnswerWorkspace";
 import styles from "./constructor.module.css";
@@ -105,7 +106,7 @@ const navigation = [
   ["База знаний", "knowledge", true],
   ["Подготовиться к клиенту", "prepare", true],
   ["Клиент задал вопрос", "answer", true],
-  ["Диагностика", "diagnostic", false],
+  ["Диагностика", "diagnostic", true],
   ["Клиенты", "clients", false],
   ["Калькулятор", "pricing", false],
   ["Коммерческие предложения", "proposals", false],
@@ -135,7 +136,7 @@ function displayDate(value: string | null): string {
 }
 
 export default function ConstructorClient() {
-  const [activeSection, setActiveSection] = useState<"knowledge" | "prepare" | "answer">("knowledge");
+  const [activeSection, setActiveSection] = useState<"knowledge" | "prepare" | "answer" | "diagnostic">("knowledge");
   const [bootstrap, setBootstrap] = useState<BootstrapData | null>(null);
   const [items, setItems] = useState<KnowledgeItem[]>([]);
   const [pagination, setPagination] = useState<KnowledgeResponse["pagination"]>({ page: 1, limit: 30, total: 0, pages: 1 });
@@ -319,7 +320,7 @@ export default function ConstructorClient() {
               type="button"
               disabled={!enabled}
               onClick={() => {
-                if (key === "knowledge" || key === "prepare" || key === "answer") {
+                if (key === "knowledge" || key === "prepare" || key === "answer" || key === "diagnostic") {
                   setActiveSection(key);
                   setSelected(null);
                   setShowAdd(false);
@@ -498,8 +499,10 @@ export default function ConstructorClient() {
           </>
         ) : activeSection === "prepare" ? (
           <PreparationWorkspace bootstrap={bootstrap} onToast={setToast} />
-        ) : (
+        ) : activeSection === "answer" ? (
           <QuestionAnswerWorkspace bootstrap={bootstrap} onToast={setToast} />
+        ) : (
+          <DiagnosticWorkspace bootstrap={bootstrap} onToast={setToast} />
         )}
       </section>
 
@@ -617,3 +620,4 @@ function DetailBlock({ title, text, warning = false, onCopy }: { title: string; 
     </section>
   );
 }
+
