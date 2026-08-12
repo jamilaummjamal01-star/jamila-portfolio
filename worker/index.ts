@@ -52,6 +52,7 @@ interface KnowledgeRow {
   status: string;
   source_kind: string;
   source_url: string | null;
+  version: number;
   reviewed_at: string | null;
   updated_at: string;
   niche_slugs: string | null;
@@ -432,6 +433,20 @@ function splitList(value: string | null): string[] {
   return value ? value.split(listDelimiter).filter(Boolean) : [];
 }
 
+function toKnowledgeItem(row: KnowledgeRow) {
+  return {
+    ...row,
+    niches: splitList(row.niche_names),
+    nicheSlugs: splitList(row.niche_slugs),
+    stages: splitList(row.stage_names),
+    stageSlugs: splitList(row.stage_slugs),
+    niche_names: undefined,
+    niche_slugs: undefined,
+    stage_names: undefined,
+    stage_slugs: undefined,
+  };
+}
+
 function parsePositiveInteger(value: string | null, fallback: number, maximum: number): number {
   const parsed = Number.parseInt(value ?? "", 10);
   if (!Number.isFinite(parsed) || parsed < 1) return fallback;
@@ -794,7 +809,7 @@ async function handleKnowledgeList(request: Request, env: Env): Promise<Response
   const limit = parsePositiveInteger(url.searchParams.get("limit"), 30, 100);
   const offset = (page - 1) * limit;
 
-  const filters: string[] = ["ki.status <> 'archived'"];
+  const filters: string[] = status === "archived" ? [] : ["ki.status <> 'archived'"];
   const bindings: Array<string | number> = [];
 
   if (status !== "all") {
@@ -873,6 +888,7 @@ async function handleKnowledgeList(request: Request, env: Env): Promise<Response
       ki.status,
       ki.source_kind,
       ki.source_url,
+      ki.version,
       ki.reviewed_at,
       ki.updated_at,
       (
@@ -915,17 +931,7 @@ async function handleKnowledgeList(request: Request, env: Env): Promise<Response
     db.prepare(countSql).bind(...bindings),
   ]);
 
-  const items = ((itemsResult.results ?? []) as unknown as KnowledgeRow[]).map((row) => ({
-    ...row,
-    niches: splitList(row.niche_names),
-    nicheSlugs: splitList(row.niche_slugs),
-    stages: splitList(row.stage_names),
-    stageSlugs: splitList(row.stage_slugs),
-    niche_names: undefined,
-    niche_slugs: undefined,
-    stage_names: undefined,
-    stage_slugs: undefined,
-  }));
+  const items = ((itemsResult.results ?? []) as unknown as KnowledgeRow[]).map(toKnowledgeItem);
 
   const total = Number((countResult.results?.[0] as { total?: number } | undefined)?.total ?? 0);
 
@@ -938,6 +944,113 @@ async function handleKnowledgeList(request: Request, env: Env): Promise<Response
       pages: Math.max(1, Math.ceil(total / limit)),
     },
   });
+}
+
+const knowledgeItemTypes = new Set([
+  "question_to_client",
+  "question_from_client",
+  "answer",
+  "objection",
+  "objection_response",
+  "clarifying_question",
+  "first_message",
+  "follow_up",
+  "diagnostic_hint",
+  "audit_check",
+  "red_flag",
+  "ethical_rule",
+  "proposal_block",
+  "package",
+  "next_action",
+  "refusal_reason",
+]);
+const knowledgeSpeakers = new Set(["creator", "client", "system"]);
+const knowledgeRequiredLevels = new Set(["required", "recommended", "optional", "conditional"]);
+const knowledgeRiskLevels = new Set(["normal", "elevated", "high", "refusal"]);
+const knowledgeStatuses = new Set(["draft", "review", "approved", "archived"]);
+const knowledgeSourceKinds = new Set(["notion", "manual", "real_dialogue", "import"]);
+
+function readKnowledgeStringArray(body: Record<string, unknown>, key: string, maximum = 40): string[] {
+  if (!Array.isArray(body[key])) return [];
+  return [...new Set(
+    body[key]
+      .filter((value): value is string => typeof value === "string")
+      .map((value) => value.trim().slice(0, 120))
+      .filter(Boolean),
+  )].slice(0, maximum);
+}
+
+function knowledgeNormalizedKey(itemType: string, category: string, title: string, promptText: string): string {
+  return `${itemType}|${category}|${promptText || title}`
+    .toLowerCase()
+    .replace(/ё/g, "е")
+    .replace(/[^a-zа-я0-9]+/gi, " ")
+    .trim()
+    .slice(0, 500);
+}
+
+async function handleKnowledgeDetail(itemId: string, env: Env): Promise<Response> {
+  const db = requireDatabase(env);
+  if (db instanceof Response) return db;
+
+  const row = await db.prepare(`
+    SELECT
+      ki.id,
+      ki.item_type,
+      ki.speaker,
+      ki.category,
+      ki.title,
+      ki.prompt_text,
+      ki.short_text,
+      ki.full_text,
+      ki.soft_text,
+      ki.firm_text,
+      ki.clarification_text,
+      ki.next_action_text,
+      ki.avoid_text,
+      ki.diagnostic_value,
+      ki.red_flag_text,
+      ki.channel,
+      ki.tone,
+      ki.required_level,
+      ki.risk_level,
+      ki.status,
+      ki.source_kind,
+      ki.source_url,
+      ki.version,
+      ki.reviewed_at,
+      ki.updated_at,
+      (
+        SELECT GROUP_CONCAT(n.slug, '${listDelimiter}')
+        FROM knowledge_item_niches kin
+        JOIN niches n ON n.id = kin.niche_id
+        WHERE kin.knowledge_item_id = ki.id
+      ) AS niche_slugs,
+      (
+        SELECT GROUP_CONCAT(n.name, '${listDelimiter}')
+        FROM knowledge_item_niches kin
+        JOIN niches n ON n.id = kin.niche_id
+        WHERE kin.knowledge_item_id = ki.id
+      ) AS niche_names,
+      (
+        SELECT GROUP_CONCAT(s.slug, '${listDelimiter}')
+        FROM knowledge_item_stages kis
+        JOIN stages s ON s.id = kis.stage_id
+        WHERE kis.knowledge_item_id = ki.id
+      ) AS stage_slugs,
+      (
+        SELECT GROUP_CONCAT(s.name, '${listDelimiter}')
+        FROM knowledge_item_stages kis
+        JOIN stages s ON s.id = kis.stage_id
+        WHERE kis.knowledge_item_id = ki.id
+      ) AS stage_names
+    FROM knowledge_items ki
+    WHERE ki.id = ?
+    LIMIT 1
+  `).bind(itemId).first<KnowledgeRow>();
+
+  if (!row) return constructorError(404, "KNOWLEDGE_NOT_FOUND", "Запись базы знаний не найдена.");
+  return json({ item: toKnowledgeItem(row) });
 }
 
 async function handleKnowledgeCreate(request: Request, env: Env, identity: ConstructorIdentity): Promise<Response> {
@@ -959,26 +1072,7 @@ async function handleKnowledgeCreate(request: Request, env: Env, identity: Const
   const nicheSlugs = Array.isArray(body.nicheSlugs) ? body.nicheSlugs.filter((value): value is string => typeof value === "string") : [];
   const stageSlugs = Array.isArray(body.stageSlugs) ? body.stageSlugs.filter((value): value is string => typeof value === "string") : [];
 
-  const allowedTypes = new Set([
-    "question_to_client",
-    "question_from_client",
-    "answer",
-    "objection",
-    "objection_response",
-    "clarifying_question",
-    "first_message",
-    "follow_up",
-    "diagnostic_hint",
-    "audit_check",
-    "red_flag",
-    "ethical_rule",
-    "proposal_block",
-    "package",
-    "next_action",
-    "refusal_reason",
-  ]);
-
-  if (!title || !category || !allowedTypes.has(itemType)) {
+  if (!title || !category || !knowledgeItemTypes.has(itemType)) {
     return constructorError(422, "VALIDATION_FAILED", "Укажите название, категорию и корректный тип записи.");
   }
 
@@ -1035,6 +1129,173 @@ async function handleKnowledgeCreate(request: Request, env: Env, identity: Const
 
   await db.batch(statements);
   return json({ id, status: "draft" }, { status: 201 });
+}
+
+async function handleKnowledgeUpdate(request: Request, itemId: string, env: Env, identity: ConstructorIdentity): Promise<Response> {
+  const db = requireDatabase(env);
+  if (db instanceof Response) return db;
+
+  let body: Record<string, unknown>;
+  try {
+    body = (await request.json()) as Record<string, unknown>;
+  } catch {
+    return constructorError(400, "INVALID_JSON", "Не удалось прочитать изменения записи.");
+  }
+
+  const existing = await db.prepare(`
+    SELECT id, item_type, category, title, status, version, reviewed_at
+    FROM knowledge_items
+    WHERE id = ?
+    LIMIT 1
+  `).bind(itemId).first<{
+    id: string;
+    item_type: string;
+    category: string;
+    title: string;
+    status: string;
+    version: number;
+    reviewed_at: string | null;
+  }>();
+  if (!existing) return constructorError(404, "KNOWLEDGE_NOT_FOUND", "Запись базы знаний не найдена.");
+
+  const expectedVersion = typeof body.version === "number" && Number.isSafeInteger(body.version) ? body.version : 0;
+  if (expectedVersion < 1) {
+    return constructorError(422, "VERSION_REQUIRED", "Не удалось определить версию записи. Обновите страницу и повторите редактирование.");
+  }
+  if (expectedVersion !== Number(existing.version)) {
+    return constructorError(409, "VERSION_CONFLICT", "Запись уже была изменена. Обновите страницу и повторите редактирование.");
+  }
+
+  const itemType = readText(body, "itemType", 80);
+  const speaker = readText(body, "speaker", 40) || "system";
+  const category = readText(body, "category", 160);
+  const title = readText(body, "title", 240);
+  const promptText = readText(body, "promptText", 6000);
+  const shortText = readText(body, "shortText", 6000);
+  const fullText = readText(body, "fullText", 12000);
+  const softText = readText(body, "softText", 6000);
+  const firmText = readText(body, "firmText", 6000);
+  const clarificationText = readText(body, "clarificationText", 6000);
+  const nextActionText = readText(body, "nextActionText", 6000);
+  const avoidText = readText(body, "avoidText", 6000);
+  const diagnosticValue = readText(body, "diagnosticValue", 6000);
+  const redFlagText = readText(body, "redFlagText", 6000);
+  const channel = readText(body, "channel", 80) || "any";
+  const tone = readText(body, "tone", 80) || "neutral";
+  const requiredLevel = readText(body, "requiredLevel", 40) || "recommended";
+  const riskLevel = readText(body, "riskLevel", 40) || "normal";
+  const status = readText(body, "status", 40) || "draft";
+  const sourceKind = readText(body, "sourceKind", 40) || "manual";
+  const sourceUrl = readText(body, "sourceUrl", 1000);
+  const nicheSlugs = readKnowledgeStringArray(body, "nicheSlugs", 30);
+  const stageSlugs = readKnowledgeStringArray(body, "stageSlugs", 30);
+
+  if (
+    !title || !category || !knowledgeItemTypes.has(itemType) || !knowledgeSpeakers.has(speaker) ||
+    !knowledgeRequiredLevels.has(requiredLevel) || !knowledgeRiskLevels.has(riskLevel) ||
+    !knowledgeStatuses.has(status) || !knowledgeSourceKinds.has(sourceKind)
+  ) {
+    return constructorError(422, "VALIDATION_FAILED", "Проверьте название, классификацию и статус записи.");
+  }
+  if (!isHttpUrl(sourceUrl)) {
+    return constructorError(422, "INVALID_SOURCE_URL", "Ссылка на источник должна начинаться с http:// или https://.");
+  }
+  if (status === "approved" && !promptText && !shortText && !fullText) {
+    return constructorError(422, "APPROVED_TEXT_REQUIRED", "Перед утверждением добавьте формулировку, короткий или подробный текст.");
+  }
+  if (status === "approved" && itemType === "question_from_client" && !shortText && !fullText) {
+    return constructorError(422, "ANSWER_REQUIRED", "Для утверждённого вопроса клиента нужен короткий или подробный ответ.");
+  }
+  if (status === "approved" && (riskLevel === "high" || riskLevel === "refusal") && !redFlagText) {
+    return constructorError(422, "RISK_EXPLANATION_REQUIRED", "Для высокого риска или отказа добавьте объяснение красного флага.");
+  }
+
+  const now = new Date().toISOString();
+  const reviewedAt = status === "approved" ? now : null;
+  const nextVersion = Number(existing.version) + 1;
+  const statements = [
+    db.prepare(`
+      UPDATE knowledge_items
+      SET
+        item_type = ?, speaker = ?, category = ?, title = ?, prompt_text = ?, short_text = ?,
+        full_text = ?, soft_text = ?, firm_text = ?, clarification_text = ?, next_action_text = ?,
+        avoid_text = ?, diagnostic_value = ?, red_flag_text = ?, channel = ?, tone = ?,
+        required_level = ?, risk_level = ?, source_kind = ?, source_url = ?, status = ?,
+        version = ?, normalized_key = ?, reviewed_at = ?, updated_at = ?
+      WHERE id = ?
+    `).bind(
+      itemType,
+      speaker,
+      category,
+      title,
+      promptText || null,
+      shortText || null,
+      fullText || null,
+      softText || null,
+      firmText || null,
+      clarificationText || null,
+      nextActionText || null,
+      avoidText || null,
+      diagnosticValue || null,
+      redFlagText || null,
+      channel,
+      tone,
+      requiredLevel,
+      riskLevel,
+      sourceKind,
+      sourceUrl || null,
+      status,
+      nextVersion,
+      knowledgeNormalizedKey(itemType, category, title, promptText),
+      reviewedAt,
+      now,
+      itemId,
+    ),
+    db.prepare("DELETE FROM knowledge_item_niches WHERE knowledge_item_id = ?").bind(itemId),
+    db.prepare("DELETE FROM knowledge_item_stages WHERE knowledge_item_id = ?").bind(itemId),
+  ];
+
+  for (const slug of nicheSlugs) {
+    statements.push(
+      db.prepare(`
+        INSERT OR IGNORE INTO knowledge_item_niches (knowledge_item_id, niche_id, relevance)
+        SELECT ?, id, 'primary' FROM niches WHERE slug = ?
+      `).bind(itemId, slug),
+    );
+  }
+  for (const slug of stageSlugs) {
+    statements.push(
+      db.prepare(`
+        INSERT OR IGNORE INTO knowledge_item_stages (knowledge_item_id, stage_id)
+        SELECT ?, id FROM stages WHERE slug = ?
+      `).bind(itemId, slug),
+    );
+  }
+
+  const action = status === "archived" ? "archive" : status === "approved" && existing.status !== "approved" ? "approve" : "update";
+  statements.push(
+    db.prepare(`
+      INSERT INTO audit_log (id, actor_email, action, entity_type, entity_id, old_value_json, new_value_json, created_at)
+      VALUES (?, ?, ?, 'knowledge_item', ?, ?, ?, ?)
+    `).bind(
+      crypto.randomUUID(),
+      identity.email,
+      action,
+      itemId,
+      JSON.stringify({
+        title: existing.title,
+        category: existing.category,
+        itemType: existing.item_type,
+        status: existing.status,
+        version: Number(existing.version),
+      }),
+      JSON.stringify({ title, category, itemType, status, version: nextVersion, nicheSlugs, stageSlugs }),
+      now,
+    ),
+  );
+
+  await db.batch(statements);
+  return handleKnowledgeDetail(itemId, env);
 }
 
 async function handlePreparationCreate(request: Request, env: Env, identity: ConstructorIdentity): Promise<Response> {
@@ -2403,6 +2664,13 @@ async function handleConstructorApi(request: Request, env: Env, identity: Constr
 
   if (url.pathname === "/api/constructor/knowledge" && request.method === "POST") {
     return handleKnowledgeCreate(request, env, identity);
+  }
+
+  const knowledgeMatch = url.pathname.match(/^\/api\/constructor\/knowledge\/([^/]+)$/);
+  if (knowledgeMatch) {
+    const itemId = knowledgeMatch[1].slice(0, 80);
+    if (request.method === "GET") return handleKnowledgeDetail(itemId, env);
+    if (request.method === "PATCH") return handleKnowledgeUpdate(request, itemId, env, identity);
   }
 
   if (url.pathname === "/api/constructor/answers" && request.method === "GET") {

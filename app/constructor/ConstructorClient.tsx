@@ -3,6 +3,7 @@
 import { FormEvent, useCallback, useEffect, useMemo, useState } from "react";
 import ClientWorkspace from "./ClientWorkspace";
 import DiagnosticWorkspace from "./DiagnosticWorkspace";
+import KnowledgeEditor, { KnowledgeUpdatePayload } from "./KnowledgeEditor";
 import PreparationWorkspace from "./PreparationWorkspace";
 import PricingWorkspace from "./PricingWorkspace";
 import ProposalWorkspace from "./ProposalWorkspace";
@@ -47,6 +48,7 @@ type KnowledgeItem = {
   status: string;
   source_kind: string;
   source_url: string | null;
+  version: number;
   reviewed_at: string | null;
   updated_at: string;
   niches: string[];
@@ -154,6 +156,7 @@ export default function ConstructorClient() {
   const [status, setStatus] = useState("approved");
   const [page, setPage] = useState(1);
   const [selected, setSelected] = useState<KnowledgeItem | null>(null);
+  const [editingSelected, setEditingSelected] = useState(false);
   const [toast, setToast] = useState("");
   const [showAdd, setShowAdd] = useState(false);
   const [saving, setSaving] = useState(false);
@@ -292,6 +295,25 @@ export default function ConstructorClient() {
     }
   }
 
+  async function updateKnowledgeItem(payload: KnowledgeUpdatePayload) {
+    if (!selected) return;
+    setError("");
+    const response = await fetch(`/api/constructor/knowledge/${encodeURIComponent(selected.id)}`, {
+      method: "PATCH",
+      headers: { "Content-Type": "application/json" },
+      credentials: "same-origin",
+      body: JSON.stringify(payload),
+    });
+    if (!response.ok) throw new Error(await parseError(response));
+
+    const result = (await response.json()) as { item: KnowledgeItem };
+    setSelected(result.item);
+    setItems((current) => current.map((item) => item.id === result.item.id ? result.item : item));
+    setEditingSelected(false);
+    setToast(result.item.status === "approved" ? "Запись утверждена" : result.item.status === "archived" ? "Запись перенесена в архив" : "Изменения сохранены");
+    await Promise.all([loadBootstrap(), loadItems()]);
+  }
+
   const hasFilters = Boolean(query || niche || stage || itemType || risk || status !== "approved");
 
   function resetFilters() {
@@ -326,6 +348,7 @@ export default function ConstructorClient() {
                 if (key === "knowledge" || key === "prepare" || key === "answer" || key === "diagnostic" || key === "clients" || key === "pricing" || key === "proposals") {
                   setActiveSection(key);
                   setSelected(null);
+                  setEditingSelected(false);
                   setShowAdd(false);
                 }
               }}
@@ -426,6 +449,7 @@ export default function ConstructorClient() {
               <option value="approved">Утверждено</option>
               <option value="review">На проверке</option>
               <option value="draft">Черновики</option>
+              <option value="archived">Архив</option>
               <option value="all">Все активные</option>
             </select>
           </label>
@@ -486,7 +510,7 @@ export default function ConstructorClient() {
 
               <div className={styles.cardActions}>
                 <button type="button" onClick={() => copyText(primaryCopyText(item))}>Копировать</button>
-                <button type="button" onClick={() => setSelected(item)}>Открыть</button>
+                <button type="button" onClick={() => { setSelected(item); setEditingSelected(false); }}>Открыть</button>
               </div>
             </article>
           ))}
@@ -516,32 +540,53 @@ export default function ConstructorClient() {
       </section>
 
       {selected && (
-        <div className={styles.drawerBackdrop} role="presentation" onMouseDown={() => setSelected(null)}>
+        <div className={styles.drawerBackdrop} role="presentation" onMouseDown={() => { setSelected(null); setEditingSelected(false); }}>
           <aside className={styles.drawer} role="dialog" aria-modal="true" aria-label={selected.title} onMouseDown={(event) => event.stopPropagation()}>
-            <button className={styles.closeButton} type="button" onClick={() => setSelected(null)} aria-label="Закрыть">×</button>
-            <p className={styles.eyebrow}>{itemTypeLabels[selected.item_type] || selected.item_type}</p>
-            <h2>{selected.title}</h2>
+            <button className={styles.closeButton} type="button" onClick={() => { setSelected(null); setEditingSelected(false); }} aria-label="Закрыть">×</button>
+            {editingSelected ? (
+              <KnowledgeEditor
+                key={`${selected.id}:${selected.version}`}
+                item={selected}
+                niches={bootstrap?.niches ?? []}
+                stages={bootstrap?.stages ?? []}
+                onCancel={() => setEditingSelected(false)}
+                onSave={updateKnowledgeItem}
+              />
+            ) : (
+              <>
+                <div className={styles.drawerHeading}>
+                  <div>
+                    <p className={styles.eyebrow}>{itemTypeLabels[selected.item_type] || selected.item_type}</p>
+                    <h2>{selected.title}</h2>
+                  </div>
+                  <button className={styles.primaryButton} type="button" onClick={() => setEditingSelected(true)}>Редактировать</button>
+                </div>
 
-            <dl className={styles.detailMeta}>
-              <div><dt>Категория</dt><dd>{selected.category}</dd></div>
-              <div><dt>Статус</dt><dd>{statusLabels[selected.status] || selected.status}</dd></div>
-              <div><dt>Риск</dt><dd>{riskLabels[selected.risk_level] || selected.risk_level}</dd></div>
-              <div><dt>Проверено</dt><dd>{displayDate(selected.reviewed_at)}</dd></div>
-            </dl>
+                <dl className={styles.detailMeta}>
+                  <div><dt>Категория</dt><dd>{selected.category}</dd></div>
+                  <div><dt>Статус</dt><dd>{statusLabels[selected.status] || selected.status}</dd></div>
+                  <div><dt>Риск</dt><dd>{riskLabels[selected.risk_level] || selected.risk_level}</dd></div>
+                  <div><dt>Версия</dt><dd>{selected.version}</dd></div>
+                  <div><dt>Проверено</dt><dd>{displayDate(selected.reviewed_at)}</dd></div>
+                  <div><dt>Источник</dt><dd>{selected.source_kind}</dd></div>
+                </dl>
 
-            {selected.prompt_text && <DetailBlock title="Формулировка" text={selected.prompt_text} onCopy={copyText} />}
-            {selected.short_text && <DetailBlock title="Короткий ответ" text={selected.short_text} onCopy={copyText} />}
-            {selected.full_text && <DetailBlock title="Подробный ответ" text={selected.full_text} onCopy={copyText} />}
-            {selected.soft_text && <DetailBlock title="Мягкая версия" text={selected.soft_text} onCopy={copyText} />}
-            {selected.firm_text && <DetailBlock title="Твёрдая версия" text={selected.firm_text} onCopy={copyText} />}
-            {selected.clarification_text && <DetailBlock title="Уточняющий вопрос" text={selected.clarification_text} onCopy={copyText} />}
-            {selected.next_action_text && <DetailBlock title="Следующий шаг" text={selected.next_action_text} onCopy={copyText} />}
-            {selected.avoid_text && <DetailBlock title="Чего не говорить" text={selected.avoid_text} warning onCopy={copyText} />}
-            {selected.red_flag_text && <DetailBlock title="Красный флаг" text={selected.red_flag_text} warning onCopy={copyText} />}
+                {selected.prompt_text && <DetailBlock title="Формулировка" text={selected.prompt_text} onCopy={copyText} />}
+                {selected.short_text && <DetailBlock title="Короткий ответ" text={selected.short_text} onCopy={copyText} />}
+                {selected.full_text && <DetailBlock title="Подробный ответ" text={selected.full_text} onCopy={copyText} />}
+                {selected.soft_text && <DetailBlock title="Мягкая версия" text={selected.soft_text} onCopy={copyText} />}
+                {selected.firm_text && <DetailBlock title="Твёрдая версия" text={selected.firm_text} onCopy={copyText} />}
+                {selected.clarification_text && <DetailBlock title="Уточняющий вопрос" text={selected.clarification_text} onCopy={copyText} />}
+                {selected.next_action_text && <DetailBlock title="Следующий шаг" text={selected.next_action_text} onCopy={copyText} />}
+                {selected.avoid_text && <DetailBlock title="Чего не говорить" text={selected.avoid_text} warning onCopy={copyText} />}
+                {selected.diagnostic_value && <DetailBlock title="Диагностическая ценность" text={selected.diagnostic_value} onCopy={copyText} />}
+                {selected.red_flag_text && <DetailBlock title="Красный флаг" text={selected.red_flag_text} warning onCopy={copyText} />}
 
-            <div className={styles.drawerTags}>
-              {[...selected.niches, ...selected.stages].map((value) => <span key={value}>{value}</span>)}
-            </div>
+                <div className={styles.drawerTags}>
+                  {[...selected.niches, ...selected.stages].map((value) => <span key={value}>{value}</span>)}
+                </div>
+              </>
+            )}
           </aside>
         </div>
       )}
