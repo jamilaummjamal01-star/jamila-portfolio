@@ -793,6 +793,155 @@ async function handleBootstrap(env: Env, identity: ConstructorIdentity): Promise
   });
 }
 
+async function handleDashboard(env: Env): Promise<Response> {
+  const db = requireDatabase(env);
+  if (db instanceof Response) return db;
+
+  const [summaryResult, followUpsResult, diagnosticsResult, proposalsResult, knowledgeResult, coverageResult] = await db.batch([
+    db.prepare(`
+      SELECT
+        (
+          SELECT COUNT(*)
+          FROM clients
+          WHERE next_contact_at IS NOT NULL
+            AND datetime(next_contact_at) <= datetime('now', '+14 days')
+            AND LOWER(crm_status) NOT IN ('archived', 'refused', 'rejected', 'lost', 'completed')
+        ) AS follow_ups,
+        (
+          SELECT COUNT(*)
+          FROM diagnostic_sessions
+          WHERE status IN ('draft', 'scheduled', 'in_progress', 'needs_clarification', 'ready_for_proposal')
+        ) AS active_diagnostics,
+        (
+          SELECT COUNT(*)
+          FROM proposals
+          WHERE status IN ('draft', 'needs_data', 'internal_review', 'ready_to_send', 'sent', 'discussion')
+        ) AS active_proposals,
+        (
+          SELECT COUNT(*)
+          FROM knowledge_items
+          WHERE status IN ('draft', 'review')
+        ) AS knowledge_review,
+        (
+          SELECT COUNT(*)
+          FROM pricing_tariffs
+          WHERE is_active = 1
+            AND (
+              rate_status = 'review_before_proposal'
+              OR (review_at IS NOT NULL AND date(review_at) <= date('now', '+30 days'))
+            )
+        ) AS tariffs_review
+    `),
+    db.prepare(`
+      SELECT
+        c.id,
+        c.name,
+        c.crm_status,
+        c.priority,
+        c.next_action,
+        c.next_contact_at,
+        (
+          SELECT n.name
+          FROM client_niches cn
+          JOIN niches n ON n.id = cn.niche_id
+          WHERE cn.client_id = c.id
+          ORDER BY CASE cn.relation_type WHEN 'primary' THEN 0 ELSE 1 END, n.name
+          LIMIT 1
+        ) AS niche_name
+      FROM clients c
+      WHERE c.next_contact_at IS NOT NULL
+        AND datetime(c.next_contact_at) <= datetime('now', '+14 days')
+        AND LOWER(c.crm_status) NOT IN ('archived', 'refused', 'rejected', 'lost', 'completed')
+      ORDER BY datetime(c.next_contact_at), CASE c.priority WHEN 'A' THEN 0 WHEN 'B' THEN 1 ELSE 2 END, c.name
+      LIMIT 8
+    `),
+    db.prepare(`
+      SELECT
+        ds.id,
+        ds.client_id,
+        c.name AS client_name,
+        ds.status,
+        ds.format,
+        ds.next_action,
+        ds.scheduled_at,
+        ds.updated_at,
+        (
+          SELECT COUNT(*) FROM diagnostic_session_items dsi
+          WHERE dsi.session_id = ds.id
+        ) AS total_items,
+        (
+          SELECT COUNT(*) FROM diagnostic_session_items dsi
+          WHERE dsi.session_id = ds.id AND (dsi.was_asked = 1 OR COALESCE(dsi.client_answer, '') <> '')
+        ) AS answered_items
+      FROM diagnostic_sessions ds
+      JOIN clients c ON c.id = ds.client_id
+      WHERE ds.status IN ('draft', 'scheduled', 'in_progress', 'needs_clarification', 'ready_for_proposal')
+      ORDER BY
+        CASE ds.status WHEN 'in_progress' THEN 0 WHEN 'needs_clarification' THEN 1 WHEN 'ready_for_proposal' THEN 2 WHEN 'scheduled' THEN 3 ELSE 4 END,
+        COALESCE(datetime(ds.scheduled_at), datetime(ds.updated_at)) DESC
+      LIMIT 8
+    `),
+    db.prepare(`
+      SELECT
+        p.id,
+        p.title,
+        p.status,
+        p.version,
+        p.follow_up_at,
+        p.valid_until,
+        p.updated_at,
+        c.name AS client_name
+      FROM proposals p
+      LEFT JOIN clients c ON c.id = p.client_id
+      WHERE p.status IN ('draft', 'needs_data', 'internal_review', 'ready_to_send', 'sent', 'discussion')
+      ORDER BY
+        CASE p.status WHEN 'discussion' THEN 0 WHEN 'sent' THEN 1 WHEN 'ready_to_send' THEN 2 WHEN 'internal_review' THEN 3 WHEN 'needs_data' THEN 4 ELSE 5 END,
+        COALESCE(datetime(p.follow_up_at), datetime(p.updated_at)) DESC
+      LIMIT 8
+    `),
+    db.prepare(`
+      SELECT id, title, item_type, category, status, risk_level, version, updated_at
+      FROM knowledge_items
+      WHERE status IN ('draft', 'review')
+      ORDER BY
+        CASE status WHEN 'review' THEN 0 ELSE 1 END,
+        CASE risk_level WHEN 'refusal' THEN 0 WHEN 'high' THEN 1 WHEN 'elevated' THEN 2 ELSE 3 END,
+        datetime(updated_at) DESC
+      LIMIT 8
+    `),
+    db.prepare(`
+      SELECT
+        n.slug,
+        n.name,
+        n.priority,
+        COUNT(DISTINCT ki.id) AS approved_items
+      FROM niches n
+      LEFT JOIN knowledge_item_niches kin ON kin.niche_id = n.id
+      LEFT JOIN knowledge_items ki ON ki.id = kin.knowledge_item_id AND ki.status = 'approved'
+      WHERE n.is_active = 1
+      GROUP BY n.id, n.slug, n.name, n.priority
+      ORDER BY approved_items, CASE n.priority WHEN 'A' THEN 0 WHEN 'B' THEN 1 ELSE 2 END, n.name
+      LIMIT 8
+    `),
+  ]);
+
+  return json({
+    generatedAt: new Date().toISOString(),
+    summary: summaryResult.results?.[0] ?? {
+      follow_ups: 0,
+      active_diagnostics: 0,
+      active_proposals: 0,
+      knowledge_review: 0,
+      tariffs_review: 0,
+    },
+    followUps: followUpsResult.results ?? [],
+    diagnostics: diagnosticsResult.results ?? [],
+    proposals: proposalsResult.results ?? [],
+    knowledgeReview: knowledgeResult.results ?? [],
+    coverageGaps: coverageResult.results ?? [],
+  });
+}
+
 async function handleKnowledgeList(request: Request, env: Env): Promise<Response> {
   const db = requireDatabase(env);
   if (db instanceof Response) return db;
@@ -2656,6 +2805,10 @@ async function handleConstructorApi(request: Request, env: Env, identity: Constr
 
   if (url.pathname === "/api/constructor/bootstrap" && request.method === "GET") {
     return handleBootstrap(env, identity);
+  }
+
+  if (url.pathname === "/api/constructor/dashboard" && request.method === "GET") {
+    return handleDashboard(env);
   }
 
   if (url.pathname === "/api/constructor/knowledge" && request.method === "GET") {

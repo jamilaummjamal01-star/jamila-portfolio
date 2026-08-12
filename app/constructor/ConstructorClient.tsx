@@ -2,6 +2,7 @@
 
 import { FormEvent, useCallback, useEffect, useMemo, useState } from "react";
 import ClientWorkspace from "./ClientWorkspace";
+import DashboardWorkspace, { ConstructorSection } from "./DashboardWorkspace";
 import DiagnosticWorkspace from "./DiagnosticWorkspace";
 import KnowledgeEditor, { KnowledgeUpdatePayload } from "./KnowledgeEditor";
 import PreparationWorkspace from "./PreparationWorkspace";
@@ -108,6 +109,7 @@ const statusLabels: Record<string, string> = {
 };
 
 const navigation = [
+  ["Главная", "home", true],
   ["База знаний", "knowledge", true],
   ["Подготовиться к клиенту", "prepare", true],
   ["Клиент задал вопрос", "answer", true],
@@ -141,7 +143,7 @@ function displayDate(value: string | null): string {
 }
 
 export default function ConstructorClient() {
-  const [activeSection, setActiveSection] = useState<"knowledge" | "prepare" | "answer" | "diagnostic" | "clients" | "pricing" | "proposals">("knowledge");
+  const [activeSection, setActiveSection] = useState<ConstructorSection>("home");
   const [bootstrap, setBootstrap] = useState<BootstrapData | null>(null);
   const [items, setItems] = useState<KnowledgeItem[]>([]);
   const [pagination, setPagination] = useState<KnowledgeResponse["pagination"]>({ page: 1, limit: 30, total: 0, pages: 1 });
@@ -326,6 +328,13 @@ export default function ConstructorClient() {
     setPage(1);
   }
 
+  function navigateToSection(section: ConstructorSection) {
+    setActiveSection(section);
+    setSelected(null);
+    setEditingSelected(false);
+    setShowAdd(false);
+  }
+
   return (
     <main className={styles.appShell}>
       <aside className={styles.sidebar}>
@@ -344,14 +353,7 @@ export default function ConstructorClient() {
               key={key}
               type="button"
               disabled={!enabled}
-              onClick={() => {
-                if (key === "knowledge" || key === "prepare" || key === "answer" || key === "diagnostic" || key === "clients" || key === "pricing" || key === "proposals") {
-                  setActiveSection(key);
-                  setSelected(null);
-                  setEditingSelected(false);
-                  setShowAdd(false);
-                }
-              }}
+              onClick={() => navigateToSection(key)}
             >
               <span>{label}</span>
               {!enabled && <small>скоро</small>}
@@ -366,7 +368,9 @@ export default function ConstructorClient() {
       </aside>
 
       <section className={styles.workspace}>
-        {activeSection === "knowledge" ? (
+        {activeSection === "home" ? (
+          <DashboardWorkspace onNavigate={navigateToSection} />
+        ) : activeSection === "knowledge" ? (
           <>
         <header className={styles.topbar}>
           <div>
