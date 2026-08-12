@@ -477,5 +477,2032 @@ function parseCalculationMetadata(value: string | null): CalculationMetadata {
 function parseCalculationItemMetadata(value: string | null): CalculationItemMetadata {
   if (!value) return { unit: "ÑƒÑĞ»ÑƒĞ³Ğ°", comment: "" };
   try {
-    const parsed = JSON.parse(value) as unknown;ÛNúÚÚ$z{-®éÜj×ò¶F"ç&W&R‚%4TÄT5B–Be$ôÒ6Æ–VçG2t„U$R–BÒòÄ”Ô•B"’æ&–æB†–çWBæ6Æ–VçD–B•Ò¢µÒ’À¢âââ†–çWBæF–væ÷7F–56W76–öä–Bò¶F"ç&W&R‚%4TÄT5B–Be$ôÒF–væ÷7F–5÷6W76–öç2t„U$R–BÒòÄ”Ô•B"’æ&–æB†–çWBæF–væ÷7F–56W76–öä–B•Ò¢µÒ’À¢âââ†–çWBæ6Æ7VÆF–öä–Bò¶F"ç&W&R‚%4TÄT5B–Be$ôÒ&ö¦V7Eö6Æ7VÆF–öç2t„U$R–BÒòÄ”Ô•B"’æ&–æB†–çWBæ6Æ7VÆF–öä–B•Ò¢µÒ’À¢Ó°¢–b†6†V6·2æÆVæwF‚ÓÓÒ’&WGW&âçVÆÃ° ¢6öç7B&W7VÇG2Òv—BF"æ&F6‚†6†V6·2“°¢ÆWB–æFW‚Ò°¢–b†–çWBæ6Æ–VçD–Bbb&W7VÇG5¶–æFW‚²µÓòç&W7VÇG3òå³Ò’°¢&WGW&â6öç7G'V7F÷$W'&÷"ƒC#"Â$4Ä”TåEôäõEôdõTäB"Â-	-½İİ½’­½]İ"İRİM]Òâ"“°¢Ğ¢–b†–çWBæF–væ÷7F–56W76–öä–Bbb&W7VÇG5¶–æFW‚²µÓòç&W7VÇG3òå³Ò’°¢&WGW&â6öç7G'V7F÷$W'&÷"ƒC#"Â$D”täõ5D”5ôäõEôdõTäB"Â-	-½İİòM=İí-­İRİM]İâ"“°¢Ğ¢–b†–çWBæ6Æ7VÆF–öä–Bbb&W7VÇG5¶–æFW‚²µÓòç&W7VÇG3òå³Ò’°¢&WGW&â6öç7G'V7F÷$W'&÷"ƒC#"Â$4Ä5TÄD”ôåôäõEôdõTäB"Â-	-½İİ½’}"İRİM]Òâ"“°¢Ğ¢&WGW&âçVÆÃ°§Ğ ¦7–æ2gVæ7F–öâ†æFÆU&÷÷6Ä&ö÷G7G&†Vçc¢Vçb“¢&öÖ—6SÅ&W7öç6Sâ°¢6öç7BF"Ò&WV—&TFF&6R†Vçb“°¢–b†F"–ç7Fæ6Vöb&W7öç6R’&WGW&âF#° ¢6öç7B¶6Æ–VçG5&W7VÇBÂ6Æ7VÆF–öç5&W7VÇBÂF–væ÷7F–75&W7VÇBÂ&÷÷6Ç5&W7VÇEÒÒv—BF"æ&F6‚…°¢F"ç&W&R† ¢4TÄT5B–BÂæÖRÂ7&Õ÷7FGW2Â&–÷&—G¢e$ôÒ6Æ–VçG0¢t„U$R7&Õ÷7FGW2Òv&6†—fVBp¢õ$DU"%’44R&–÷&—G’t„TâtrD„Tât„Tât"rD„TâTÅ4R"TäBÂWFFVEöBDU40¢Ä”Ô•B# ¢’À¢F"ç&W&R† ¢4TÄT5@¢2æ–BÀ¢2æ6Æ–VçEö–BÀ¢2ææÖR26Æ–VçEöæÖRÀ¢2ç7FGW2À¢2æ6öÖÖVçBÀ¢2çfÆ–E÷VçF–ÂÀ¢Ô‚€¢2æÖ–æ–×VÕ÷&–6RÀ¢4ôÄU44R…5TÒ€¢€¢6’çVçF—G’¢44Rt„Tâ6’æÖçVÅ÷&FRâD„Tâ6’æÖçVÅ÷&FRTÅ4R6’çF&–fe÷&FRTäB ¢6’æ6ö×ÆW†—G•ö6öVff–6–VçB¢6’ç6÷W&6Uö6öVff–6–VçB¢6’çW&vVæ7•ö6öVff–6–VçB¢6’ç&–v‡G5ö6öVff–6–VçB°¢6’æf—†VEö6÷7B²6’æ†÷W'2¢6’æ–çFW&æÅö†÷W%÷&FR²6’æW‡FW&æÅö6÷7@¢’¢ƒÒ6’æ—FVÕöF—66÷VçE÷W&6VçBò¢’Â’¢ƒÒ2æF—66÷VçE÷W&6VçBò’²2æÖçVÅöF§W7FÖVçB²2æW‡FW&æÅ÷&ö¦V7Eö6÷7@¢’2F÷FÂÀ¢4õTåB†6’æ–B’2—FVÕö6÷VçBÀ¢2çWFFVEö@¢e$ôÒ&ö¦V7Eö6Æ7VÆF–öç20¢ÄTeB¤ô”â6Æ–VçG22ôâ2æ–BÒ2æ6Æ–VçEö–@¢ÄTeB¤ô”â6Æ7VÆF–öåö—FV×26’ôâ6’æ6Æ7VÆF–öåö–BÒ2æ–@¢t„U$R2ç7FGW2Òv&6†—fVBp¢u$õU%’2æ–@¢õ$DU"%’2çWFFVEöBDU40¢Ä”Ô•B# ¢’À¢F"ç&W&R† ¢4TÄT5BG2æ–BÂG2æ6Æ–VçEö–BÂ2ææÖR26Æ–VçEöæÖRÂG2ævöÂÂG2æÖ–åöF–væ÷6—2ÂG2æ7&VFVEö@¢e$ôÒF–væ÷7F–5÷6W76–öç2G0¢¤ô”â6Æ–VçG22ôâ2æ–BÒG2æ6Æ–VçEö–@¢t„U$RG2ç7FGW2Òv&6†—fVBp¢õ$DU"%’G2çWFFVEöBDU40¢Ä”Ô•B# ¢’À¢F"ç&W&R†G·&÷÷6Å6VÆV7E7ÇĞ¢t„U$Rç7FGW2Òv&6†—fVBp¢õ$DU"%¢44Rç7FGW0¢t„TâvF—67W76–öârD„Tât„Tâw6VçBrD„Tât„Tâw&VG•÷Fõ÷6VæBrD„Tâ ¢t„Tâv–çFW&æÅ÷&Wf–WrrD„Tâ2t„TâvæVVG5öFFrD„TâBt„TâvG&gBrD„TâP¢t„Tâv&÷fVBrD„Tâbt„Tâw&V¦V7FVBrD„TârTÅ4R€¢TäBÀ¢çWFFVEöBDU40¢Ä”Ô•B3 ¢’À¢Ò“° ¢6öç7B6Æ7VÆF–öç2Ò†6Æ7VÆF–öç5&W7VÇBç&W7VÇG2óòµÒ’2Væ¶æ÷vâ2&÷÷6Ä6Æ7VÆF–öå&÷uµÓ°¢&WGW&â§6öâ‡°¢6Æ–VçG3¢‚†6Æ–VçG5&W7VÇBç&W7VÇG2óòµÒ’2Væ¶æ÷vâ2&–6–æt6Æ–VçE&÷uµÒ’æÖ‚†6Æ–VçB’Óâ‡°¢–C¢6Æ–VçBæ–BÀ¢æÖS¢6Æ–VçBææÖRÀ¢7&Õ7FGW3¢6Æ–VçBæ7&Õ÷7FGW2À¢&–÷&—G“¢6Æ–VçBç&–÷&—G’À¢Ò’’À¢6Æ7VÆF–öç3¢6Æ7VÆF–öç2æÖ‚†6Æ7VÆF–öâ’Óâ°¢6öç7BÖWFFFÒ'6T6Æ7VÆF–öäÖWFFF†6Æ7VÆF–öâæ6öÖÖVçB“°¢&WGW&â°¢–C¢6Æ7VÆF–öâæ–BÀ¢6Æ–VçD–C¢6Æ7VÆF–öâæ6Æ–VçEö–BÀ¢6Æ–VçDæÖS¢6Æ7VÆF–öâæ6Æ–VçEöæÖRÀ¢F—FÆS¢ÖWFFFçF—FÆRÀ¢7W'&Væ7“¢ÖWFFFæ7W'&Væ7’À¢F÷FÃ¢&÷VæDÖöæW’„çVÖ&W"†6Æ7VÆF–öâçF÷FÂóò’’À¢fÆ–EVçF–Ã¢6Æ7VÆF–öâçfÆ–E÷VçF–ÂÀ¢WFFVDC¢6Æ7VÆF–öâçWFFVEöBÀ¢Ó°¢Ò’À¢F–væ÷7F–73¢‚†F–væ÷7F–75&W7VÇBç&W7VÇG2óòµÒ’2Væ¶æ÷vâ2&÷÷6ÄF–væ÷7F–5&÷uµÒ’æÖ‚†F–væ÷7F–2’Óâ‡°¢–C¢F–væ÷7F–2æ–BÀ¢6Æ–VçD–C¢F–væ÷7F–2æ6Æ–VçEö–BÀ¢6Æ–VçDæÖS¢F–væ÷7F–2æ6Æ–VçEöæÖRÀ¢vöÃ¢F–væ÷7F–2ævöÂÀ¢Ö–äF–væ÷6—3¢F–væ÷7F–2æÖ–åöF–væ÷6—2À¢7&VFVDC¢F–væ÷7F–2æ7&VFVEöBÀ¢Ò’’À¢&÷÷6Ç3¢‚‡&÷÷6Ç5&W7VÇBç&W7VÇG2óòµÒ’2Væ¶æ÷vâ2&÷÷6Å&÷uµÒ’æÖ‡&÷÷6Å&W7öç6R’À¢Ò“°§Ğ ¦7–æ2gVæ7F–öâ†æFÆU&÷÷6ÄFWF–Â‡&÷÷6Ä–C¢7G&–ærÂVçc¢Vçb“¢&öÖ—6SÅ&W7öç6Sâ°¢6öç7BF"Ò&WV—&TFF&6R†Vçb“°¢–b†F"–ç7Fæ6Vöb&W7öç6R’&WGW&âF#°¢6öç7B&÷rÒv—BF"ç&W&R†G·&÷÷6Å6VÆV7E7ÇÒt„U$Ræ–BÒòÄ”Ô•B’æ&–æB‡&÷÷6Ä–B’æf—'7CÅ&÷÷6Å&÷sâ‚“°¢–b‚&÷sòæ–B’&WGW&â6öç7G'V7F÷$W'&÷"ƒCBÂ%$õõ4ÅôäõEôdõTäB"Â-	­íÍÍ]}]­íRı]M½ím]İRİRİM]İââ"“°¢&WGW&â§6öâ‡²&÷÷6Ã¢&÷÷6Å&W7öç6R‡&÷r’Ò“°§Ğ ¦7–æ2gVæ7F–öâ†æFÆU&÷÷6Ä7&VFR‡&WVW7C¢&WVW7BÂVçc¢VçbÂ–FVçF—G“¢6öç7G'V7F÷$–FVçF—G’“¢&öÖ—6SÅ&W7öç6Sâ°¢6öç7BF"Ò&WV—&TFF&6R†Vçb“°¢–b†F"–ç7Fæ6Vöb&W7öç6R’&WGW&âF#° ¢ÆWB&öG“¢&V6÷&CÇ7G&–ærÂVæ¶æ÷vãã°¢G'’°¢&öG’Ò†v—B&WVW7Bæ§6öâ‚’’2&V6÷&CÇ7G&–ærÂVæ¶æ÷vãã°¢Ò6F6‚°¢&WGW&â6öç7G'V7F÷$W'&÷"ƒCÂ$”ådÄ”Eô¥4ôâ"Â-	İR=M½íÂıí}--ÂMİİ½R­íÍÍ]}]­í=âı]M½ím]İòâ"“°¢Ğ¢6öç7B–çWBÒ&VE&÷÷6Ä–çWB†&öG’“°¢–b†–çWB–ç7Fæ6Vöb&W7öç6R’&WGW&â–çWC°¢6öç7B&VfW&Væ6TW'&÷"Òv—BfÆ–FFU&÷÷6Å&VfW&Væ6W2†F"Â–çWB“°¢–b‡&VfW&Væ6TW'&÷"’&WGW&â&VfW&Væ6TW'&÷#° ¢6öç7B&÷÷6Ä–BÒ7'—Fòç&æFöÕUT”B‚“°¢6öç7Bæ÷rÒæWrFFR‚’çFô•4õ7G&–ær‚“°¢6öç7B6VçDBÒ–çWBç7FGW2ÓÓÒ'6VçB"òæ÷r¢çVÆÃ°¢v—BF"æ&F6‚…°¢F"ç&W&R† ¢”å4U%B”åDò&÷÷6Ç2€¢–BÂ6Æ–VçEö–BÂF–væ÷7F–5÷6W76–öåö–BÂ6Æ7VÆF–öåö–BÂfW'6–öâÂ7FGW2ÂF—FÆRÀ¢F–væ÷6—5÷FW‡BÂ7G&FVw•÷FW‡BÂ6öÇWF–öå÷FW‡BÂ66÷U÷FW‡BÂF–ÖVÆ–æU÷FW‡BÀ¢&–v‡G5÷FW‡BÂÆ–Ö—FF–öç5÷FW‡BÂæW‡E÷7FW÷FW‡BÂ6Æ–VçEöFö7VÖVçBÂ–çFW&æÅöæ÷FW2À¢6VçEöBÂföÆÆ÷u÷WöBÂfÆ–E÷VçF–ÂÂ7&VFVEöBÂWFFVEö@¢’dÅTU2ƒòÂòÂòÂòÂÂòÂòÂòÂòÂòÂòÂòÂòÂòÂòÂòÂòÂòÂòÂòÂòÂò¢’æ&–æB€¢&÷÷6Ä–BÀ¢–çWBæ6Æ–VçD–BÇÂçVÆÂÀ¢–çWBæF–væ÷7F–56W76–öä–BÇÂçVÆÂÀ¢–çWBæ6Æ7VÆF–öä–BÇÂçVÆÂÀ¢–çWBç7FGW2À¢–çWBçF—FÆRÀ¢–çWBæF–væ÷6—5FW‡BÇÂçVÆÂÀ¢–çWBç7G&FVw•FW‡BÇÂçVÆÂÀ¢–çWBç6öÇWF–öåFW‡BÇÂçVÆÂÀ¢–çWBç66÷UFW‡BÇÂçVÆÂÀ¢–çWBçF–ÖVÆ–æUFW‡BÇÂçVÆÂÀ¢–çWBç&–v‡G5FW‡BÇÂçVÆÂÀ¢–çWBæÆ–Ö—FF–öç5FW‡BÇÂçVÆÂÀ¢–çWBææW‡E7FWFW‡BÇÂçVÆÂÀ¢–çWBæ6Æ–VçDFö7VÖVçBÇÂçVÆÂÀ¢–çWBæ–çFW&æÄæ÷FW2ÇÂçVÆÂÀ¢6VçDBÀ¢–çWBæföÆÆ÷uWBÇÂçVÆÂÀ¢–çWBçfÆ–EVçF–ÂÇÂçVÆÂÀ¢æ÷rÀ¢æ÷rÀ¢’À¢F"ç&W&R† ¢”å4U%B”åDòVF—EöÆör†–BÂ7F÷%öVÖ–ÂÂ7F–öâÂVçF—G•÷G—RÂVçF—G•ö–BÂæWu÷fÇVUö§6öâÂ7&VFVEöB¢dÅTU2ƒòÂòÂv7&VFRrÂw&÷÷6ÂrÂòÂòÂò¢’æ&–æB€¢7'—Fòç&æFöÕUT”B‚’À¢–FVçF—G’æVÖ–ÂÀ¢&÷÷6Ä–BÀ¢¥4ôâç7G&–æv–g’‡²F—FÆS¢–çWBçF—FÆRÂ7FGW3¢–çWBç7FGW2Â6Æ–VçD–C¢–çWBæ6Æ–VçD–BÇÂçVÆÂÂ6Æ7VÆF–öä–C¢–çWBæ6Æ7VÆF–öä–BÇÂçVÆÂÒ’À¢æ÷rÀ¢’À¢Ò“° ¢6öç7B&W7öç6RÒv—B†æFÆU&÷÷6ÄFWF–Â‡&÷÷6Ä–BÂVçb“°¢&WGW&âæWr&W7öç6R‡&W7öç6Ræ&öG’Â²7FGW3¢#Â†VFW'3¢&W7öç6Ræ†VFW'2Ò“°§Ğ ¦7–æ2gVæ7F–öâ†æFÆU&÷÷6ÅWFFR‡&WVW7C¢&WVW7BÂ&÷÷6Ä–C¢7G&–ærÂVçc¢VçbÂ–FVçF—G“¢6öç7G'V7F÷$–FVçF—G’“¢&öÖ—6SÅ&W7öç6Sâ°¢6öç7BF"Ò&WV—&TFF&6R†Vçb“°¢–b†F"–ç7Fæ6Vöb&W7öç6R’&WGW&âF#° ¢6öç7BW†—7F–ærÒv—BF"ç&W&R‚%4TÄT5B–BÂfW'6–öâÂ6VçEöBe$ôÒ&÷÷6Ç2t„U$R–BÒòÄ”Ô•B"’æ&–æB‡&÷÷6Ä–B’æf—'7CÇ²–C¢7G&–æs²fW'6–öã¢çVÖ&W#²6VçEöC¢7G&–ærÂçVÆÂÓâ‚“°¢–b‚W†—7F–æsòæ–B’&WGW&â6öç7G'V7F÷$W'&÷"ƒCBÂ%$õõ4ÅôäõEôdõTäB"Â-	­íÍÍ]}]­íRı]M½ím]İRİRİM]İââ"“° ¢ÆWB&öG“¢&V6÷&CÇ7G&–ærÂVæ¶æ÷vãã°¢G'’°¢&öG’Ò†v—B&WVW7Bæ§6öâ‚’’2&V6÷&CÇ7G&–ærÂVæ¶æ÷vãã°¢Ò6F6‚°¢&WGW&â6öç7G'V7F÷$W'&÷"ƒCÂ$”ådÄ”Eô¥4ôâ"Â-	İR=M½íÂıí}--Â}Í]İ]İò­íÍÍ]}]­í=âı]M½ím]İòâ"“°¢Ğ¢6öç7B–çWBÒ&VE&÷÷6Ä–çWB†&öG’“°¢–b†–çWB–ç7Fæ6Vöb&W7öç6R’&WGW&â–çWC°¢6öç7B&VfW&Væ6TW'&÷"Òv—BfÆ–FFU&÷÷6Å&VfW&Væ6W2†F"Â–çWB“°¢–b‡&VfW&Væ6TW'&÷"’&WGW&â&VfW&Væ6TW'&÷#° ¢6öç7Bæ÷rÒæWrFFR‚’çFô•4õ7G&–ær‚“°¢6öç7B6VçDBÒW†—7F–ærç6VçEöBÇÂ†–çWBç7FGW2ÓÓÒ'6VçB"òæ÷r¢çVÆÂ“°¢v—BF"æ&F6‚…°¢F"ç&W&R† ¢UDDR&÷÷6Ç0¢4U@¢6Æ–VçEö–BÒòÂF–væ÷7F–5÷6W76–öåö–BÒòÂ6Æ7VÆF–öåö–BÒòÂfW'6–öâÒòÂ7FGW2ÒòÂF—FÆRÒòÀ¢F–væ÷6—5÷FW‡BÒòÂ7G&FVw•÷FW‡BÒòÂ6öÇWF–öå÷FW‡BÒòÂ66÷U÷FW‡BÒòÂF–ÖVÆ–æU÷FW‡BÒòÀ¢&–v‡G5÷FW‡BÒòÂÆ–Ö—FF–öç5÷FW‡BÒòÂæW‡E÷7FW÷FW‡BÒòÂ6Æ–VçEöFö7VÖVçBÒòÂ–çFW&æÅöæ÷FW2ÒòÀ¢6VçEöBÒòÂföÆÆ÷u÷WöBÒòÂfÆ–E÷VçF–ÂÒòÂWFFVEöBÒğ¢t„U$R–BÒğ¢’æ&–æB€¢–çWBæ6Æ–VçD–BÇÂçVÆÂÀ¢–çWBæF–væ÷7F–56W76–öä–BÇÂçVÆÂÀ¢–çWBæ6Æ7VÆF–öä–BÇÂçVÆÂÀ¢çVÖ&W"†W†—7F–ærçfW'6–öâ’²À¢–çWBç7FGW2À¢–çWBçF—FÆRÀ¢–çWBæF–væ÷6—5FW‡BÇÂçVÆÂÀ¢–çWBç7G&FVw•FW‡BÇÂçVÆÂÀ¢–çWBç6öÇWF–öåFW‡BÇÂçVÆÂÀ¢–çWBç66÷UFW‡BÇÂçVÆÂÀ¢–çWBçF–ÖVÆ–æUFW‡BÇÂçVÆÂÀ¢–çWBç&–v‡G5FW‡BÇÂçVÆÂÀ¢–çWBæÆ–Ö—FF–öç5FW‡BÇÂçVÆÂÀ¢–çWBææW‡E7FWFW‡BÇÂçVÆÂÀ¢–çWBæ6Æ–VçDFö7VÖVçBÇÂçVÆÂÀ¢–çWBæ–çFW&æÄæ÷FW2ÇÂçVÆÂÀ¢6VçDBÀ¢–çWBæföÆÆ÷uWBÇÂçVÆÂÀ¢–çWBçfÆ–EVçF–ÂÇÂçVÆÂÀ¢æ÷rÀ¢&÷÷6Ä–BÀ¢’À¢F"ç&W&R† ¢”å4U%B”åDòVF—EöÆör†–BÂ7F÷%öVÖ–ÂÂ7F–öâÂVçF—G•÷G—RÂVçF—G•ö–BÂæWu÷fÇVUö§6öâÂ7&VFVEöB¢dÅTU2ƒòÂòÂwWFFRrÂw&÷÷6ÂrÂòÂòÂò¢’æ&–æB€¢7'—Fòç&æFöÕUT”B‚’À¢–FVçF—G’æVÖ–ÂÀ¢&÷÷6Ä–BÀ¢¥4ôâç7G&–æv–g’‡²F—FÆS¢–çWBçF—FÆRÂ7FGW3¢–çWBç7FGW2ÂfW'6–öã¢çVÖ&W"†W†—7F–ærçfW'6–öâ’²Ò’À¢æ÷rÀ¢’À¢Ò“°¢&WGW&â†æFÆU&÷÷6ÄFWF–Â‡&÷÷6Ä–BÂVçb“°§Ğ ¦7–æ2gVæ7F–öâ†æFÆT6öç7G'V7F÷$’‡&WVW7C¢&WVW7BÂVçc¢VçbÂ–FVçF—G“¢6öç7G'V7F÷$–FVçF—G’“¢&öÖ—6SÅ&W7öç6Sâ°¢6öç7BW&ÂÒæWrU$Â‡&WVW7BçW&Â“°Ğ Ğ¢–b‡W&ÂçF†æÖRÓÓÒ"ö’ö6öç7G'V7F÷"ö†VÇF‚"bb&WVW7BæÖWF†öBÓÓÒ$tUB"’°Ğ¢&WGW&â§6öâ‡°Ğ¢ö³¢G'VRÀĞ¢–FVçF—G’ÀĞ¢FF&6T6öæf–wW&VC¢&ööÆVâ†VçbäD"’ÀĞ¢66W746öæf–wW&VC¢Vçbä4ôå5E%T5Dõ%ôUD…ôTä$ÄTBÓÓÒ'G'VR"ÀĞ¢Ò“°Ğ¢ĞĞ Ğ¢–b‡W&ÂçF†æÖRÓÓÒ"ö’ö6öç7G'V7F÷"ö&ö÷G7G&"bb&WVW7BæÖWF†öBÓÓÒ$tUB"’°Ğ¢&WGW&â†æFÆT&ö÷G7G&†VçbÂ–FVçF—G’“°Ğ¢ĞĞ Ğ¢–b‡W&ÂçF†æÖRÓÓÒ"ö’ö6öç7G'V7F÷"ö¶æ÷vÆVFvR"bb&WVW7BæÖWF†öBÓÓÒ$tUB"’°Ğ¢&WGW&â†æFÆT¶æ÷vÆVFvTÆ—7B‡&WVW7BÂVçb“°Ğ¢ĞĞ Ğ¢–b‡W&ÂçF†æÖRÓÓÒ"ö’ö6öç7G'V7F÷"ö¶æ÷vÆVFvR"bb&WVW7BæÖWF†öBÓÓÒ%õ5B"’°¢&WGW&â†æFÆT¶æ÷vÆVFvT7&VFR‡&WVW7BÂVçbÂ–FVçF—G’“°¢Ğ ¢–b‡W&ÂçF†æÖRÓÓÒ"ö’ö6öç7G'V7F÷"öç7vW'2"bb&WVW7BæÖWF†öBÓÓÒ$tUB"’°¢&WGW&â†æFÆTç7vW%6V&6‚‡&WVW7BÂVçb“°¢Ğ ¢–b‡W&ÂçF†æÖRÓÓÒ"ö’ö6öç7G'V7F÷"÷&W&F–öç2"bb&WVW7BæÖWF†öBÓÓÒ%õ5B"’°¢&WGW&â†æFÆU&W&F–öä7&VFR‡&WVW7BÂVçbÂ–FVçF—G’“°¢Ğ ¢–b‡W&ÂçF†æÖRÓÓÒ"ö’ö6öç7G'V7F÷"öF–væ÷7F–72"bb&WVW7BæÖWF†öBÓÓÒ%õ5B"’°¢&WGW&â†æFÆTF–væ÷7F–47&VFR‡&WVW7BÂVçbÂ–FVçF—G’“°¢Ğ ¢–b‡W&ÂçF†æÖRÓÓÒ"ö’ö6öç7G'V7F÷"ö6Æ–VçG2"bb&WVW7BæÖWF†öBÓÓÒ$tUB"’°¢&WGW&â†æFÆT6Æ–VçDÆ—7B‡&WVW7BÂVçb“°¢Ğ ¢–b‡W&ÂçF†æÖRÓÓÒ"ö’ö6öç7G'V7F÷"÷&–6–ærö&ö÷G7G&"bb&WVW7BæÖWF†öBÓÓÒ$tUB"’°¢&WGW&â†æFÆU&–6–æt&ö÷G7G&†Vçb“°¢Ğ ¢–b‡W&ÂçF†æÖRÓÓÒ"ö’ö6öç7G'V7F÷"ö6Æ7VÆF–öç2"bb&WVW7BæÖWF†öBÓÓÒ%õ5B"’°¢&WGW&â†æFÆT6Æ7VÆF–öä7&VFR‡&WVW7BÂVçbÂ–FVçF—G’“°¢Ğ ¢–b‡W&ÂçF†æÖRÓÓÒ"ö’ö6öç7G'V7F÷"÷&÷÷6Ç2ö&ö÷G7G&"bb&WVW7BæÖWF†öBÓÓÒ$tUB"’°¢&WGW&â†æFÆU&÷÷6Ä&ö÷G7G&†Vçb“°¢Ğ ¢–b‡W&ÂçF†æÖRÓÓÒ"ö’ö6öç7G'V7F÷"÷&÷÷6Ç2"bb&WVW7BæÖWF†öBÓÓÒ%õ5B"’°¢&WGW&â†æFÆU&÷÷6Ä7&VFR‡&WVW7BÂVçbÂ–FVçF—G’“°¢Ğ ¢6öç7B&÷÷6ÄÖF6‚ÒW&ÂçF†æÖRæÖF6‚‚õåÂö•Âö6öç7G'V7F÷%Â÷&÷÷6Ç5Âò…µâõÒ²’Bò“°¢–b‡&÷÷6ÄÖF6‚’°¢6öç7B&÷÷6Ä–BÒ&÷÷6ÄÖF6…³Òç6Æ–6RƒÂƒ“°¢–b‡&WVW7BæÖWF†öBÓÓÒ$tUB"’&WGW&â†æFÆU&÷÷6ÄFWF–Â‡&÷÷6Ä–BÂVçb“°¢–b‡&WVW7BæÖWF†öBÓÓÒ%D4‚"’&WGW&â†æFÆU&÷÷6ÅWFFR‡&WVW7BÂ&÷÷6Ä–BÂVçbÂ–FVçF—G’“°¢Ğ ¢6öç7B6Æ7VÆF–öäÖF6‚ÒW&ÂçF†æÖRæÖF6‚‚õåÂö•Âö6öç7G'V7F÷%Âö6Æ7VÆF–öç5Âò…µâõÒ²’Bò“°¢–b†6Æ7VÆF–öäÖF6‚bb&WVW7BæÖWF†öBÓÓÒ$tUB"’°¢&WGW&â†æFÆT6Æ7VÆF–öäFWF–Â†6Æ7VÆF–öäÖF6…³Òç6Æ–6RƒÂƒ’ÂVçb“°¢Ğ ¢6öç7B6Æ–VçDÖF6‚ÒW&ÂçF†æÖRæÖF6‚‚õåÂö•Âö6öç7G'V7F÷%Âö6Æ–VçG5Âò…µâõÒ²’Bò“°¢–b†6Æ–VçDÖF6‚’°¢6öç7B6Æ–VçD–BÒ6Æ–VçDÖF6…³Òç6Æ–6RƒÂƒ“°¢–b‡&WVW7BæÖWF†öBÓÓÒ$tUB"’&WGW&â†æFÆT6Æ–VçDFWF–Â†6Æ–VçD–BÂVçb“°¢–b‡&WVW7BæÖWF†öBÓÓÒ%D4‚"’&WGW&â†æFÆT6Æ–VçEWFFR‡&WVW7BÂ6Æ–VçD–BÂVçbÂ–FVçF—G’“°¢Ğ Ğ¢&WGW&â6öç7G'V7F÷$W'&÷"ƒCBÂ$äõEôdõTäB"Â-
-}M]²­íİ-=­-íİRİM]Òâ"“°Ğ§ĞĞ Ğ¦gVæ7F–öâ6V7W&T6öç7G'V7F÷%&W7öç6R‡&W7öç6S¢&W7öç6R“¢&W7öç6R°Ğ¢6öç7B†VFW'2ÒæWr†VFW'2‡&W7öç6Ræ†VFW'2“°Ğ¢†VFW'2ç6WB‚$66†RÔ6öçG&öÂ"Â'&—fFRÂæò×7F÷&RÂÖ‚ÖvSÓ"“°Ğ¢†VFW'2ç6WB‚%&vÖ"Â&æòÖ66†R"“°Ğ¢†VFW'2ç6WB‚%‚Õ&ö&÷G2ÕFr"Â&æö–æFW‚ÂæöföÆÆ÷rÂæö&6†—fR"“°Ğ¢†VFW'2ç6WB‚%‚Ô6öçFVçBÕG—RÔ÷F–öç2"Â&æ÷6æ–fb"“°Ğ¢†VFW'2ç6WB‚%&VfW'&W"ÕöÆ–7’"Â'6ÖRÖ÷&–v–â"“°Ğ¢†VFW'2ç6WB‚%W&Ö—76–öç2ÕöÆ–7’"Â&6ÖW&Ò‚’ÂÖ–7&÷†öæSÒ‚’ÂvVöÆö6F–öãÒ‚’"“°Ğ¢&WGW&âæWr&W7öç6R‡&W7öç6Ræ&öG’Â°Ğ¢7FGW3¢&W7öç6Rç7FGW2ÀĞ¢7FGW5FW‡C¢&W7öç6Rç7FGW5FW‡BÀĞ¢†VFW'2ÀĞ¢Ò“°Ğ§ĞĞ Ğ¦6öç7Bv÷&¶W"Ò°Ğ¢7–æ2fWF6‚‡&WVW7C¢&WVW7BÂVçc¢VçbÂ7Gƒ¢W†V7WF–öä6öçFW‡B“¢&öÖ—6SÅ&W7öç6Sâ°Ğ¢6öç7BW&ÂÒæWrU$Â‡&WVW7BçW&Â“°Ğ Ğ¢–b‡W&ÂçF†æÖRÓÓÒ"õ÷f–æW‡Bö–ÖvR"’°Ğ¢6öç7BÆÆ÷vVEv–GF‡2Ò²ââäDTdTÅEôDUd”4Uõ4•¤U2ÂââäDTdTÅEô”ÔtUõ4•¤U5Ó°Ğ¢&WGW&â†æFÆT–ÖvT÷F–Ö—¦F–öâ‡&WVW7BÂ°Ğ¢fWF6„76WC¢‡F‚’ÓâVçbä54UE2æfWF6‚†æWr&WVW7B†æWrU$Â‡F‚Â&WVW7BçW&Â’’’ÀĞ¢G&ç6f÷&Ô–ÖvS¢7–æ2†&öG’Â²v–GF‚Âf÷&ÖBÂVÆ—G’Ò’Óâ°Ğ¢6öç7B&W7VÇBÒv—BVçbä”ÔtU2æ–çWB†&öG’’çG&ç6f÷&Ò‡v–GF‚âò²v–GF‚Ò¢·Ò’æ÷WGWB‡²f÷&ÖBÂVÆ—G’Ò“°Ğ¢&WGW&â&W7VÇBç&W7öç6R‚“°Ğ¢ÒÀĞ¢ÒÂÆÆ÷vVEv–GF‡2“°Ğ¢ĞĞ Ğ¢–b†—46öç7G'V7F÷%&WVW7B‡W&ÂçF†æÖR’’°Ğ¢6öç7B–FVçF—G’Òv—BWF†VçF–6FT6öç7G'V7F÷"‡&WVW7BÂVçb“°Ğ¢–b†–FVçF—G’–ç7Fæ6Vöb&W7öç6R’&WGW&â–FVçF—G“°Ğ Ğ¢–b‡W&ÂçF†æÖRç7F'G5v—F‚‚"ö’ö6öç7G'V7F÷"ò"’’°Ğ¢&WGW&â†æFÆT6öç7G'V7F÷$’‡&WVW7BÂVçbÂ–FVçF—G’“°Ğ¢ĞĞ Ğ¢6öç7B&W7öç6RÒv—B†æFÆW"æfWF6‚‡&WVW7BÂVçbÂ7G‚“°Ğ¢&WGW&â6V7W&T6öç7G'V7F÷%&W7öç6R‡&W7öç6R“°Ğ¢ĞĞ Ğ¢&WGW&â†æFÆW"æfWF6‚‡&WVW7BÂVçbÂ7G‚“°Ğ¢ÒÀĞ§Ó°Ğ Ğ¦W‡÷'BFVfVÇBv÷&¶W#°Ğ
+    const parsed = JSON.parse(value) as unknown;
+    const record = asRecord(parsed);
+    if (!record) return { unit: "ÑƒÑĞ»ÑƒĞ³Ğ°", comment: value };
+    return {
+      unit: readText(record, "unit", 80) || "ÑƒÑĞ»ÑƒĞ³Ğ°",
+      comment: readText(record, "comment", 800),
+    };
+  } catch {
+    return { unit: "ÑƒÑĞ»ÑƒĞ³Ğ°", comment: value };
+  }
+}
+
+const proposalStatuses = new Set([
+  "draft",
+  "needs_data",
+  "internal_review",
+  "ready_to_send",
+  "sent",
+  "discussion",
+  "approved",
+  "rejected",
+  "archived",
+]);
+
+function readProposalInput(body: Record<string, unknown>): ProposalInput | Response {
+  const input: ProposalInput = {
+    clientId: readText(body, "clientId", 80),
+    diagnosticSessionId: readText(body, "diagnosticSessionId", 80),
+    calculationId: readText(body, "calculationId", 80),
+    status: readText(body, "status", 40) || "draft",
+    title: readText(body, "title", 240),
+    diagnosisText: readText(body, "diagnosisText", 6000),
+    strategyText: readText(body, "strategyText", 6000),
+    solutionText: readText(body, "solutionText", 6000),
+    scopeText: readText(body, "scopeText", 6000),
+    timelineText: readText(body, "timelineText", 4000),
+    rightsText: readText(body, "rightsText", 4000),
+    limitationsText: readText(body, "limitationsText", 4000),
+    nextStepText: readText(body, "nextStepText", 4000),
+    clientDocument: readText(body, "clientDocument", 30000),
+    internalNotes: readText(body, "internalNotes", 12000),
+    followUpAt: readText(body, "followUpAt", 80),
+    validUntil: readText(body, "validUntil", 80),
+  };
+
+  if (!input.title || !proposalStatuses.has(input.status)) {
+    return constructorError(422, "VALIDATION_FAILED", "Ğ£ĞºĞ°Ğ¶Ğ¸Ñ‚Ğµ Ğ½Ğ°Ğ·Ğ²Ğ°Ğ½Ğ¸Ğµ Ğ¸ ĞºĞ¾Ñ€Ñ€ĞµĞºÑ‚Ğ½Ñ‹Ğ¹ ÑÑ‚Ğ°Ñ‚ÑƒÑ ĞºĞ¾Ğ¼Ğ¼ĞµÑ€Ñ‡ĞµÑĞºĞ¾Ğ³Ğ¾ Ğ¿Ñ€ĞµĞ´Ğ»Ğ¾Ğ¶ĞµĞ½Ğ¸Ñ.");
+  }
+
+  for (const [value, code, message] of [
+    [input.followUpAt, "INVALID_FOLLOW_UP", "Ğ£ĞºĞ°Ğ¶Ğ¸Ñ‚Ğµ ĞºĞ¾Ñ€Ñ€ĞµĞºÑ‚Ğ½ÑƒÑ Ğ´Ğ°Ñ‚Ñƒ ÑĞ»ĞµĞ´ÑƒÑÑ‰ĞµĞ³Ğ¾ ĞºĞ¾Ğ½Ñ‚Ğ°ĞºÑ‚Ğ°."],
+    [input.validUntil, "INVALID_VALID_UNTIL", "Ğ£ĞºĞ°Ğ¶Ğ¸Ñ‚Ğµ ĞºĞ¾Ñ€Ñ€ĞµĞºÑ‚Ğ½Ñ‹Ğ¹ ÑÑ€Ğ¾Ğº Ğ´ĞµĞ¹ÑÑ‚Ğ²Ğ¸Ñ Ğ¿Ñ€ĞµĞ´Ğ»Ğ¾Ğ¶ĞµĞ½Ğ¸Ñ."],
+  ] as const) {
+    if (value && Number.isNaN(Date.parse(value))) return constructorError(422, code, message);
+  }
+
+  return input;
+}
+
+function isHttpUrl(value: string): boolean {
+  if (!value) return true;
+  try {
+    const url = new URL(value);
+    return url.protocol === "http:" || url.protocol === "https:";
+  } catch {
+    return false;
+  }
+}
+
+function preparationText(row: PreparationKnowledgeRow): string {
+  return row.prompt_text || row.short_text || row.full_text || row.red_flag_text || row.title;
+}
+
+function toPreparationItem(row: PreparationKnowledgeRow): PreparationItem {
+  return {
+    id: row.id,
+    itemType: row.item_type,
+    category: row.category,
+    title: row.title,
+    text: preparationText(row),
+    answer: row.short_text || row.full_text,
+    nextAction: row.next_action_text,
+    riskLevel: row.risk_level,
+  };
+}
+
+function groupPreparationItems(rows: PreparationKnowledgeRow[]) {
+  const groups = {
+    auditChecks: [] as PreparationItem[],
+    questionsToAsk: [] as PreparationItem[],
+    likelyClientQuestions: [] as PreparationItem[],
+    firstMessages: [] as PreparationItem[],
+    risks: [] as PreparationItem[],
+    packages: [] as PreparationItem[],
+    nextActions: [] as PreparationItem[],
+  };
+
+  for (const row of rows) {
+    const item = toPreparationItem(row);
+    if (row.item_type === "audit_check") groups.auditChecks.push(item);
+    if (["question_to_client", "clarifying_question", "diagnostic_hint"].includes(row.item_type)) groups.questionsToAsk.push(item);
+    if (["question_from_client", "objection", "objection_response"].includes(row.item_type)) groups.likelyClientQuestions.push(item);
+    if (["first_message", "follow_up"].includes(row.item_type)) groups.firstMessages.push(item);
+    if (["red_flag", "ethical_rule", "refusal_reason"].includes(row.item_type) || ["high", "refusal"].includes(row.risk_level)) groups.risks.push(item);
+    if (["package", "proposal_block"].includes(row.item_type)) groups.packages.push(item);
+    if (row.item_type === "next_action") groups.nextActions.push(item);
+  }
+
+  return groups;
+}
+
+function normalizeSearchText(value: string): string {
+  return value
+    .toLocaleLowerCase("ru")
+    .replace(/Ñ‘/g, "Ğµ")
+    .replace(/[^a-zĞ°-Ñ0-9]+/gi, " ")
+    .trim();
+}
+
+function searchTokens(value: string): string[] {
+  return [...new Set(normalizeSearchText(value).split(" ").filter((token) => token.length >= 3 && !answerStopWords.has(token)))];
+}
+
+function detectAnswerCategory(value: string): string | null {
+  const normalized = normalizeSearchText(value);
+  let bestCategory: string | null = null;
+  let bestScore = 0;
+
+  for (const [category, keywords] of Object.entries(answerCategoryKeywords)) {
+    const score = keywords.reduce((total, keyword) => total + (normalized.includes(normalizeSearchText(keyword)) ? 1 : 0), 0);
+    if (score > bestScore) {
+      bestCategory = category;
+      bestScore = score;
+    }
+  }
+
+  return bestCategory;
+}
+
+function textMatchesToken(text: string, token: string): boolean {
+  return text.split(" ").some((word) => (
+    word === token
+    || (word.length >= 5 && token.length >= 5 && (word.startsWith(token) || token.startsWith(word)))
+  ));
+}
+
+function answerMatchScore(row: AnswerKnowledgeRow, query: string, tokens: string[], category: string | null): number {
+  const prompt = normalizeSearchText(`${row.title} ${row.prompt_text || ""}`);
+  const allText = normalizeSearchText([
+    row.title,
+    row.prompt_text,
+    row.short_text,
+    row.full_text,
+    row.soft_text,
+    row.firm_text,
+    row.clarification_text,
+  ].filter(Boolean).join(" "));
+  const normalizedQuery = normalizeSearchText(query);
+  let score = 0;
+
+  if (category && row.category === category) score += 80;
+  if (normalizedQuery && prompt.includes(normalizedQuery)) score += 120;
+  for (const token of tokens) {
+    if (textMatchesToken(prompt, token)) score += 16;
+    else if (textMatchesToken(allText, token)) score += 6;
+  }
+  if (row.item_type === "question_from_client") score += 8;
+  if (row.risk_level === "normal") score += 2;
+
+  return score;
+}
+
+async function handleAnswerSearch(request: Request, env: Env): Promise<Response> {
+  const db = requireDatabase(env);
+  if (db instanceof Response) return db;
+
+  const url = new URL(request.url);
+  const query = (url.searchParams.get("q") || "").trim().slice(0, 1200);
+  const selectedCategory = (url.searchParams.get("category") || "").trim().slice(0, 80);
+  const niche = (url.searchParams.get("niche") || "").trim().slice(0, 120);
+  const channel = (url.searchParams.get("channel") || "").trim().slice(0, 80);
+
+  if (!query && !selectedCategory) {
+    return constructorError(422, "ANSWER_QUERY_REQUIRED", "Ğ’ÑÑ‚Ğ°Ğ²ÑŒÑ‚Ğµ Ğ²Ğ¾Ğ¿Ñ€Ğ¾Ñ ĞºĞ»Ğ¸ĞµĞ½Ñ‚Ğ° Ğ¸Ğ»Ğ¸ Ğ²Ñ‹Ğ±ĞµÑ€Ğ¸Ñ‚Ğµ Ñ‚ĞµĞ¼Ñƒ.");
+  }
+
+  const detectedCategory = selectedCategory || detectAnswerCategory(query);
+  const filters = [
+    "ki.status = 'approved'",
+    "ki.item_type IN ('question_from_client', 'objection', 'objection_response', 'answer')",
+  ];
+  const bindings: string[] = [];
+
+  if (selectedCategory) {
+    filters.push("ki.category = ?");
+    bindings.push(selectedCategory);
+  }
+
+  if (niche) {
+    filters.push(`(
+      NOT EXISTS (SELECT 1 FROM knowledge_item_niches all_kin WHERE all_kin.knowledge_item_id = ki.id)
+      OR EXISTS (
+        SELECT 1
+        FROM knowledge_item_niches kin
+        JOIN niches n ON n.id = kin.niche_id
+        WHERE kin.knowledge_item_id = ki.id AND n.slug = ?
+      )
+    )`);
+    bindings.push(niche);
+  }
+
+  if (channel) {
+    filters.push("ki.channel IN ('any', ?)");
+    bindings.push(channel);
+  }
+
+  const result = await db.prepare(`
+    SELECT
+      ki.id,
+      ki.item_type,
+      ki.category,
+      ki.title,
+      ki.prompt_text,
+      ki.short_text,
+      ki.full_text,
+      ki.soft_text,
+      ki.firm_text,
+      ki.clarification_text,
+      ki.next_action_text,
+      ki.avoid_text,
+      ki.red_flag_text,
+      ki.risk_level,
+      ki.channel,
+      (
+        SELECT GROUP_CONCAT(n.name, '${listDelimiter}')
+        FROM knowledge_item_niches kin
+        JOIN niches n ON n.id = kin.niche_id
+        WHERE kin.knowledge_item_id = ki.id
+      ) AS niche_names
+    FROM knowledge_items ki
+    WHERE ${filters.join(" AND ")}
+    ORDER BY
+      CASE ki.required_level WHEN 'required' THEN 0 WHEN 'recommended' THEN 1 ELSE 2 END,
+      ki.title
+    LIMIT 120
+  `).bind(...bindings).all<AnswerKnowledgeRow>();
+
+  const tokens = searchTokens(query);
+  const rows = (result.results ?? [])
+    .map((row) => ({ row, score: answerMatchScore(row, query, tokens, detectedCategory) }))
+    .filter(({ score }) => Boolean(selectedCategory) || score > 15)
+    .sort((left, right) => right.score - left.score || left.row.title.localeCompare(right.row.title, "ru"))
+    .slice(0, 10)
+    .map(({ row, score }) => ({
+      id: row.id,
+      itemType: row.item_type,
+      category: row.category,
+      title: row.title,
+      question: row.prompt_text,
+      shortText: row.short_text,
+      fullText: row.full_text,
+      softText: row.soft_text,
+      firmText: row.firm_text,
+      clarificationText: row.clarification_text,
+      nextActionText: row.next_action_text,
+      avoidText: row.avoid_text,
+      redFlagText: row.red_flag_text,
+      riskLevel: row.risk_level,
+      niches: splitList(row.niche_names),
+      score,
+    }));
+
+  return json({ query, recognizedCategory: detectedCategory, items: rows });
+}
+
+async function handleBootstrap(env: Env, identity: ConstructorIdentity): Promise<Response> {
+  const db = requireDatabase(env);
+  if (db instanceof Response) return db;
+
+  const [nichesResult, stagesResult, countsResult] = await db.batch([
+    db.prepare("SELECT slug, name, priority FROM niches WHERE is_active = 1 ORDER BY priority, name"),
+    db.prepare("SELECT slug, name, sort_order FROM stages WHERE is_active = 1 ORDER BY sort_order"),
+    db.prepare(`
+      SELECT
+        COUNT(*) AS total,
+        SUM(CASE WHEN status = 'approved' THEN 1 ELSE 0 END) AS approved,
+        SUM(CASE WHEN status = 'review' THEN 1 ELSE 0 END) AS review,
+        SUM(CASE WHEN risk_level IN ('high', 'refusal') THEN 1 ELSE 0 END) AS high_risk
+      FROM knowledge_items
+      WHERE status <> 'archived'
+    `),
+  ]);
+
+  return json({
+    identity,
+    niches: nichesResult.results ?? [],
+    stages: stagesResult.results ?? [],
+    counts: countsResult.results?.[0] ?? { total: 0, approved: 0, review: 0, high_risk: 0 },
+  });
+}
+
+async function handleKnowledgeList(request: Request, env: Env): Promise<Response> {
+  const db = requireDatabase(env);
+  if (db instanceof Response) return db;
+
+  const url = new URL(request.url);
+  const q = url.searchParams.get("q")?.trim().toLowerCase() ?? "";
+  const niche = url.searchParams.get("niche")?.trim() ?? "";
+  const stage = url.searchParams.get("stage")?.trim() ?? "";
+  const itemType = url.searchParams.get("type")?.trim() ?? "";
+  const risk = url.searchParams.get("risk")?.trim() ?? "";
+  const category = url.searchParams.get("category")?.trim() ?? "";
+  const status = url.searchParams.get("status")?.trim() ?? "approved";
+  const page = parsePositiveInteger(url.searchParams.get("page"), 1, 100000);
+  const limit = parsePositiveInteger(url.searchParams.get("limit"), 30, 100);
+  const offset = (page - 1) * limit;
+
+  const filters: string[] = ["ki.status <> 'archived'"];
+  const bindings: Array<string | number> = [];
+
+  if (status !== "all") {
+    filters.push("ki.status = ?");
+    bindings.push(status);
+  }
+
+  if (q) {
+    filters.push(`LOWER(
+      COALESCE(ki.title, '') || ' ' ||
+      COALESCE(ki.prompt_text, '') || ' ' ||
+      COALESCE(ki.short_text, '') || ' ' ||
+      COALESCE(ki.full_text, '') || ' ' ||
+      COALESCE(ki.clarification_text, '')
+    ) LIKE ?`);
+    bindings.push(`%${q}%`);
+  }
+
+  if (niche) {
+    filters.push(`EXISTS (
+      SELECT 1
+      FROM knowledge_item_niches kin
+      JOIN niches n ON n.id = kin.niche_id
+      WHERE kin.knowledge_item_id = ki.id AND n.slug = ?
+    )`);
+    bindings.push(niche);
+  }
+
+  if (stage) {
+    filters.push(`EXISTS (
+      SELECT 1
+      FROM knowledge_item_stages kis
+      JOIN stages s ON s.id = kis.stage_id
+      WHERE kis.knowledge_item_id = ki.id AND s.slug = ?
+    )`);
+    bindings.push(stage);
+  }
+
+  if (itemType) {
+    filters.push("ki.item_type = ?");
+    bindings.push(itemType);
+  }
+
+  if (risk) {
+    filters.push("ki.risk_level = ?");
+    bindings.push(risk);
+  }
+
+  if (category) {
+    filters.push("ki.category = ?");
+    bindings.push(category);
+  }
+
+  const where = filters.join(" AND ");
+  const selectSql = `
+    SELECT
+      ki.id,
+      ki.item_type,
+      ki.speaker,
+      ki.category,
+      ki.title,
+      ki.prompt_text,
+      ki.short_text,
+      ki.full_text,
+      ki.soft_text,
+      ki.firm_text,
+      ki.clarification_text,
+      ki.next_action_text,
+      ki.avoid_text,
+      ki.diagnostic_value,
+      ki.red_flag_text,
+      ki.channel,
+      ki.tone,
+      ki.required_level,
+      ki.risk_level,
+      ki.status,
+      ki.source_kind,
+      ki.source_url,
+      ki.reviewed_at,
+      ki.updated_at,
+      (
+        SELECT GROUP_CONCAT(n.slug, '${listDelimiter}')
+        FROM knowledge_item_niches kin
+        JOIN niches n ON n.id = kin.niche_id
+        WHERE kin.knowledge_item_id = ki.id
+      ) AS niche_slugs,
+      (
+        SELECT GROUP_CONCAT(n.name, '${listDelimiter}')
+        FROM knowledge_item_niches kin
+        JOIN niches n ON n.id = kin.niche_id
+        WHERE kin.knowledge_item_id = ki.id
+      ) AS niche_names,
+      (
+        SELECT GROUP_CONCAT(s.slug, '${listDelimiter}')
+        FROM knowledge_item_stages kis
+        JOIN stages s ON s.id = kis.stage_id
+        WHERE kis.knowledge_item_id = ki.id
+      ) AS stage_slugs,
+      (
+        SELECT GROUP_CONCAT(s.name, '${listDelimiter}')
+        FROM knowledge_item_stages kis
+        JOIN stages s ON s.id = kis.stage_id
+        WHERE kis.knowledge_item_id = ki.id
+      ) AS stage_names
+    FROM knowledge_items ki
+    WHERE ${where}
+    ORDER BY
+      CASE ki.required_level WHEN 'required' THEN 0 WHEN 'recommended' THEN 1 ELSE 2 END,
+      CASE ki.risk_level WHEN 'refusal' THEN 0 WHEN 'high' THEN 1 WHEN 'elevated' THEN 2 ELSE 3 END,
+      ki.updated_at DESC,
+      ki.title
+    LIMIT ? OFFSET ?
+  `;
+
+  const countSql = `SELECT COUNT(*) AS total FROM knowledge_items ki WHERE ${where}`;
+  const [itemsResult, countResult] = await db.batch([
+    db.prepare(selectSql).bind(...bindings, limit, offset),
+    db.prepare(countSql).bind(...bindings),
+  ]);
+
+  const items = ((itemsResult.results ?? []) as unknown as KnowledgeRow[]).map((row) => ({
+    ...row,
+    niches: splitList(row.niche_names),
+    nicheSlugs: splitList(row.niche_slugs),
+    stages: splitList(row.stage_names),
+    stageSlugs: splitList(row.stage_slugs),
+    niche_names: undefined,
+    niche_slugs: undefined,
+    stage_names: undefined,
+    stage_slugs: undefined,
+  }));
+
+  const total = Number((countResult.results?.[0] as { total?: number } | undefined)?.total ?? 0);
+
+  return json({
+    items,
+    pagination: {
+      page,
+      limit,
+      total,
+      pages: Math.max(1, Math.ceil(total / limit)),
+    },
+  });
+}
+
+async function handleKnowledgeCreate(request: Request, env: Env, identity: ConstructorIdentity): Promise<Response> {
+  const db = requireDatabase(env);
+  if (db instanceof Response) return db;
+
+  let body: Record<string, unknown>;
+  try {
+    body = (await request.json()) as Record<string, unknown>;
+  } catch {
+    return constructorError(400, "INVALID_JSON", "ĞĞµ ÑƒĞ´Ğ°Ğ»Ğ¾ÑÑŒ Ğ¿Ñ€Ğ¾Ñ‡Ğ¸Ñ‚Ğ°Ñ‚ÑŒ Ğ´Ğ°Ğ½Ğ½Ñ‹Ğµ Ğ½Ğ¾Ğ²Ğ¾Ğ¹ Ğ·Ğ°Ğ¿Ğ¸ÑĞ¸.");
+  }
+
+  const title = typeof body.title === "string" ? body.title.trim() : "";
+  const category = typeof body.category === "string" ? body.category.trim() : "";
+  const itemType = typeof body.itemType === "string" ? body.itemType.trim() : "";
+  const promptText = typeof body.promptText === "string" ? body.promptText.trim() : null;
+  const shortText = typeof body.shortText === "string" ? body.shortText.trim() : null;
+  const nicheSlugs = Array.isArray(body.nicheSlugs) ? body.nicheSlugs.filter((value): value is string => typeof value === "string") : [];
+  const stageSlugs = Array.isArray(body.stageSlugs) ? body.stageSlugs.filter((value): value is string => typeof value === "string") : [];
+
+  const allowedTypes = new Set([
+    "question_to_client",
+    "question_from_client",
+    "answer",
+    "objection",
+    "objection_response",
+    "clarifying_question",
+    "first_message",
+    "follow_up",
+    "diagnostic_hint",
+    "audit_check",
+    "red_flag",
+    "ethical_rule",
+    "proposal_block",
+    "package",
+    "next_action",
+    "refusal_reason",
+  ]);
+
+  if (!title || !category || !allowedTypes.has(itemType)) {
+    return constructorError(422, "VALIDATION_FAILED", "Ğ£ĞºĞ°Ğ¶Ğ¸Ñ‚Ğµ Ğ½Ğ°Ğ·Ğ²Ğ°Ğ½Ğ¸Ğµ, ĞºĞ°Ñ‚ĞµĞ³Ğ¾Ñ€Ğ¸Ñ Ğ¸ ĞºĞ¾Ñ€Ñ€ĞµĞºÑ‚Ğ½Ñ‹Ğ¹ Ñ‚Ğ¸Ğ¿ Ğ·Ğ°Ğ¿Ğ¸ÑĞ¸.");
+  }
+
+  const id = crypto.randomUUID();
+  const now = new Date().toISOString();
+  const statements = [
+    db.prepare(`
+      INSERT INTO knowledge_items (
+        id, item_type, speaker, category, title, prompt_text, short_text,
+        channel, tone, required_level, risk_level, source_kind, status,
+        version, created_at, updated_at
+      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'manual', 'draft', 1, ?, ?)
+    `).bind(
+      id,
+      itemType,
+      typeof body.speaker === "string" ? body.speaker : "system",
+      category,
+      title,
+      promptText,
+      shortText,
+      typeof body.channel === "string" ? body.channel : "any",
+      typeof body.tone === "string" ? body.tone : "neutral",
+      typeof body.requiredLevel === "string" ? body.requiredLevel : "recommended",
+      typeof body.riskLevel === "string" ? body.riskLevel : "normal",
+      now,
+      now,
+    ),
+  ];
+
+  for (const slug of nicheSlugs) {
+    statements.push(
+      db.prepare(`
+        INSERT OR IGNORE INTO knowledge_item_niches (knowledge_item_id, niche_id, relevance)
+        SELECT ?, id, 'primary' FROM niches WHERE slug = ?
+      `).bind(id, slug),
+    );
+  }
+
+  for (const slug of stageSlugs) {
+    statements.push(
+      db.prepare(`
+        INSERT OR IGNORE INTO knowledge_item_stages (knowledge_item_id, stage_id)
+        SELECT ?, id FROM stages WHERE slug = ?
+      `).bind(id, slug),
+    );
+  }
+
+  statements.push(
+    db.prepare(`
+      INSERT INTO audit_log (id, actor_email, action, entity_type, entity_id, new_value_json, created_at)
+      VALUES (?, ?, 'create', 'knowledge_item', ?, ?, ?)
+    `).bind(crypto.randomUUID(), identity.email, id, JSON.stringify({ title, category, itemType }), now),
+  );
+
+  await db.batch(statements);
+  return json({ id, status: "draft" }, { status: 201 });
+}
+
+async function handlePreparationCreate(request: Request, env: Env, identity: ConstructorIdentity): Promise<Response> {
+  const db = requireDatabase(env);
+  if (db instanceof Response) return db;
+
+  let body: Record<string, unknown>;
+  try {
+    body = (await request.json()) as Record<string, unknown>;
+  } catch {
+    return constructorError(400, "INVALID_JSON", "ĞĞµ ÑƒĞ´Ğ°Ğ»Ğ¾ÑÑŒ Ğ¿Ñ€Ğ¾Ñ‡Ğ¸Ñ‚Ğ°Ñ‚ÑŒ Ğ´Ğ°Ğ½Ğ½Ñ‹Ğµ Ğ¿Ğ¾Ğ´Ğ³Ğ¾Ñ‚Ğ¾Ğ²ĞºĞ¸.");
+  }
+
+  const clientName = readText(body, "clientName", 160);
+  const accountUrl = readText(body, "accountUrl", 500);
+  const nicheSlug = readText(body, "nicheSlug", 120);
+  const stageSlug = readText(body, "stageSlug", 120);
+  const businessModel = readText(body, "businessModel", 160);
+  const productSummary = readText(body, "productSummary", 1200);
+  const audienceSummary = readText(body, "audienceSummary", 1200);
+  const commercialGoal = readText(body, "commercialGoal", 1200);
+  const salesChannel = readText(body, "salesChannel", 160);
+  const messageChannel = readText(body, "messageChannel", 80) || "other";
+  const notes = readText(body, "notes", 2000);
+
+  if (!clientName || !nicheSlug || !stageSlug || !productSummary || !commercialGoal) {
+    return constructorError(422, "VALIDATION_FAILED", "Ğ—Ğ°Ğ¿Ğ¾Ğ»Ğ½Ğ¸Ñ‚Ğµ ĞºĞ»Ğ¸ĞµĞ½Ñ‚Ğ°, Ğ½Ğ¸ÑˆÑƒ, ÑÑ‚Ğ°Ğ¿, Ğ¿Ñ€Ğ¾Ğ´ÑƒĞºÑ‚ Ğ¸ ĞºĞ¾Ğ¼Ğ¼ĞµÑ€Ñ‡ĞµÑĞºÑƒÑ Ğ·Ğ°Ğ´Ğ°Ñ‡Ñƒ.");
+  }
+
+  if (!isHttpUrl(accountUrl)) {
+    return constructorError(422, "INVALID_ACCOUNT_URL", "Ğ¡ÑÑ‹Ğ»ĞºĞ° Ğ½Ğ° ĞºĞ»Ğ¸ĞµĞ½Ñ‚Ğ° Ğ´Ğ¾Ğ»Ğ¶Ğ½Ğ° Ğ½Ğ°Ñ‡Ğ¸Ğ½Ğ°Ñ‚ÑŒÑÑ Ñ http:// Ğ¸Ğ»Ğ¸ https://.");
+  }
+
+  const [nicheResult, stageResult] = await db.batch([
+    db.prepare("SELECT id, name FROM niches WHERE slug = ? AND is_active = 1 LIMIT 1").bind(nicheSlug),
+    db.prepare("SELECT slug, name FROM stages WHERE slug = ? AND is_active = 1 LIMIT 1").bind(stageSlug),
+  ]);
+
+  const niche = nicheResult.results?.[0] as { id?: string; name?: string } | undefined;
+  const stage = stageResult.results?.[0] as { slug?: string; name?: string } | undefined;
+  if (!niche?.id || !niche.name || !stage?.slug || !stage.name) {
+    return constructorError(422, "REFERENCE_NOT_FOUND", "Ğ’Ñ‹Ğ±Ñ€Ğ°Ğ½Ğ½Ğ°Ñ Ğ½Ğ¸ÑˆĞ° Ğ¸Ğ»Ğ¸ ÑÑ‚Ğ°Ğ¿ Ğ±Ğ¾Ğ»ÑŒÑˆĞµ Ğ½ĞµĞ´Ğ¾ÑÑ‚ÑƒĞ¿Ğ½Ñ‹. ĞĞ±Ğ½Ğ¾Ğ²Ğ¸Ñ‚Ğµ ÑÑ‚Ñ€Ğ°Ğ½Ğ¸Ñ†Ñƒ Ğ¸ Ğ¿Ğ¾Ğ¿Ñ€Ğ¾Ğ±ÑƒĞ¹Ñ‚Ğµ ÑĞ½Ğ¾Ğ²Ğ°.");
+  }
+
+  const knowledgeResult = await db.prepare(`
+    SELECT
+      ki.id,
+      ki.item_type,
+      ki.category,
+      ki.title,
+      ki.prompt_text,
+      ki.short_text,
+      ki.full_text,
+      ki.next_action_text,
+      ki.red_flag_text,
+      ki.risk_level,
+      ki.required_level
+    FROM knowledge_items ki
+    WHERE ki.status = 'approved'
+      AND (
+        NOT EXISTS (
+          SELECT 1 FROM knowledge_item_niches universal_niche
+          WHERE universal_niche.knowledge_item_id = ki.id
+        )
+        OR EXISTS (
+          SELECT 1
+          FROM knowledge_item_niches kin
+          JOIN niches n ON n.id = kin.niche_id
+          WHERE kin.knowledge_item_id = ki.id AND n.slug = ?
+        )
+      )
+      AND (
+        NOT EXISTS (
+          SELECT 1 FROM knowledge_item_stages universal_stage
+          WHERE universal_stage.knowledge_item_id = ki.id
+        )
+        OR EXISTS (
+          SELECT 1
+          FROM knowledge_item_stages kis
+          JOIN stages s ON s.id = kis.stage_id
+          WHERE kis.knowledge_item_id = ki.id AND s.slug = ?
+        )
+      )
+    ORDER BY
+      CASE ki.required_level WHEN 'required' THEN 0 WHEN 'recommended' THEN 1 ELSE 2 END,
+      CASE ki.risk_level WHEN 'refusal' THEN 0 WHEN 'high' THEN 1 WHEN 'elevated' THEN 2 ELSE 3 END,
+      ki.title
+    LIMIT 60
+  `).bind(nicheSlug, stageSlug).all<PreparationKnowledgeRow>();
+
+  const rows = knowledgeResult.results ?? [];
+  const clientId = crypto.randomUUID();
+  const sessionId = crypto.randomUUID();
+  const now = new Date().toISOString();
+  const statements = [
+    db.prepare(`
+      INSERT INTO clients (
+        id, name, account_url, business_model, product_summary, audience_summary,
+        commercial_goal, desired_action, sales_channel, crm_status, internal_notes,
+        created_at, updated_at
+      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, 'found', ?, ?, ?)
+    `).bind(
+      clientId,
+      clientName,
+      accountUrl || null,
+      businessModel || null,
+      productSummary,
+      audienceSummary || null,
+      commercialGoal,
+      commercialGoal,
+      salesChannel || null,
+      notes || null,
+      now,
+      now,
+    ),
+    db.prepare(`
+      INSERT INTO client_niches (client_id, niche_id, relation_type)
+      VALUES (?, ?, 'primary')
+    `).bind(clientId, niche.id),
+    db.prepare(`
+      INSERT INTO diagnostic_sessions (
+        id, client_id, format, status, channel, stage_slug, goal,
+        ethical_decision, created_at, updated_at
+      ) VALUES (?, ?, 'express', 'draft', ?, ?, ?, 'not_checked', ?, ?)
+    `).bind(sessionId, clientId, messageChannel, stageSlug, commercialGoal, now, now),
+  ];
+
+  rows.forEach((row, index) => {
+    statements.push(
+      db.prepare(`
+        INSERT INTO diagnostic_session_items (
+          id, session_id, knowledge_item_id, sort_order, created_at, updated_at
+        ) VALUES (?, ?, ?, ?, ?, ?)
+      `).bind(crypto.randomUUID(), sessionId, row.id, index + 1, now, now),
+    );
+  });
+
+  statements.push(
+    db.prepare(`
+      INSERT INTO audit_log (id, actor_email, action, entity_type, entity_id, new_value_json, created_at)
+      VALUES (?, ?, 'create', 'client_preparation', ?, ?, ?)
+    `).bind(
+      crypto.randomUUID(),
+      identity.email,
+      sessionId,
+      JSON.stringify({ clientId, clientName, nicheSlug, stageSlug, selectedItems: rows.length }),
+      now,
+    ),
+  );
+
+  await db.batch(statements);
+
+  return json({
+    preparation: {
+      clientId,
+      sessionId,
+      clientName,
+      nicheName: niche.name,
+      stageName: stage.name,
+      createdAt: now,
+    },
+    sections: groupPreparationItems(rows),
+  }, { status: 201 });
+}
+
+async function handleDiagnosticCreate(request: Request, env: Env, identity: ConstructorIdentity): Promise<Response> {
+  const db = requireDatabase(env);
+  if (db instanceof Response) return db;
+
+  let body: Record<string, unknown>;
+  try {
+    body = (await request.json()) as Record<string, unknown>;
+  } catch {
+    return constructorError(400, "INVALID_JSON", "ĞĞµ ÑƒĞ´Ğ°Ğ»Ğ¾ÑÑŒ Ğ¿Ñ€Ğ¾Ñ‡Ğ¸Ñ‚Ğ°Ñ‚ÑŒ Ğ´Ğ°Ğ½Ğ½Ñ‹Ğµ Ğ´Ğ¸Ğ°Ğ³Ğ½Ğ¾ÑÑ‚Ğ¸ĞºĞ¸.");
+  }
+
+  const clientName = readText(body, "clientName", 160);
+  const accountUrl = readText(body, "accountUrl", 500);
+  const nicheSlug = readText(body, "nicheSlug", 120);
+  const format = readText(body, "format", 40) === "full" ? "full" : "express";
+  const channel = readText(body, "channel", 80) || "other";
+  const goal = readText(body, "goal", 1200);
+  const product = readText(body, "product", 1200);
+  const audience = readText(body, "audience", 1200);
+  const materials = readText(body, "materials", 1200);
+  const deadline = readText(body, "deadline", 400);
+  const budget = readText(body, "budget", 400);
+  const approver = readText(body, "approver", 500);
+  const desiredAction = readText(body, "desiredAction", 800);
+  const constraints = readText(body, "constraints", 1500);
+  const rightsStatus = readText(body, "rightsStatus", 40);
+  const notes = readText(body, "notes", 2000);
+
+  if (!clientName || !nicheSlug || !goal) {
+    return constructorError(422, "VALIDATION_FAILED", "Ğ—Ğ°Ğ¿Ğ¾Ğ»Ğ½Ğ¸Ñ‚Ğµ ĞºĞ»Ğ¸ĞµĞ½Ñ‚Ğ°, Ğ½Ğ¸ÑˆÑƒ Ğ¸ Ğ³Ğ»Ğ°Ğ²Ğ½ÑƒÑ Ğ·Ğ°Ğ´Ğ°Ñ‡Ñƒ Ğ´Ğ¸Ğ°Ğ³Ğ½Ğ¾ÑÑ‚Ğ¸ĞºĞ¸.");
+  }
+
+  if (!isHttpUrl(accountUrl)) {
+    return constructorError(422, "INVALID_ACCOUNT_URL", "Ğ¡ÑÑ‹Ğ»ĞºĞ° Ğ½Ğ° ĞºĞ»Ğ¸ĞµĞ½Ñ‚Ğ° Ğ´Ğ¾Ğ»Ğ¶Ğ½Ğ° Ğ½Ğ°Ñ‡Ğ¸Ğ½Ğ°Ñ‚ÑŒÑÑ Ñ http:// Ğ¸Ğ»Ğ¸ https://.");
+  }
+
+  if (!new Set(["confirmed", "unknown", "restricted"]).has(rightsStatus)) {
+    return constructorError(422, "INVALID_RIGHTS_STATUS", "Ğ£ĞºĞ°Ğ¶Ğ¸Ñ‚Ğµ, Ğ¿Ğ¾Ğ´Ñ‚Ğ²ĞµÑ€Ğ¶Ğ´ĞµĞ½Ñ‹ Ğ»Ğ¸ Ğ¿Ñ€Ğ°Ğ²Ğ° Ğ½Ğ° Ğ¸ÑÑ…Ğ¾Ğ´Ğ½Ñ‹Ğµ Ğ¼Ğ°Ñ‚ĞµÑ€Ğ¸Ğ°Ğ»Ñ‹.");
+  }
+
+  const stageSlug = format === "full" ? "full-diagnostic" : "express-diagnostic";
+  const [nicheResult, stageResult] = await db.batch([
+    db.prepare("SELECT id, name FROM niches WHERE slug = ? AND is_active = 1 LIMIT 1").bind(nicheSlug),
+    db.prepare("SELECT slug, name FROM stages WHERE slug = ? AND is_active = 1 LIMIT 1").bind(stageSlug),
+  ]);
+
+  const niche = nicheResult.results?.[0] as { id?: string; name?: string } | undefined;
+  const stage = stageResult.results?.[0] as { slug?: string; name?: string } | undefined;
+  if (!niche?.id || !niche.name || !stage?.slug || !stage.name) {
+    return constructorError(422, "REFERENCE_NOT_FOUND", "Ğ’Ñ‹Ğ±Ñ€Ğ°Ğ½Ğ½Ğ°Ñ Ğ½Ğ¸ÑˆĞ° Ğ¸Ğ»Ğ¸ Ñ„Ğ¾Ñ€Ğ¼Ğ°Ñ‚ Ğ´Ğ¸Ğ°Ğ³Ğ½Ğ¾ÑÑ‚Ğ¸ĞºĞ¸ Ğ½ĞµĞ´Ğ¾ÑÑ‚ÑƒĞ¿Ğ½Ñ‹. ĞĞ±Ğ½Ğ¾Ğ²Ğ¸Ñ‚Ğµ ÑÑ‚Ñ€Ğ°Ğ½Ğ¸Ñ†Ñƒ Ğ¸ Ğ¿Ğ¾Ğ¿Ñ€Ğ¾Ğ±ÑƒĞ¹Ñ‚Ğµ ÑĞ½Ğ¾Ğ²Ğ°.");
+  }
+
+  const diagnosticFields = [
+    { key: "goal", label: "ĞºĞ¾Ğ¼Ğ¼ĞµÑ€Ñ‡ĞµÑĞºĞ°Ñ Ğ·Ğ°Ğ´Ğ°Ñ‡Ğ°", value: goal },
+    { key: "product", label: "Ğ¿Ñ€Ğ¸Ğ¾Ñ€Ğ¸Ñ‚ĞµÑ‚Ğ½Ñ‹Ğ¹ Ğ¿Ñ€Ğ¾Ğ´ÑƒĞºÑ‚", value: product },
+    { key: "audience", label: "Ñ†ĞµĞ»ĞµĞ²Ğ°Ñ Ğ°ÑƒĞ´Ğ¸Ñ‚Ğ¾Ñ€Ğ¸Ñ", value: audience },
+    { key: "materials", label: "Ğ¸ÑÑ…Ğ¾Ğ´Ğ½Ñ‹Ğµ Ğ¼Ğ°Ñ‚ĞµÑ€Ğ¸Ğ°Ğ»Ñ‹", value: materials },
+    { key: "deadline", label: "ÑÑ€Ğ¾Ğº", value: deadline },
+    { key: "budget", label: "Ğ±ÑĞ´Ğ¶ĞµÑ‚Ğ½Ñ‹Ğ¹ Ğ¾Ñ€Ğ¸ĞµĞ½Ñ‚Ğ¸Ñ€", value: budget },
+    { key: "approver", label: "Ğ¾Ñ‚Ğ²ĞµÑ‚ÑÑ‚Ğ²ĞµĞ½Ğ½Ñ‹Ğ¹ Ğ·Ğ° ÑĞ¾Ğ³Ğ»Ğ°ÑĞ¾Ğ²Ğ°Ğ½Ğ¸Ğµ", value: approver },
+    { key: "desiredAction", label: "Ñ†ĞµĞ»ĞµĞ²Ğ¾Ğµ Ğ´ĞµĞ¹ÑÑ‚Ğ²Ğ¸Ğµ Ğ°ÑƒĞ´Ğ¸Ñ‚Ğ¾Ñ€Ğ¸Ğ¸", value: desiredAction },
+  ];
+  const missing = diagnosticFields.filter((field) => !field.value).map((field) => field.label);
+  if (rightsStatus !== "confirmed") missing.push("Ğ¿Ñ€Ğ°Ğ²Ğ° Ğ½Ğ° Ğ¸ÑÑ…Ğ¾Ğ´Ğ½Ñ‹Ğµ Ğ¼Ğ°Ñ‚ĞµÑ€Ğ¸Ğ°Ğ»Ñ‹");
+
+  const completedWeight = diagnosticFields.reduce((total, field) => total + (field.value ? 1 : 0), 0) + (rightsStatus === "confirmed" ? 1 : 0);
+  const readiness = Math.round((completedWeight / 9) * 100);
+  const readinessLevel = readiness >= 80 ? "ready" : readiness >= 50 ? "clarify" : "early";
+  const status = readinessLevel === "ready" ? "ready_for_proposal" : "needs_clarification";
+  const ethicalDecision = rightsStatus === "restricted" ? "review" : rightsStatus === "confirmed" ? "approved" : "not_checked";
+  const strongSide = product && audience
+    ? "ĞĞ¿Ñ€ĞµĞ´ĞµĞ»ĞµĞ½Ñ‹ Ğ¿Ñ€Ğ¸Ğ¾Ñ€Ğ¸Ñ‚ĞµÑ‚Ğ½Ñ‹Ğ¹ Ğ¿Ñ€Ğ¾Ğ´ÑƒĞºÑ‚ Ğ¸ Ğ°ÑƒĞ´Ğ¸Ñ‚Ğ¾Ñ€Ğ¸Ñ."
+    : goal
+      ? "Ğ—Ğ°Ñ„Ğ¸ĞºÑĞ¸Ñ€Ğ¾Ğ²Ğ°Ğ½Ğ° Ğ³Ğ»Ğ°Ğ²Ğ½Ğ°Ñ ĞºĞ¾Ğ¼Ğ¼ĞµÑ€Ñ‡ĞµÑĞºĞ°Ñ Ğ·Ğ°Ğ´Ğ°Ñ‡Ğ°."
+      : "ĞšĞ¾Ğ½Ñ‚ĞµĞºÑÑ‚ Ñ‚Ñ€ĞµĞ±ÑƒĞµÑ‚ ÑƒÑ‚Ğ¾Ñ‡Ğ½ĞµĞ½Ğ¸Ñ.";
+  const mainBarrier = missing.length > 0 ? `ĞĞµ Ñ…Ğ²Ğ°Ñ‚Ğ°ĞµÑ‚ Ğ´Ğ°Ğ½Ğ½Ñ‹Ñ…: ${missing.join(", ")}.` : "ĞšÑ€Ğ¸Ñ‚Ğ¸Ñ‡Ğ½Ñ‹Ñ… Ğ¿Ñ€Ğ¾Ğ±ĞµĞ»Ğ¾Ğ² Ğ½Ğµ Ğ²Ñ‹ÑĞ²Ğ»ĞµĞ½Ğ¾.";
+  const mainDiagnosis = readinessLevel === "ready"
+    ? "ĞšĞ¾Ğ½Ñ‚ĞµĞºÑÑ‚Ğ° Ğ´Ğ¾ÑÑ‚Ğ°Ñ‚Ğ¾Ñ‡Ğ½Ğ¾, Ñ‡Ñ‚Ğ¾Ğ±Ñ‹ Ğ¿ĞµÑ€ĞµÑ…Ğ¾Ğ´Ğ¸Ñ‚ÑŒ Ğº Ğ¾Ğ±ÑŠÑ‘Ğ¼Ñƒ Ñ€Ğ°Ğ±Ğ¾Ñ‚ Ğ¸ ĞºĞ¾Ğ¼Ğ¼ĞµÑ€Ñ‡ĞµÑĞºĞ¾Ğ¼Ñƒ Ğ¿Ñ€ĞµĞ´Ğ»Ğ¾Ğ¶ĞµĞ½Ğ¸Ñ."
+    : readinessLevel === "clarify"
+      ? "ĞÑĞ½Ğ¾Ğ²Ğ° ÑÑ„Ğ¾Ñ€Ğ¼Ğ¸Ñ€Ğ¾Ğ²Ğ°Ğ½Ğ°, Ğ½Ğ¾ Ğ¿ĞµÑ€ĞµĞ´ Ñ€Ğ°ÑÑ‡Ñ‘Ñ‚Ğ¾Ğ¼ Ğ½ÑƒĞ¶Ğ½Ğ¾ Ğ·Ğ°ĞºÑ€Ñ‹Ñ‚ÑŒ Ğ½ĞµÑĞºĞ¾Ğ»ÑŒĞºĞ¾ ÑƒÑ‚Ğ¾Ñ‡Ğ½ĞµĞ½Ğ¸Ğ¹."
+      : "ĞŸĞ¾ĞºĞ° Ñ€Ğ°Ğ½Ğ¾ Ğ¿Ñ€ĞµĞ´Ğ»Ğ°Ğ³Ğ°Ñ‚ÑŒ Ñ€ĞµÑˆĞµĞ½Ğ¸Ğµ: ÑĞ½Ğ°Ñ‡Ğ°Ğ»Ğ° Ğ½ÑƒĞ¶Ğ½Ğ¾ ÑĞ¾Ğ±Ñ€Ğ°Ñ‚ÑŒ Ğ±Ğ°Ğ·Ğ¾Ğ²Ñ‹Ğ¹ ĞºĞ¾Ğ½Ñ‚ĞµĞºÑÑ‚ Ğ·Ğ°Ğ´Ğ°Ñ‡Ğ¸.";
+  const nextAction = readinessLevel === "ready"
+    ? "Ğ¡Ğ¾Ğ³Ğ»Ğ°ÑĞ¾Ğ²Ğ°Ñ‚ÑŒ Ğ¾Ğ±ÑŠÑ‘Ğ¼, ÑÑ‚Ğ°Ğ¿Ñ‹ Ğ¸ Ğ¿ĞµÑ€ĞµĞ¹Ñ‚Ğ¸ Ğº Ñ€Ğ°ÑÑ‡Ñ‘Ñ‚Ñƒ Ğ¿Ñ€ĞµĞ´Ğ»Ğ¾Ğ¶ĞµĞ½Ğ¸Ñ."
+    : `Ğ£Ñ‚Ğ¾Ñ‡Ğ½Ğ¸Ñ‚ÑŒ: ${missing.slice(0, 3).join(", ") || "Ğ¾ÑÑ‚Ğ°Ğ²ÑˆĞ¸ĞµÑÑ Ğ´ĞµÑ‚Ğ°Ğ»Ğ¸ Ğ¿Ñ€Ğ¾ĞµĞºÑ‚Ğ°"}.`;
+
+  const knowledgeResult = await db.prepare(`
+    SELECT
+      ki.id,
+      ki.item_type,
+      ki.category,
+      ki.title,
+      ki.prompt_text,
+      ki.short_text,
+      ki.full_text,
+      ki.next_action_text,
+      ki.red_flag_text,
+      ki.risk_level
+    FROM knowledge_items ki
+    WHERE ki.status = 'approved'
+      AND ki.item_type IN (
+        'question_to_client', 'clarifying_question', 'diagnostic_hint',
+        'red_flag', 'ethical_rule', 'refusal_reason', 'next_action'
+      )
+      AND (
+        NOT EXISTS (
+          SELECT 1 FROM knowledge_item_niches universal_niche
+          WHERE universal_niche.knowledge_item_id = ki.id
+        )
+        OR EXISTS (
+          SELECT 1
+          FROM knowledge_item_niches kin
+          JOIN niches n ON n.id = kin.niche_id
+          WHERE kin.knowledge_item_id = ki.id AND n.slug = ?
+        )
+      )
+      AND (
+        NOT EXISTS (
+          SELECT 1 FROM knowledge_item_stages universal_stage
+          WHERE universal_stage.knowledge_item_id = ki.id
+        )
+        OR EXISTS (
+          SELECT 1
+          FROM knowledge_item_stages kis
+          JOIN stages s ON s.id = kis.stage_id
+          WHERE kis.knowledge_item_id = ki.id AND s.slug = ?
+        )
+      )
+    ORDER BY
+      CASE ki.required_level WHEN 'required' THEN 0 WHEN 'recommended' THEN 1 ELSE 2 END,
+      CASE ki.risk_level WHEN 'refusal' THEN 0 WHEN 'high' THEN 1 WHEN 'elevated' THEN 2 ELSE 3 END,
+      ki.title
+    LIMIT 30
+  `).bind(nicheSlug, stageSlug).all<DiagnosticKnowledgeRow>();
+
+  const rows = knowledgeResult.results ?? [];
+  const clientId = crypto.randomUUID();
+  const sessionId = crypto.randomUUID();
+  const now = new Date().toISOString();
+  const internalNotes = [
+    materials && `Ğ˜ÑÑ…Ğ¾Ğ´Ğ½Ğ¸ĞºĞ¸: ${materials}`,
+    deadline && `Ğ¡Ñ€Ğ¾Ğº: ${deadline}`,
+    budget && `Ğ‘ÑĞ´Ğ¶ĞµÑ‚: ${budget}`,
+    approver && `Ğ¡Ğ¾Ğ³Ğ»Ğ°ÑĞ¾Ğ²Ğ°Ğ½Ğ¸Ğµ: ${approver}`,
+    constraints && `ĞĞ³Ñ€Ğ°Ğ½Ğ¸Ñ‡ĞµĞ½Ğ¸Ñ: ${constraints}`,
+    notes && `Ğ—Ğ°Ğ¼ĞµÑ‚ĞºĞ¸: ${notes}`,
+  ].filter(Boolean).join("\n");
+
+  const statements = [
+    db.prepare(`
+      INSERT INTO clients (
+        id, name, account_url, product_summary, audience_summary, commercial_goal,
+        desired_action, crm_status, ethical_status, next_action, internal_notes,
+        created_at, updated_at
+      ) VALUES (?, ?, ?, ?, ?, ?, ?, 'diagnostic', ?, ?, ?, ?, ?)
+    `).bind(
+      clientId,
+      clientName,
+      accountUrl || null,
+      product || null,
+      audience || null,
+      goal,
+      desiredAction || null,
+      ethicalDecision,
+      nextAction,
+      internalNotes || null,
+      now,
+      now,
+    ),
+    db.prepare(`
+      INSERT INTO client_niches (client_id, niche_id, relation_type)
+      VALUES (?, ?, 'primary')
+    `).bind(clientId, niche.id),
+    db.prepare(`
+      INSERT INTO diagnostic_sessions (
+        id, client_id, format, status, channel, stage_slug, started_at, completed_at,
+        goal, strong_side, main_barrier, main_diagnosis, missing_data, next_action,
+        ethical_decision, created_at, updated_at
+      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+    `).bind(
+      sessionId,
+      clientId,
+      format,
+      status,
+      channel,
+      stageSlug,
+      now,
+      readinessLevel === "ready" ? now : null,
+      goal,
+      strongSide,
+      mainBarrier,
+      mainDiagnosis,
+      missing.length > 0 ? JSON.stringify(missing) : null,
+      nextAction,
+      ethicalDecision,
+      now,
+      now,
+    ),
+  ];
+
+  rows.forEach((row, index) => {
+    const isRisk = ["red_flag", "ethical_rule", "refusal_reason"].includes(row.item_type) || ["high", "refusal"].includes(row.risk_level);
+    statements.push(
+      db.prepare(`
+        INSERT INTO diagnostic_session_items (
+          id, session_id, knowledge_item_id, sort_order, risk_detected,
+          include_in_summary, created_at, updated_at
+        ) VALUES (?, ?, ?, ?, ?, 1, ?, ?)
+      `).bind(crypto.randomUUID(), sessionId, row.id, index + 1, isRisk ? 1 : 0, now, now),
+    );
+  });
+
+  statements.push(
+    db.prepare(`
+      INSERT INTO audit_log (id, actor_email, action, entity_type, entity_id, new_value_json, created_at)
+      VALUES (?, ?, 'create', 'diagnostic_session', ?, ?, ?)
+    `).bind(
+      crypto.randomUUID(),
+      identity.email,
+      sessionId,
+      JSON.stringify({ clientId, clientName, nicheSlug, format, readiness, status, selectedItems: rows.length }),
+      now,
+    ),
+  );
+
+  await db.batch(statements);
+
+  const toResultItem = (row: DiagnosticKnowledgeRow) => ({
+    id: row.id,
+    category: row.category,
+    title: row.title,
+    text: row.prompt_text || row.short_text || row.full_text || row.red_flag_text || row.title,
+    nextAction: row.next_action_text,
+    riskLevel: row.risk_level,
+  });
+
+  return json({
+    diagnostic: {
+      clientId,
+      sessionId,
+      clientName,
+      nicheName: niche.name,
+      format,
+      stageName: stage.name,
+      readiness,
+      readinessLevel,
+      status,
+      strongSide,
+      mainBarrier,
+      mainDiagnosis,
+      nextAction,
+      ethicalDecision,
+      missing,
+      confirmed: diagnosticFields.filter((field) => field.value).map((field) => ({ label: field.label, value: field.value })),
+      createdAt: now,
+    },
+    sections: {
+      questions: rows.filter((row) => ["question_to_client", "clarifying_question", "diagnostic_hint"].includes(row.item_type)).map(toResultItem),
+      risks: rows.filter((row) => ["red_flag", "ethical_rule", "refusal_reason"].includes(row.item_type) || ["high", "refusal"].includes(row.risk_level)).map(toResultItem),
+      nextActions: rows.filter((row) => row.item_type === "next_action").map(toResultItem),
+    },
+  }, { status: 201 });
+}
+
+function toClientListItem(row: ClientListRow) {
+  return {
+    id: row.id,
+    name: row.name,
+    accountUrl: row.account_url,
+    contactName: row.contact_name,
+    contactChannel: row.contact_channel,
+    contactValue: row.contact_value,
+    crmStatus: row.crm_status,
+    priority: row.priority,
+    ethicalStatus: row.ethical_status,
+    nextAction: row.next_action,
+    nextContactAt: row.next_contact_at,
+    nicheName: row.niche_name,
+    sessionCount: Number(row.session_count ?? 0),
+    latestSessionStatus: row.latest_session_status,
+    latestSessionAt: row.latest_session_at,
+    createdAt: row.created_at,
+    updatedAt: row.updated_at,
+  };
+}
+
+function parseMissingData(value: string | null): string[] {
+  if (!value) return [];
+  try {
+    const parsed = JSON.parse(value) as unknown;
+    return Array.isArray(parsed) ? parsed.filter((item): item is string => typeof item === "string") : [value];
+  } catch {
+    return [value];
+  }
+}
+
+async function handleClientList(request: Request, env: Env): Promise<Response> {
+  const db = requireDatabase(env);
+  if (db instanceof Response) return db;
+
+  const url = new URL(request.url);
+  const query = (url.searchParams.get("q") || "").trim().toLocaleLowerCase("ru").slice(0, 160);
+  const status = (url.searchParams.get("status") || "").trim().slice(0, 40);
+  const priority = (url.searchParams.get("priority") || "").trim().slice(0, 4);
+  const filters = ["1 = 1"];
+  const bindings: string[] = [];
+
+  if (status) {
+    filters.push("c.crm_status = ?");
+    bindings.push(status);
+  }
+
+  if (priority && ["A", "B", "C"].includes(priority)) {
+    filters.push("c.priority = ?");
+    bindings.push(priority);
+  }
+
+  const where = filters.join(" AND ");
+  const [clientsResult, countResult, statusResult] = await db.batch([
+    db.prepare(`
+      SELECT
+        c.id,
+        c.name,
+        c.account_url,
+        c.contact_name,
+        c.contact_channel,
+        c.contact_value,
+        c.crm_status,
+        c.priority,
+        c.ethical_status,
+        c.next_action,
+        c.next_contact_at,
+        c.created_at,
+        c.updated_at,
+        COALESCE(c.name, '') || ' ' ||
+          COALESCE(c.contact_name, '') || ' ' ||
+          COALESCE(c.contact_value, '') || ' ' ||
+          COALESCE(c.product_summary, '') || ' ' ||
+          COALESCE(c.commercial_goal, '') AS search_text,
+        (
+          SELECT n.name
+          FROM client_niches cn
+          JOIN niches n ON n.id = cn.niche_id
+          WHERE cn.client_id = c.id
+          ORDER BY CASE cn.relation_type WHEN 'primary' THEN 0 ELSE 1 END, n.name
+          LIMIT 1
+        ) AS niche_name,
+        (SELECT COUNT(*) FROM diagnostic_sessions ds WHERE ds.client_id = c.id) AS session_count,
+        (
+          SELECT ds.status FROM diagnostic_sessions ds
+          WHERE ds.client_id = c.id
+          ORDER BY ds.updated_at DESC LIMIT 1
+        ) AS latest_session_status,
+        (
+          SELECT ds.updated_at FROM diagnostic_sessions ds
+          WHERE ds.client_id = c.id
+          ORDER BY ds.updated_at DESC LIMIT 1
+        ) AS latest_session_at
+      FROM clients c
+      WHERE ${where}
+      ORDER BY
+        CASE c.priority WHEN 'A' THEN 0 WHEN 'B' THEN 1 ELSE 2 END,
+        CASE WHEN c.next_contact_at IS NULL THEN 1 ELSE 0 END,
+        c.next_contact_at,
+        c.updated_at DESC
+      LIMIT 500
+    `).bind(...bindings),
+    db.prepare(`SELECT COUNT(*) AS total FROM clients c WHERE ${where}`).bind(...bindings),
+    db.prepare(`
+      SELECT crm_status AS status, COUNT(*) AS total
+      FROM clients
+      GROUP BY crm_status
+      ORDER BY total DESC, crm_status
+    `),
+  ]);
+
+  const clientRows = (clientsResult.results ?? []) as unknown as ClientListRow[];
+  const matchingRows = query
+    ? clientRows.filter((row) => (row.search_text || "").toLocaleLowerCase("ru").includes(query))
+    : clientRows;
+
+  return json({
+    items: matchingRows.slice(0, 100).map(toClientListItem),
+    total: query ? matchingRows.length : Number((countResult.results?.[0] as { total?: number } | undefined)?.total ?? 0),
+    statusCounts: statusResult.results ?? [],
+  });
+}
+
+async function handleClientDetail(clientId: string, env: Env): Promise<Response> {
+  const db = requireDatabase(env);
+  if (db instanceof Response) return db;
+
+  const [clientResult, sessionsResult] = await db.batch([
+    db.prepare(`
+      SELECT
+        c.*,
+        (
+          SELECT n.name
+          FROM client_niches cn
+          JOIN niches n ON n.id = cn.niche_id
+          WHERE cn.client_id = c.id
+          ORDER BY CASE cn.relation_type WHEN 'primary' THEN 0 ELSE 1 END, n.name
+          LIMIT 1
+        ) AS niche_name,
+        (SELECT COUNT(*) FROM diagnostic_sessions ds WHERE ds.client_id = c.id) AS session_count,
+        (
+          SELECT ds.status FROM diagnostic_sessions ds
+          WHERE ds.client_id = c.id
+          ORDER BY ds.updated_at DESC LIMIT 1
+        ) AS latest_session_status,
+        (
+          SELECT ds.updated_at FROM diagnostic_sessions ds
+          WHERE ds.client_id = c.id
+          ORDER BY ds.updated_at DESC LIMIT 1
+        ) AS latest_session_at
+      FROM clients c
+      WHERE c.id = ?
+      LIMIT 1
+    `).bind(clientId),
+    db.prepare(`
+      SELECT
+        ds.id,
+        ds.format,
+        ds.status,
+        ds.channel,
+        ds.stage_slug,
+        s.name AS stage_name,
+        ds.goal,
+        ds.strong_side,
+        ds.main_barrier,
+        ds.main_diagnosis,
+        ds.missing_data,
+        ds.next_action,
+        ds.ethical_decision,
+        (SELECT COUNT(*) FROM diagnostic_session_items dsi WHERE dsi.session_id = ds.id) AS selected_items,
+        ds.created_at,
+        ds.updated_at
+      FROM diagnostic_sessions ds
+      LEFT JOIN stages s ON s.slug = ds.stage_slug
+      WHERE ds.client_id = ?
+      ORDER BY ds.updated_at DESC
+      LIMIT 50
+    `).bind(clientId),
+  ]);
+
+  const row = clientResult.results?.[0] as unknown as ClientDetailRow | undefined;
+  if (!row?.id) return constructorError(404, "CLIENT_NOT_FOUND", "ĞšĞ°Ñ€Ñ‚Ğ¾Ñ‡ĞºĞ° ĞºĞ»Ğ¸ĞµĞ½Ñ‚Ğ° Ğ½Ğµ Ğ½Ğ°Ğ¹Ğ´ĞµĞ½Ğ°.");
+
+  return json({
+    client: {
+      ...toClientListItem(row),
+      city: row.city,
+      geography: row.geography,
+      businessModel: row.business_model,
+      productSummary: row.product_summary,
+      audienceSummary: row.audience_summary,
+      commercialGoal: row.commercial_goal,
+      desiredAction: row.desired_action,
+      salesChannel: row.sales_channel,
+      budgetMin: row.budget_min,
+      budgetMax: row.budget_max,
+      mainObjection: row.main_objection,
+      internalNotes: row.internal_notes,
+    },
+    sessions: ((sessionsResult.results ?? []) as unknown as ClientSessionRow[]).map((session) => ({
+      id: session.id,
+      format: session.format,
+      status: session.status,
+      channel: session.channel,
+      stageSlug: session.stage_slug,
+      stageName: session.stage_name,
+      goal: session.goal,
+      strongSide: session.strong_side,
+      mainBarrier: session.main_barrier,
+      mainDiagnosis: session.main_diagnosis,
+      missing: parseMissingData(session.missing_data),
+      nextAction: session.next_action,
+      ethicalDecision: session.ethical_decision,
+      selectedItems: Number(session.selected_items ?? 0),
+      createdAt: session.created_at,
+      updatedAt: session.updated_at,
+    })),
+  });
+}
+
+async function handleClientUpdate(request: Request, clientId: string, env: Env, identity: ConstructorIdentity): Promise<Response> {
+  const db = requireDatabase(env);
+  if (db instanceof Response) return db;
+
+  let body: Record<string, unknown>;
+  try {
+    body = (await request.json()) as Record<string, unknown>;
+  } catch {
+    return constructorError(400, "INVALID_JSON", "ĞĞµ ÑƒĞ´Ğ°Ğ»Ğ¾ÑÑŒ Ğ¿Ñ€Ğ¾Ñ‡Ğ¸Ñ‚Ğ°Ñ‚ÑŒ Ğ¸Ğ·Ğ¼ĞµĞ½ĞµĞ½Ğ¸Ñ ĞºĞ°Ñ€Ñ‚Ğ¾Ñ‡ĞºĞ¸ ĞºĞ»Ğ¸ĞµĞ½Ñ‚Ğ°.");
+  }
+
+  const existing = await db.prepare("SELECT id FROM clients WHERE id = ? LIMIT 1").bind(clientId).first<{ id: string }>();
+  if (!existing?.id) return constructorError(404, "CLIENT_NOT_FOUND", "ĞšĞ°Ñ€Ñ‚Ğ¾Ñ‡ĞºĞ° ĞºĞ»Ğ¸ĞµĞ½Ñ‚Ğ° Ğ½Ğµ Ğ½Ğ°Ğ¹Ğ´ĞµĞ½Ğ°.");
+
+  const crmStatus = readText(body, "crmStatus", 40);
+  const priority = readText(body, "priority", 4);
+  const contactName = readText(body, "contactName", 160);
+  const contactChannel = readText(body, "contactChannel", 80);
+  const contactValue = readText(body, "contactValue", 320);
+  const nextAction = readText(body, "nextAction", 1000);
+  const nextContactAt = readText(body, "nextContactAt", 80);
+  const internalNotes = readText(body, "internalNotes", 3000);
+  const allowedStatuses = new Set(["found", "diagnostic", "qualified", "proposal", "negotiation", "won", "paused", "lost", "archived"]);
+
+  if (!allowedStatuses.has(crmStatus) || !["A", "B", "C"].includes(priority)) {
+    return constructorError(422, "VALIDATION_FAILED", "Ğ’Ñ‹Ğ±ĞµÑ€Ğ¸Ñ‚Ğµ ĞºĞ¾Ñ€Ñ€ĞµĞºÑ‚Ğ½Ñ‹Ğ¹ ÑÑ‚Ğ°Ñ‚ÑƒÑ Ğ¸ Ğ¿Ñ€Ğ¸Ğ¾Ñ€Ğ¸Ñ‚ĞµÑ‚ ĞºĞ»Ğ¸ĞµĞ½Ñ‚Ğ°.");
+  }
+
+  if (nextContactAt && Number.isNaN(Date.parse(nextContactAt))) {
+    return constructorError(422, "INVALID_NEXT_CONTACT", "Ğ£ĞºĞ°Ğ¶Ğ¸Ñ‚Ğµ ĞºĞ¾Ñ€Ñ€ĞµĞºÑ‚Ğ½ÑƒÑ Ğ´Ğ°Ñ‚Ñƒ ÑĞ»ĞµĞ´ÑƒÑÑ‰ĞµĞ³Ğ¾ ĞºĞ¾Ğ½Ñ‚Ğ°ĞºÑ‚Ğ°.");
+  }
+
+  const now = new Date().toISOString();
+  await db.batch([
+    db.prepare(`
+      UPDATE clients
+      SET
+        crm_status = ?,
+        priority = ?,
+        contact_name = ?,
+        contact_channel = ?,
+        contact_value = ?,
+        next_action = ?,
+        next_contact_at = ?,
+        internal_notes = ?,
+        updated_at = ?
+      WHERE id = ?
+    `).bind(
+      crmStatus,
+      priority,
+      contactName || null,
+      contactChannel || null,
+      contactValue || null,
+      nextAction || null,
+      nextContactAt || null,
+      internalNotes || null,
+      now,
+      clientId,
+    ),
+    db.prepare(`
+      INSERT INTO audit_log (id, actor_email, action, entity_type, entity_id, new_value_json, created_at)
+      VALUES (?, ?, 'update', 'client', ?, ?, ?)
+    `).bind(
+      crypto.randomUUID(),
+      identity.email,
+      clientId,
+      JSON.stringify({ crmStatus, priority, contactName, contactChannel, nextAction, nextContactAt }),
+      now,
+    ),
+  ]);
+
+  return handleClientDetail(clientId, env);
+}
+
+function calculateLine(item: CalculationItemInput) {
+  const rate = item.manualRate > 0 ? item.manualRate : item.tariffRate;
+  const production = item.quantity * rate * item.complexityCoefficient * item.sourceCoefficient * item.urgencyCoefficient * item.rightsCoefficient;
+  const labor = item.hours * item.internalHourRate;
+  const beforeDiscount = production + item.fixedCost + labor + item.externalCost;
+  const total = beforeDiscount * (1 - item.itemDiscountPercent / 100);
+  return {
+    rate: roundMoney(rate),
+    production: roundMoney(production),
+    labor: roundMoney(labor),
+    beforeDiscount: roundMoney(beforeDiscount),
+    total: roundMoney(Math.max(0, total)),
+  };
+}
+
+function parseCalculationItem(value: unknown, index: number): CalculationItemInput | null {
+  const item = asRecord(value);
+  if (!item) return null;
+  const name = readText(item, "name", 240);
+  if (!name) return null;
+
+  return {
+    tariffId: readText(item, "tariffId", 80),
+    name,
+    unit: readText(item, "unit", 80) || "ÑƒÑĞ»ÑƒĞ³Ğ°",
+    quantity: readNumber(item, "quantity", 1, 0.01, 10000),
+    tariffRate: readNumber(item, "tariffRate", 0, 0, 1_000_000_000),
+    manualRate: readNumber(item, "manualRate", 0, 0, 1_000_000_000),
+    complexityCoefficient: readNumber(item, "complexityCoefficient", 1, 0.1, 10),
+    sourceCoefficient: readNumber(item, "sourceCoefficient", 1, 0.1, 10),
+    urgencyCoefficient: readNumber(item, "urgencyCoefficient", 1, 0.1, 10),
+    rightsCoefficient: readNumber(item, "rightsCoefficient", 1, 0.1, 10),
+    itemDiscountPercent: readNumber(item, "itemDiscountPercent", 0, 0, 100),
+    fixedCost: readNumber(item, "fixedCost", 0, 0, 1_000_000_000),
+    hours: readNumber(item, "hours", 0, 0, 10000),
+    internalHourRate: readNumber(item, "internalHourRate", 0, 0, 10_000_000),
+    externalCost: readNumber(item, "externalCost", 0, 0, 1_000_000_000),
+    comment: readText(item, "comment", 800) || `ĞŸĞ¾Ğ·Ğ¸Ñ†Ğ¸Ñ ${index + 1}`,
+  };
+}
+
+function calculationResponse(row: CalculationRow, items: CalculationItemRow[]) {
+  const normalizedItems = items.map((item) => {
+    const metadata = parseCalculationItemMetadata(item.comment);
+    const normalized: CalculationItemInput = {
+      tariffId: item.tariff_id || "",
+      name: item.name,
+      unit: metadata.unit,
+      quantity: Number(item.quantity),
+      tariffRate: Number(item.tariff_rate),
+      manualRate: Number(item.manual_rate),
+      complexityCoefficient: Number(item.complexity_coefficient),
+      sourceCoefficient: Number(item.source_coefficient),
+      urgencyCoefficient: Number(item.urgency_coefficient),
+      rightsCoefficient: Number(item.rights_coefficient),
+      itemDiscountPercent: Number(item.item_discount_percent),
+      fixedCost: Number(item.fixed_cost),
+      hours: Number(item.hours),
+      internalHourRate: Number(item.internal_hour_rate),
+      externalCost: Number(item.external_cost),
+      comment: metadata.comment,
+    };
+    return { id: item.id, ...normalized, ...calculateLine(normalized) };
+  });
+  const subtotal = roundMoney(normalizedItems.reduce((sum, item) => sum + item.total, 0));
+  const afterDiscount = roundMoney(subtotal * (1 - Number(row.discount_percent) / 100));
+  const calculatedTotal = roundMoney(afterDiscount + Number(row.manual_adjustment) + Number(row.external_project_cost));
+  const total = roundMoney(Math.max(0, Number(row.minimum_price), calculatedTotal));
+  const prepayment = roundMoney(total * Number(row.prepayment_percent) / 100);
+  const metadata = parseCalculationMetadata(row.comment);
+
+  return {
+    calculation: {
+      id: row.id,
+      clientId: row.client_id,
+      clientName: row.client_name,
+      diagnosticSessionId: row.diagnostic_session_id,
+      title: metadata.title,
+      currency: metadata.currency,
+      projectType: row.project_type,
+      status: row.status,
+      discountPercent: Number(row.discount_percent),
+      manualAdjustment: Number(row.manual_adjustment),
+      minimumPrice: Number(row.minimum_price),
+      externalProjectCost: Number(row.external_project_cost),
+      prepaymentPercent: Number(row.prepayment_percent),
+      ethicalStatus: row.ethical_status,
+      validUntil: row.valid_until,
+      comment: metadata.comment,
+      subtotal,
+      afterDiscount,
+      total,
+      prepayment,
+      createdAt: row.created_at,
+      updatedAt: row.updated_at,
+    },
+    items: normalizedItems,
+  };
+}
+
+async function handlePricingBootstrap(env: Env): Promise<Response> {
+  const db = requireDatabase(env);
+  if (db instanceof Response) return db;
+
+  const [clientsResult, tariffsResult, recentResult] = await Promise.all([
+    db.prepare(`
+      SELECT id, name, crm_status, priority
+      FROM clients
+      WHERE crm_status != 'archived'
+      ORDER BY CASE priority WHEN 'A' THEN 0 WHEN 'B' THEN 1 ELSE 2 END, updated_at DESC
+      LIMIT 200
+    `).all<PricingClientRow>(),
+    db.prepare(`
+      SELECT id, name, category, unit, working_rate, minimum_rate, rate_status, includes_text, excludes_text
+      FROM pricing_tariffs
+      WHERE is_active = 1 AND rate_status != 'disabled'
+      ORDER BY category, name
+      LIMIT 200
+    `).all<PricingTariffRow>(),
+    db.prepare(`
+      SELECT
+        pc.id,
+        c.name AS client_name,
+        pc.status,
+        pc.comment,
+        MAX(
+          pc.minimum_price,
+          COALESCE(SUM(
+            (
+              ci.quantity * CASE WHEN ci.manual_rate > 0 THEN ci.manual_rate ELSE ci.tariff_rate END *
+              ci.complexity_coefficient * ci.source_coefficient * ci.urgency_coefficient * ci.rights_coefficient +
+              ci.fixed_cost + ci.hours * ci.internal_hour_rate + ci.external_cost
+            ) * (1 - ci.item_discount_percent / 100)
+          ), 0) * (1 - pc.discount_percent / 100) + pc.manual_adjustment + pc.external_project_cost
+        ) AS total,
+        COUNT(ci.id) AS item_count,
+        pc.updated_at
+      FROM project_calculations pc
+      LEFT JOIN clients c ON c.id = pc.client_id
+      LEFT JOIN calculation_items ci ON ci.calculation_id = pc.id
+      WHERE pc.status != 'archived'
+      GROUP BY pc.id
+      ORDER BY pc.updated_at DESC
+      LIMIT 20
+    `).all<RecentCalculationRow>(),
+  ]);
+
+  return json({
+    clients: (clientsResult.results ?? []).map((client) => ({
+      id: client.id,
+      name: client.name,
+      crmStatus: client.crm_status,
+      priority: client.priority,
+    })),
+    tariffs: (tariffsResult.results ?? []).map((tariff) => ({
+      id: tariff.id,
+      name: tariff.name,
+      category: tariff.category,
+      unit: tariff.unit,
+      workingRate: Number(tariff.working_rate),
+      minimumRate: Number(tariff.minimum_rate),
+      rateStatus: tariff.rate_status,
+      includes: tariff.includes_text,
+      excludes: tariff.excludes_text,
+    })),
+    recent: (recentResult.results ?? []).map((calculation) => ({
+      ...(() => {
+        const metadata = parseCalculationMetadata(calculation.comment);
+        return { title: metadata.title, currency: metadata.currency };
+      })(),
+      id: calculation.id,
+      clientName: calculation.client_name,
+      status: calculation.status,
+      total: roundMoney(Number(calculation.total ?? 0)),
+      itemCount: Number(calculation.item_count ?? 0),
+      updatedAt: calculation.updated_at,
+    })),
+  });
+}
+
+async function handleCalculationDetail(calculationId: string, env: Env): Promise<Response> {
+  const db = requireDatabase(env);
+  if (db instanceof Response) return db;
+
+  const [row, itemsResult] = await Promise.all([
+    db.prepare(`
+      SELECT pc.*, c.name AS client_name
+      FROM project_calculations pc
+      LEFT JOIN clients c ON c.id = pc.client_id
+      WHERE pc.id = ?
+      LIMIT 1
+    `).bind(calculationId).first<CalculationRow>(),
+    db.prepare(`
+      SELECT id, tariff_id, name, quantity, tariff_rate, manual_rate,
+        complexity_coefficient, source_coefficient, urgency_coefficient, rights_coefficient,
+        item_discount_percent, fixed_cost, hours, internal_hour_rate, external_cost,
+        sort_order, comment
+      FROM calculation_items
+      WHERE calculation_id = ?
+      ORDER BY sort_order, created_at
+    `).bind(calculationId).all<CalculationItemRow>(),
+  ]);
+
+  if (!row?.id) return constructorError(404, "CALCULATION_NOT_FOUND", "Ğ¡Ğ¾Ñ…Ñ€Ğ°Ğ½Ñ‘Ğ½Ğ½Ñ‹Ğ¹ Ñ€Ğ°ÑÑ‡Ñ‘Ñ‚ Ğ½Ğµ Ğ½Ğ°Ğ¹Ğ´ĞµĞ½.");
+  return json(calculationResponse(row, itemsResult.results ?? []));
+}
+
+async function handleCalculationCreate(request: Request, env: Env, identity: ConstructorIdentity): Promise<Response> {
+  const db = requireDatabase(env);
+  if (db instanceof Response) return db;
+
+  let body: Record<string, unknown>;
+  try {
+    body = (await request.json()) as Record<string, unknown>;
+  } catch {
+    return constructorError(400, "INVALID_JSON", "ĞĞµ ÑƒĞ´Ğ°Ğ»Ğ¾ÑÑŒ Ğ¿Ñ€Ğ¾Ñ‡Ğ¸Ñ‚Ğ°Ñ‚ÑŒ Ğ´Ğ°Ğ½Ğ½Ñ‹Ğµ Ñ€Ğ°ÑÑ‡Ñ‘Ñ‚Ğ°.");
+  }
+
+  const rawItems = Array.isArray(body.items) ? body.items.slice(0, 50) : [];
+  const items = rawItems.map(parseCalculationItem).filter((item): item is CalculationItemInput => Boolean(item));
+  if (items.length === 0 || items.length !== rawItems.length) {
+    return constructorError(422, "CALCULATION_ITEMS_REQUIRED", "Ğ”Ğ¾Ğ±Ğ°Ğ²ÑŒÑ‚Ğµ Ñ…Ğ¾Ñ‚Ñ Ğ±Ñ‹ Ğ¾Ğ´Ğ½Ñƒ Ğ¿Ğ¾Ğ·Ğ¸Ñ†Ğ¸Ñ Ğ¸ Ğ·Ğ°Ğ¿Ğ¾Ğ»Ğ½Ğ¸Ñ‚Ğµ ĞµÑ‘ Ğ½Ğ°Ğ·Ğ²Ğ°Ğ½Ğ¸Ğµ.");
+  }
+
+  const title = readText(body, "title", 240) || "Ğ Ğ°ÑÑ‡Ñ‘Ñ‚ Ğ¿Ñ€Ğ¾ĞµĞºÑ‚Ğ°";
+  const clientId = readText(body, "clientId", 80);
+  const projectType = readText(body, "projectType", 40) || "individual";
+  const validProjectTypes = new Set(["test", "main", "system", "recurring", "individual"]);
+  if (!validProjectTypes.has(projectType)) {
+    return constructorError(422, "INVALID_PROJECT_TYPE", "Ğ’Ñ‹Ğ±ĞµÑ€Ğ¸Ñ‚Ğµ ĞºĞ¾Ñ€Ñ€ĞµĞºÑ‚Ğ½Ñ‹Ğ¹ Ñ‚Ğ¸Ğ¿ Ğ¿Ñ€Ğ¾ĞµĞºÑ‚Ğ°.");
+  }
+
+  if (clientId) {
+    const client = await db.prepare("SELECT id FROM clients WHERE id = ? LIMIT 1").bind(clientId).first<{ id: string }>();
+    if (!client?.id) return constructorError(422, "CLIENT_NOT_FOUND", "Ğ’Ñ‹Ğ±Ñ€Ğ°Ğ½Ğ½Ñ‹Ğ¹ ĞºĞ»Ğ¸ĞµĞ½Ñ‚ Ğ½Ğµ Ğ½Ğ°Ğ¹Ğ´ĞµĞ½.");
+  }
+
+  const discountPercent = readNumber(body, "discountPercent", 0, 0, 100);
+  const manualAdjustment = readNumber(body, "manualAdjustment", 0, -1_000_000_000, 1_000_000_000);
+  const minimumPrice = readNumber(body, "minimumPrice", 0, 0, 1_000_000_000);
+  const externalProjectCost = readNumber(body, "externalProjectCost", 0, 0, 1_000_000_000);
+  const prepaymentPercent = readNumber(body, "prepaymentPercent", 50, 0, 100);
+  const validUntil = readText(body, "validUntil", 80);
+  const comment = readText(body, "comment", 3000);
+  if (validUntil && Number.isNaN(Date.parse(validUntil))) {
+    return constructorError(422, "INVALID_VALID_UNTIL", "Ğ£ĞºĞ°Ğ¶Ğ¸Ñ‚Ğµ ĞºĞ¾Ñ€Ñ€ĞµĞºÑ‚Ğ½Ñ‹Ğ¹ ÑÑ€Ğ¾Ğº Ğ´ĞµĞ¹ÑÑ‚Ğ²Ğ¸Ñ Ñ€Ğ°ÑÑ‡Ñ‘Ñ‚Ğ°.");
+  }
+
+  const calculationId = crypto.randomUUID();
+  const now = new Date().toISOString();
+  const statements = [
+    db.prepare(`
+      INSERT INTO project_calculations (
+        id, client_id, project_type, status, discount_percent,
+        manual_adjustment, minimum_price, external_project_cost, prepayment_percent,
+        ethical_status, valid_until, comment, created_at, updated_at
+      ) VALUES (?, ?, ?, 'ready', ?, ?, ?, ?, ?, 'approved', ?, ?, ?, ?)
+    `).bind(
+      calculationId,
+      clientId || null,
+      projectType,
+      discountPercent,
+      manualAdjustment,
+      minimumPrice,
+      externalProjectCost,
+      prepaymentPercent,
+      validUntil || null,
+      JSON.stringify({ title, currency: "RUB", comment }),
+      now,
+      now,
+    ),
+  ];
+
+  items.forEach((item, index) => {
+    statements.push(db.prepare(`
+      INSERT INTO calculation_items (
+        id, calculation_id, tariff_id, name, quantity, tariff_rate, manual_rate,
+        complexity_coefficient, source_coefficient, urgency_coefficient, rights_coefficient,
+        item_discount_percent, fixed_cost, hours, internal_hour_rate, external_cost,
+        sort_order, comment, created_at, updated_at
+      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+    `).bind(
+      crypto.randomUUID(), calculationId, item.tariffId || null, item.name,
+      item.quantity, item.tariffRate, item.manualRate, item.complexityCoefficient,
+      item.sourceCoefficient, item.urgencyCoefficient, item.rightsCoefficient,
+      item.itemDiscountPercent, item.fixedCost, item.hours, item.internalHourRate,
+      item.externalCost, index + 1, JSON.stringify({ unit: item.unit, comment: item.comment }), now, now,
+    ));
+  });
+
+  const subtotal = roundMoney(items.reduce((sum, item) => sum + calculateLine(item).total, 0));
+  const total = roundMoney(Math.max(0, minimumPrice, subtotal * (1 - discountPercent / 100) + manualAdjustment + externalProjectCost));
+  statements.push(db.prepare(`
+    INSERT INTO audit_log (id, actor_email, action, entity_type, entity_id, new_value_json, created_at)
+    VALUES (?, ?, 'create', 'project_calculation', ?, ?, ?)
+  `).bind(
+    crypto.randomUUID(), identity.email, calculationId,
+    JSON.stringify({ title, clientId: clientId || null, itemCount: items.length, total, currency: "RUB" }),
+    now,
+  ));
+
+  await db.batch(statements);
+  const response = await handleCalculationDetail(calculationId, env);
+  return new Response(response.body, { status: 201, headers: response.headers });
+}
+
+const proposalSelectSql = `
+  SELECT
+    p.*,
+    c.name AS client_name,
+    ds.goal AS diagnostic_goal,
+    ds.created_at AS diagnostic_created_at,
+    pc.comment AS calculation_comment,
+    CASE WHEN pc.id IS NULL THEN NULL ELSE MAX(
+      pc.minimum_price,
+      COALESCE((
+        SELECT SUM(
+          (
+            ci.quantity * CASE WHEN ci.manual_rate > 0 THEN ci.manual_rate ELSE ci.tariff_rate END *
+            ci.complexity_coefficient * ci.source_coefficient * ci.urgency_coefficient * ci.rights_coefficient +
+            ci.fixed_cost + ci.hours * ci.internal_hour_rate + ci.external_cost
+          ) * (1 - ci.item_discount_percent / 100)
+        )
+        FROM calculation_items ci
+        WHERE ci.calculation_id = pc.id
+      ), 0) * (1 - pc.discount_percent / 100) + pc.manual_adjustment + pc.external_project_cost
+    ) END AS calculation_total
+  FROM proposals p
+  LEFT JOIN clients c ON c.id = p.client_id
+  LEFT JOIN diagnostic_sessions ds ON ds.id = p.diagnostic_session_id
+  LEFT JOIN project_calculations pc ON pc.id = p.calculation_id
+`;
+
+function proposalResponse(row: ProposalRow) {
+  const calculationMetadata = parseCalculationMetadata(row.calculation_comment);
+  return {
+    id: row.id,
+    clientId: row.client_id,
+    clientName: row.client_name,
+    diagnosticSessionId: row.diagnostic_session_id,
+    diagnosticLabel: row.diagnostic_session_id
+      ? row.diagnostic_goal || `Ğ”Ğ¸Ğ°Ğ³Ğ½Ğ¾ÑÑ‚Ğ¸ĞºĞ° Ğ¾Ñ‚ ${row.diagnostic_created_at || ""}`.trim()
+      : null,
+    calculationId: row.calculation_id,
+    calculationTitle: row.calculation_id ? calculationMetadata.title : null,
+    calculationCurrency: row.calculation_id ? calculationMetadata.currency : null,
+    calculationTotal: row.calculation_total === null ? null : roundMoney(Number(row.calculation_total)),
+    version: Number(row.version),
+    status: row.status,
+    title: row.title,
+    diagnosisText: row.diagnosis_text || "",
+    strategyText: row.strategy_text || "",
+    solutionText: row.solution_text || "",
+    scopeText: row.scope_text || "",
+    timelineText: row.timeline_text || "",
+    rightsText: row.rights_text || "",
+    limitationsText: row.limitations_text || "",
+    nextStepText: row.next_step_text || "",
+    clientDocument: row.client_document || "",
+    internalNotes: row.internal_notes || "",
+    sentAt: row.sent_at,
+    followUpAt: row.follow_up_at,
+    validUntil: row.valid_until,
+    createdAt: row.created_at,
+    updatedAt: row.updated_at,
+  };
+}
+
+async function validateProposalReferences(db: NonNullable<Env["DB"]>, input: ProposalInput): Promise<Response | null> {
+  const checks = [
+    ...(input.clientId ? [db.prepare("SELECT id FROM clients WHERE id = ? LIMIT 1").bind(input.clientId)] : []),
+    ...(input.diagnosticSessionId ? [db.prepare("SELECT id FROM diagnostic_sessions WHERE id = ? LIMIT 1").bind(input.diagnosticSessionId)] : []),
+    ...(input.calculationId ? [db.prepare("SELECT id FROM project_calculations WHERE id = ? LIMIT 1").bind(input.calculationId)] : []),
+  ];
+  if (checks.length === 0) return null;
+
+  const results = await db.batch(checks);
+  let index = 0;
+  if (input.clientId && !results[index++]?.results?.[0]) {
+    return constructorError(422, "CLIENT_NOT_FOUND", "Ğ’Ñ‹Ğ±Ñ€Ğ°Ğ½Ğ½Ñ‹Ğ¹ ĞºĞ»Ğ¸ĞµĞ½Ñ‚ Ğ½Ğµ Ğ½Ğ°Ğ¹Ğ´ĞµĞ½.");
+  }
+  if (input.diagnosticSessionId && !results[index++]?.results?.[0]) {
+    return constructorError(422, "DIAGNOSTIC_NOT_FOUND", "Ğ’Ñ‹Ğ±Ñ€Ğ°Ğ½Ğ½Ğ°Ñ Ğ´Ğ¸Ğ°Ğ³Ğ½Ğ¾ÑÑ‚Ğ¸ĞºĞ° Ğ½Ğµ Ğ½Ğ°Ğ¹Ğ´ĞµĞ½Ğ°.");
+  }
+  if (input.calculationId && !results[index++]?.results?.[0]) {
+    return constructorError(422, "CALCULATION_NOT_FOUND", "Ğ’Ñ‹Ğ±Ñ€Ğ°Ğ½Ğ½Ñ‹Ğ¹ Ñ€Ğ°ÑÑ‡Ñ‘Ñ‚ Ğ½Ğµ Ğ½Ğ°Ğ¹Ğ´ĞµĞ½.");
+  }
+  return null;
+}
+
+async function handleProposalBootstrap(env: Env): Promise<Response> {
+  const db = requireDatabase(env);
+  if (db instanceof Response) return db;
+
+  const [clientsResult, calculationsResult, diagnosticsResult, proposalsResult] = await db.batch([
+    db.prepare(`
+      SELECT id, name, crm_status, priority
+      FROM clients
+      WHERE crm_status != 'archived'
+      ORDER BY CASE priority WHEN 'A' THEN 0 WHEN 'B' THEN 1 ELSE 2 END, updated_at DESC
+      LIMIT 200
+    `),
+    db.prepare(`
+      SELECT
+        pc.id,
+        pc.client_id,
+        c.name AS client_name,
+        pc.status,
+        pc.comment,
+        pc.valid_until,
+        MAX(
+          pc.minimum_price,
+          COALESCE(SUM(
+            (
+              ci.quantity * CASE WHEN ci.manual_rate > 0 THEN ci.manual_rate ELSE ci.tariff_rate END *
+              ci.complexity_coefficient * ci.source_coefficient * ci.urgency_coefficient * ci.rights_coefficient +
+              ci.fixed_cost + ci.hours * ci.internal_hour_rate + ci.external_cost
+            ) * (1 - ci.item_discount_percent / 100)
+          ), 0) * (1 - pc.discount_percent / 100) + pc.manual_adjustment + pc.external_project_cost
+        ) AS total,
+        COUNT(ci.id) AS item_count,
+        pc.updated_at
+      FROM project_calculations pc
+      LEFT JOIN clients c ON c.id = pc.client_id
+      LEFT JOIN calculation_items ci ON ci.calculation_id = pc.id
+      WHERE pc.status != 'archived'
+      GROUP BY pc.id
+      ORDER BY pc.updated_at DESC
+      LIMIT 200
+    `),
+    db.prepare(`
+      SELECT ds.id, ds.client_id, c.name AS client_name, ds.goal, ds.main_diagnosis, ds.created_at
+      FROM diagnostic_sessions ds
+      JOIN clients c ON c.id = ds.client_id
+      WHERE ds.status != 'archived'
+      ORDER BY ds.updated_at DESC
+      LIMIT 200
+    `),
+    db.prepare(`${proposalSelectSql}
+      WHERE p.status != 'archived'
+      ORDER BY
+        CASE p.status
+          WHEN 'discussion' THEN 0 WHEN 'sent' THEN 1 WHEN 'ready_to_send' THEN 2
+          WHEN 'internal_review' THEN 3 WHEN 'needs_data' THEN 4 WHEN 'draft' THEN 5
+          WHEN 'approved' THEN 6 WHEN 'rejected' THEN 7 ELSE 8
+        END,
+        p.updated_at DESC
+      LIMIT 300
+    `),
+  ]);
+
+  const calculations = (calculationsResult.results ?? []) as unknown as ProposalCalculationRow[];
+  return json({
+    clients: ((clientsResult.results ?? []) as unknown as PricingClientRow[]).map((client) => ({
+      id: client.id,
+      name: client.name,
+      crmStatus: client.crm_status,
+      priority: client.priority,
+    })),
+    calculations: calculations.map((calculation) => {
+      const metadata = parseCalculationMetadata(calculation.comment);
+      return {
+        id: calculation.id,
+        clientId: calculation.client_id,
+        clientName: calculation.client_name,
+        title: metadata.title,
+        currency: metadata.currency,
+        total: roundMoney(Number(calculation.total ?? 0)),
+        validUntil: calculation.valid_until,
+        updatedAt: calculation.updated_at,
+      };
+    }),
+    diagnostics: ((diagnosticsResult.results ?? []) as unknown as ProposalDiagnosticRow[]).map((diagnostic) => ({
+      id: diagnostic.id,
+      clientId: diagnostic.client_id,
+      clientName: diagnostic.client_name,
+      goal: diagnostic.goal,
+      mainDiagnosis: diagnostic.main_diagnosis,
+      createdAt: diagnostic.created_at,
+    })),
+    proposals: ((proposalsResult.results ?? []) as unknown as ProposalRow[]).map(proposalResponse),
+  });
+}
+
+async function handleProposalDetail(proposalId: string, env: Env): Promise<Response> {
+  const db = requireDatabase(env);
+  if (db instanceof Response) return db;
+  const row = await db.prepare(`${proposalSelectSql} WHERE p.id = ? LIMIT 1`).bind(proposalId).first<ProposalRow>();
+  if (!row?.id) return constructorError(404, "PROPOSAL_NOT_FOUND", "ĞšĞ¾Ğ¼Ğ¼ĞµÑ€Ñ‡ĞµÑĞºĞ¾Ğµ Ğ¿Ñ€ĞµĞ´Ğ»Ğ¾Ğ¶ĞµĞ½Ğ¸Ğµ Ğ½Ğµ Ğ½Ğ°Ğ¹Ğ´ĞµĞ½Ğ¾.");
+  return json({ proposal: proposalResponse(row) });
+}
+
+async function handleProposalCreate(request: Request, env: Env, identity: ConstructorIdentity): Promise<Response> {
+  const db = requireDatabase(env);
+  if (db instanceof Response) return db;
+
+  let body: Record<string, unknown>;
+  try {
+    body = (await request.json()) as Record<string, unknown>;
+  } catch {
+    return constructorError(400, "INVALID_JSON", "ĞĞµ ÑƒĞ´Ğ°Ğ»Ğ¾ÑÑŒ Ğ¿Ñ€Ğ¾Ñ‡Ğ¸Ñ‚Ğ°Ñ‚ÑŒ Ğ´Ğ°Ğ½Ğ½Ñ‹Ğµ ĞºĞ¾Ğ¼Ğ¼ĞµÑ€Ñ‡ĞµÑĞºĞ¾Ğ³Ğ¾ Ğ¿Ñ€ĞµĞ´Ğ»Ğ¾Ğ¶ĞµĞ½Ğ¸Ñ.");
+  }
+  const input = readProposalInput(body);
+  if (input instanceof Response) return input;
+  const referenceError = await validateProposalReferences(db, input);
+  if (referenceError) return referenceError;
+
+  const proposalId = crypto.randomUUID();
+  const now = new Date().toISOString();
+  const sentAt = input.status === "sent" ? now : null;
+  await db.batch([
+    db.prepare(`
+      INSERT INTO proposals (
+        id, client_id, diagnostic_session_id, calculation_id, version, status, title,
+        diagnosis_text, strategy_text, solution_text, scope_text, timeline_text,
+        rights_text, limitations_text, next_step_text, client_document, internal_notes,
+        sent_at, follow_up_at, valid_until, created_at, updated_at
+      ) VALUES (?, ?, ?, ?, 1, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+    `).bind(
+      proposalId,
+      input.clientId || null,
+      input.diagnosticSessionId || null,
+      input.calculationId || null,
+      input.status,
+      input.title,
+      input.diagnosisText || null,
+      input.strategyText || null,
+      input.solutionText || null,
+      input.scopeText || null,
+      input.timelineText || null,
+      input.rightsText || null,
+      input.limitationsText || null,
+      input.nextStepText || null,
+      input.clientDocument || null,
+      input.internalNotes || null,
+      sentAt,
+      input.followUpAt || null,
+      input.validUntil || null,
+      now,
+      now,
+    ),
+    db.prepare(`
+      INSERT INTO audit_log (id, actor_email, action, entity_type, entity_id, new_value_json, created_at)
+      VALUES (?, ?, 'create', 'proposal', ?, ?, ?)
+    `).bind(
+      crypto.randomUUID(),
+      identity.email,
+      proposalId,
+      JSON.stringify({ title: input.title, status: input.status, clientId: input.clientId || null, calculationId: input.calculationId || null }),
+      now,
+    ),
+  ]);
+
+  const response = await handleProposalDetail(proposalId, env);
+  return new Response(response.body, { status: 201, headers: response.headers });
+}
+
+async function handleProposalUpdate(request: Request, proposalId: string, env: Env, identity: ConstructorIdentity): Promise<Response> {
+  const db = requireDatabase(env);
+  if (db instanceof Response) return db;
+
+  const existing = await db.prepare("SELECT id, version, sent_at FROM proposals WHERE id = ? LIMIT 1").bind(proposalId).first<{ id: string; version: number; sent_at: string | null }>();
+  if (!existing?.id) return constructorError(404, "PROPOSAL_NOT_FOUND", "ĞšĞ¾Ğ¼Ğ¼ĞµÑ€Ñ‡ĞµÑĞºĞ¾Ğµ Ğ¿Ñ€ĞµĞ´Ğ»Ğ¾Ğ¶ĞµĞ½Ğ¸Ğµ Ğ½Ğµ Ğ½Ğ°Ğ¹Ğ´ĞµĞ½Ğ¾.");
+
+  let body: Record<string, unknown>;
+  try {
+    body = (await request.json()) as Record<string, unknown>;
+  } catch {
+    return constructorError(400, "INVALID_JSON", "ĞĞµ ÑƒĞ´Ğ°Ğ»Ğ¾ÑÑŒ Ğ¿Ñ€Ğ¾Ñ‡Ğ¸Ñ‚Ğ°Ñ‚ÑŒ Ğ¸Ğ·Ğ¼ĞµĞ½ĞµĞ½Ğ¸Ñ ĞºĞ¾Ğ¼Ğ¼ĞµÑ€Ñ‡ĞµÑĞºĞ¾Ğ³Ğ¾ Ğ¿Ñ€ĞµĞ´Ğ»Ğ¾Ğ¶ĞµĞ½Ğ¸Ñ.");
+  }
+  const input = readProposalInput(body);
+  if (input instanceof Response) return input;
+  const referenceError = await validateProposalReferences(db, input);
+  if (referenceError) return referenceError;
+
+  const now = new Date().toISOString();
+  const sentAt = existing.sent_at || (input.status === "sent" ? now : null);
+  await db.batch([
+    db.prepare(`
+      UPDATE proposals
+      SET
+        client_id = ?, diagnostic_session_id = ?, calculation_id = ?, version = ?, status = ?, title = ?,
+        diagnosis_text = ?, strategy_text = ?, solution_text = ?, scope_text = ?, timeline_text = ?,
+        rights_text = ?, limitations_text = ?, next_step_text = ?, client_document = ?, internal_notes = ?,
+        sent_at = ?, follow_up_at = ?, valid_until = ?, updated_at = ?
+      WHERE id = ?
+    `).bind(
+      input.clientId || null,
+      input.diagnosticSessionId || null,
+      input.calculationId || null,
+      Number(existing.version) + 1,
+      input.status,
+      input.title,
+      input.diagnosisText || null,
+      input.strategyText || null,
+      input.solutionText || null,
+      input.scopeText || null,
+      input.timelineText || null,
+      input.rightsText || null,
+      input.limitationsText || null,
+      input.nextStepText || null,
+      input.clientDocument || null,
+      input.internalNotes || null,
+      sentAt,
+      input.followUpAt || null,
+      input.validUntil || null,
+      now,
+      proposalId,
+    ),
+    db.prepare(`
+      INSERT INTO audit_log (id, actor_email, action, entity_type, entity_id, new_value_json, created_at)
+      VALUES (?, ?, 'update', 'proposal', ?, ?, ?)
+    `).bind(
+      crypto.randomUUID(),
+      identity.email,
+      proposalId,
+      JSON.stringify({ title: input.title, status: input.status, version: Number(existing.version) + 1 }),
+      now,
+    ),
+  ]);
+  return handleProposalDetail(proposalId, env);
+}
+
+async function handleConstructorApi(request: Request, env: Env, identity: ConstructorIdentity): Promise<Response> {
+  const url = new URL(request.url);
+
+  if (url.pathname === "/api/constructor/health" && request.method === "GET") {
+    return json({
+      ok: true,
+      identity,
+      databaseConfigured: Boolean(env.DB),
+      accessConfigured: env.CONSTRUCTOR_AUTH_ENABLED === "true",
+    });
+  }
+
+  if (url.pathname === "/api/constructor/bootstrap" && request.method === "GET") {
+    return handleBootstrap(env, identity);
+  }
+
+  if (url.pathname === "/api/constructor/knowledge" && request.method === "GET") {
+    return handleKnowledgeList(request, env);
+  }
+
+  if (url.pathname === "/api/constructor/knowledge" && request.method === "POST") {
+    return handleKnowledgeCreate(request, env, identity);
+  }
+
+  if (url.pathname === "/api/constructor/answers" && request.method === "GET") {
+    return handleAnswerSearch(request, env);
+  }
+
+  if (url.pathname === "/api/constructor/preparations" && request.method === "POST") {
+    return handlePreparationCreate(request, env, identity);
+  }
+
+  if (url.pathname === "/api/constructor/diagnostics" && request.method === "POST") {
+    return handleDiagnosticCreate(request, env, identity);
+  }
+
+  if (url.pathname === "/api/constructor/clients" && request.method === "GET") {
+    return handleClientList(request, env);
+  }
+
+  if (url.pathname === "/api/constructor/pricing/bootstrap" && request.method === "GET") {
+    return handlePricingBootstrap(env);
+  }
+
+  if (url.pathname === "/api/constructor/calculations" && request.method === "POST") {
+    return handleCalculationCreate(request, env, identity);
+  }
+
+  if (url.pathname === "/api/constructor/proposals/bootstrap" && request.method === "GET") {
+    return handleProposalBootstrap(env);
+  }
+
+  if (url.pathname === "/api/constructor/proposals" && request.method === "POST") {
+    return handleProposalCreate(request, env, identity);
+  }
+
+  const proposalMatch = url.pathname.match(/^\/api\/constructor\/proposals\/([^/]+)$/);
+  if (proposalMatch) {
+    const proposalId = proposalMatch[1].slice(0, 80);
+    if (request.method === "GET") return handleProposalDetail(proposalId, env);
+    if (request.method === "PATCH") return handleProposalUpdate(request, proposalId, env, identity);
+  }
+
+  const calculationMatch = url.pathname.match(/^\/api\/constructor\/calculations\/([^/]+)$/);
+  if (calculationMatch && request.method === "GET") {
+    return handleCalculationDetail(calculationMatch[1].slice(0, 80), env);
+  }
+
+  const clientMatch = url.pathname.match(/^\/api\/constructor\/clients\/([^/]+)$/);
+  if (clientMatch) {
+    const clientId = clientMatch[1].slice(0, 80);
+    if (request.method === "GET") return handleClientDetail(clientId, env);
+    if (request.method === "PATCH") return handleClientUpdate(request, clientId, env, identity);
+  }
+
+  return constructorError(404, "NOT_FOUND", "Ğ Ğ°Ğ·Ğ´ĞµĞ» ĞºĞ¾Ğ½ÑÑ‚Ñ€ÑƒĞºÑ‚Ğ¾Ñ€Ğ° Ğ½Ğµ Ğ½Ğ°Ğ¹Ğ´ĞµĞ½.");
+}
+
+function secureConstructorResponse(response: Response): Response {
+  const headers = new Headers(response.headers);
+  headers.set("Cache-Control", "private, no-store, max-age=0");
+  headers.set("Pragma", "no-cache");
+  headers.set("X-Robots-Tag", "noindex, nofollow, noarchive");
+  headers.set("X-Content-Type-Options", "nosniff");
+  headers.set("Referrer-Policy", "same-origin");
+  headers.set("Permissions-Policy", "camera=(), microphone=(), geolocation=()");
+  return new Response(response.body, {
+    status: response.status,
+    statusText: response.statusText,
+    headers,
+  });
+}
+
+const worker = {
+  async fetch(request: Request, env: Env, ctx: ExecutionContext): Promise<Response> {
+    const url = new URL(request.url);
+
+    if (url.pathname === "/_vinext/image") {
+      const allowedWidths = [...DEFAULT_DEVICE_SIZES, ...DEFAULT_IMAGE_SIZES];
+      return handleImageOptimization(request, {
+        fetchAsset: (path) => env.ASSETS.fetch(new Request(new URL(path, request.url))),
+        transformImage: async (body, { width, format, quality }) => {
+          const result = await env.IMAGES.input(body).transform(width > 0 ? { width } : {}).output({ format, quality });
+          return result.response();
+        },
+      }, allowedWidths);
+    }
+
+    if (isConstructorRequest(url.pathname)) {
+      const identity = await authenticateConstructor(request, env);
+      if (identity instanceof Response) return identity;
+
+      if (url.pathname.startsWith("/api/constructor/")) {
+        return handleConstructorApi(request, env, identity);
+      }
+
+      const response = await handler.fetch(request, env, ctx);
+      return secureConstructorResponse(response);
+    }
+
+    return handler.fetch(request, env, ctx);
+  },
+};
+
+export default worker;
