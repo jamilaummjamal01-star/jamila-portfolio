@@ -5,6 +5,7 @@ import ClientWorkspace from "./ClientWorkspace";
 import DiagnosticWorkspace from "./DiagnosticWorkspace";
 import PreparationWorkspace from "./PreparationWorkspace";
 import PricingWorkspace from "./PricingWorkspace";
+import ProposalWorkspace from "./ProposalWorkspace";
 import QuestionAnswerWorkspace from "./QuestionAnswerWorkspace";
 import styles from "./constructor.module.css";
 
@@ -111,7 +112,7 @@ const navigation = [
   ["Диагностика", "diagnostic", true],
   ["Клиенты", "clients", true],
   ["Калькулятор", "pricing", true],
-  ["Коммерческие предложения", "proposals", false],
+  ["Коммерческие предложения", "proposals", true],
 ] as const;
 
 function getErrorMessage(payload: ErrorPayload | null, fallback: string): string {
@@ -138,7 +139,7 @@ function displayDate(value: string | null): string {
 }
 
 export default function ConstructorClient() {
-  const [activeSection, setActiveSection] = useState<"knowledge" | "prepare" | "answer" | "diagnostic" | "clients" | "pricing">("knowledge");
+  const [activeSection, setActiveSection] = useState<"knowledge" | "prepare" | "answer" | "diagnostic" | "clients" | "pricing" | "proposals">("knowledge");
   const [bootstrap, setBootstrap] = useState<BootstrapData | null>(null);
   const [items, setItems] = useState<KnowledgeItem[]>([]);
   const [pagination, setPagination] = useState<KnowledgeResponse["pagination"]>({ page: 1, limit: 30, total: 0, pages: 1 });
@@ -322,7 +323,7 @@ export default function ConstructorClient() {
               type="button"
               disabled={!enabled}
               onClick={() => {
-                if (key === "knowledge" || key === "prepare" || key === "answer" || key === "diagnostic" || key === "clients" || key === "pricing") {
+                if (key === "knowledge" || key === "prepare" || key === "answer" || key === "diagnostic" || key === "clients" || key === "pricing" || key === "proposals") {
                   setActiveSection(key);
                   setSelected(null);
                   setShowAdd(false);
@@ -507,8 +508,10 @@ export default function ConstructorClient() {
           <DiagnosticWorkspace bootstrap={bootstrap} onToast={setToast} />
         ) : activeSection === "clients" ? (
           <ClientWorkspace onToast={setToast} />
-        ) : (
+        ) : activeSection === "pricing" ? (
           <PricingWorkspace onToast={setToast} />
+        ) : (
+          <ProposalWorkspace onToast={setToast} />
         )}
       </section>
 

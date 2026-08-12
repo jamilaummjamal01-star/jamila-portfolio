@@ -68,4 +68,5 @@ test("renders the protected constructor navigation locally", async () => {
   assert.match(html, /Диагностика/);
   assert.match(html, /Клиенты/);
   assert.match(html, /Калькулятор/);
+  assert.match(html, /Коммерческие предложения/);
 });
