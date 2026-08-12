@@ -4,6 +4,7 @@ import { FormEvent, useCallback, useEffect, useMemo, useState } from "react";
 import ClientWorkspace from "./ClientWorkspace";
 import DashboardWorkspace, { ConstructorSection } from "./DashboardWorkspace";
 import DiagnosticWorkspace from "./DiagnosticWorkspace";
+import ImportQualityWorkspace from "./ImportQualityWorkspace";
 import KnowledgeEditor, { KnowledgeUpdatePayload } from "./KnowledgeEditor";
 import PreparationWorkspace from "./PreparationWorkspace";
 import PricingWorkspace from "./PricingWorkspace";
@@ -117,6 +118,7 @@ const navigation = [
   ["Клиенты", "clients", true],
   ["Калькулятор", "pricing", true],
   ["Коммерческие предложения", "proposals", true],
+  ["Импорт и качество", "quality", true],
 ] as const;
 
 function getErrorMessage(payload: ErrorPayload | null, fallback: string): string {
@@ -538,8 +540,10 @@ export default function ConstructorClient() {
           <ClientWorkspace onToast={setToast} />
         ) : activeSection === "pricing" ? (
           <PricingWorkspace onToast={setToast} />
-        ) : (
+        ) : activeSection === "proposals" ? (
           <ProposalWorkspace onToast={setToast} />
+        ) : (
+          <ImportQualityWorkspace onToast={setToast} />
         )}
       </section>
 

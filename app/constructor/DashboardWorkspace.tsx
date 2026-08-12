@@ -4,7 +4,7 @@ import { useCallback, useEffect, useMemo, useState } from "react";
 import type { ReactNode } from "react";
 import styles from "./constructor.module.css";
 
-export type ConstructorSection = "home" | "knowledge" | "prepare" | "answer" | "diagnostic" | "clients" | "pricing" | "proposals";
+export type ConstructorSection = "home" | "knowledge" | "prepare" | "answer" | "diagnostic" | "clients" | "pricing" | "proposals" | "quality";
 
 type DashboardData = {
   generatedAt: string;
