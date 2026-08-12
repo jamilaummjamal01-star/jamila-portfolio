@@ -4,6 +4,7 @@ import { FormEvent, useCallback, useEffect, useMemo, useState } from "react";
 import ClientWorkspace from "./ClientWorkspace";
 import DiagnosticWorkspace from "./DiagnosticWorkspace";
 import PreparationWorkspace from "./PreparationWorkspace";
+import PricingWorkspace from "./PricingWorkspace";
 import QuestionAnswerWorkspace from "./QuestionAnswerWorkspace";
 import styles from "./constructor.module.css";
 
@@ -109,7 +110,7 @@ const navigation = [
   ["Клиент задал вопрос", "answer", true],
   ["Диагностика", "diagnostic", true],
   ["Клиенты", "clients", true],
-  ["Калькулятор", "pricing", false],
+  ["Калькулятор", "pricing", true],
   ["Коммерческие предложения", "proposals", false],
 ] as const;
 
@@ -137,7 +138,7 @@ function displayDate(value: string | null): string {
 }
 
 export default function ConstructorClient() {
-  const [activeSection, setActiveSection] = useState<"knowledge" | "prepare" | "answer" | "diagnostic" | "clients">("knowledge");
+  const [activeSection, setActiveSection] = useState<"knowledge" | "prepare" | "answer" | "diagnostic" | "clients" | "pricing">("knowledge");
   const [bootstrap, setBootstrap] = useState<BootstrapData | null>(null);
   const [items, setItems] = useState<KnowledgeItem[]>([]);
   const [pagination, setPagination] = useState<KnowledgeResponse["pagination"]>({ page: 1, limit: 30, total: 0, pages: 1 });
@@ -321,7 +322,7 @@ export default function ConstructorClient() {
               type="button"
               disabled={!enabled}
               onClick={() => {
-                if (key === "knowledge" || key === "prepare" || key === "answer" || key === "diagnostic" || key === "clients") {
+                if (key === "knowledge" || key === "prepare" || key === "answer" || key === "diagnostic" || key === "clients" || key === "pricing") {
                   setActiveSection(key);
                   setSelected(null);
                   setShowAdd(false);
@@ -504,8 +505,10 @@ export default function ConstructorClient() {
           <QuestionAnswerWorkspace bootstrap={bootstrap} onToast={setToast} />
         ) : activeSection === "diagnostic" ? (
           <DiagnosticWorkspace bootstrap={bootstrap} onToast={setToast} />
-        ) : (
+        ) : activeSection === "clients" ? (
           <ClientWorkspace onToast={setToast} />
+        ) : (
+          <PricingWorkspace onToast={setToast} />
         )}
       </section>
 

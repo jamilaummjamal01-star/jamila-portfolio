@@ -172,6 +172,97 @@ interface ClientSessionRow {
   updated_at: string;
 }
 
+interface PricingClientRow {
+  id: string;
+  name: string;
+  crm_status: string;
+  priority: string;
+}
+
+interface PricingTariffRow {
+  id: string;
+  name: string;
+  category: string;
+  unit: string;
+  working_rate: number;
+  minimum_rate: number;
+  rate_status: string;
+  includes_text: string | null;
+  excludes_text: string | null;
+}
+
+interface CalculationRow {
+  id: string;
+  client_id: string | null;
+  client_name: string | null;
+  diagnostic_session_id: string | null;
+  title: string | null;
+  currency: string;
+  project_type: string;
+  status: string;
+  discount_percent: number;
+  manual_adjustment: number;
+  minimum_price: number;
+  external_project_cost: number;
+  prepayment_percent: number;
+  ethical_status: string;
+  valid_until: string | null;
+  comment: string | null;
+  created_at: string;
+  updated_at: string;
+}
+
+interface CalculationItemRow {
+  id: string;
+  tariff_id: string | null;
+  name: string;
+  unit: string;
+  quantity: number;
+  tariff_rate: number;
+  manual_rate: number;
+  complexity_coefficient: number;
+  source_coefficient: number;
+  urgency_coefficient: number;
+  rights_coefficient: number;
+  item_discount_percent: number;
+  fixed_cost: number;
+  hours: number;
+  internal_hour_rate: number;
+  external_cost: number;
+  sort_order: number;
+  comment: string | null;
+}
+
+interface RecentCalculationRow {
+  id: string;
+  title: string | null;
+  client_name: string | null;
+  status: string;
+  currency: string;
+  total: number;
+  item_count: number;
+  updated_at: string;
+}
+
+interface CalculationItemInput {
+  tariffId: string;
+  name: string;
+  unit: string;
+  quantity: number;
+  tariffRate: number;
+  manualRate: number;
+  complexityCoefficient: number;
+  sourceCoefficient: number;
+  urgencyCoefficient: number;
+  rightsCoefficient: number;
+  itemDiscountPercent: number;
+  fixedCost: number;
+  hours: number;
+  internalHourRate: number;
+  externalCost: number;
+  comment: string;
+}
+
 const jwksCache = new Map<string, ReturnType<typeof createRemoteJWKSet>>();
 const listDelimiter = "|||";
 const answerCategoryKeywords: Record<string, string[]> = {
@@ -279,6 +370,21 @@ function parsePositiveInteger(value: string | null, fallback: number, maximum: n
 function readText(body: Record<string, unknown>, key: string, maximum: number): string {
   const value = typeof body[key] === "string" ? body[key].trim() : "";
   return value.slice(0, maximum);
+}
+
+function readNumber(body: Record<string, unknown>, key: string, fallback: number, minimum: number, maximum: number): number {
+  const raw = body[key];
+  const value = typeof raw === "number" ? raw : typeof raw === "string" && raw.trim() ? Number(raw) : fallback;
+  if (!Number.isFinite(value)) return fallback;
+  return Math.min(maximum, Math.max(minimum, value));
+}
+
+function asRecord(value: unknown): Record<string, unknown> | null {
+  return value && typeof value === "object" && !Array.isArray(value) ? value as Record<string, unknown> : null;
+}
+
+function roundMoney(value: number): number {
+  return Math.round((value + Number.EPSILON) * 100) / 100;
 }
 
 function isHttpUrl(value: string): boolean {
@@ -1503,6 +1609,310 @@ async function handleClientUpdate(request: Request, clientId: string, env: Env, 
   return handleClientDetail(clientId, env);
 }
 
+function calculateLine(item: CalculationItemInput) {
+  const rate = item.manualRate > 0 ? item.manualRate : item.tariffRate;
+  const production = item.quantity * rate * item.complexityCoefficient * item.sourceCoefficient * item.urgencyCoefficient * item.rightsCoefficient;
+  const labor = item.hours * item.internalHourRate;
+  const beforeDiscount = production + item.fixedCost + labor + item.externalCost;
+  const total = beforeDiscount * (1 - item.itemDiscountPercent / 100);
+  return {
+    rate: roundMoney(rate),
+    production: roundMoney(production),
+    labor: roundMoney(labor),
+    beforeDiscount: roundMoney(beforeDiscount),
+    total: roundMoney(Math.max(0, total)),
+  };
+}
+
+function parseCalculationItem(value: unknown, index: number): CalculationItemInput | null {
+  const item = asRecord(value);
+  if (!item) return null;
+  const name = readText(item, "name", 240);
+  if (!name) return null;
+
+  return {
+    tariffId: readText(item, "tariffId", 80),
+    name,
+    unit: readText(item, "unit", 80) || "услуга",
+    quantity: readNumber(item, "quantity", 1, 0.01, 10000),
+    tariffRate: readNumber(item, "tariffRate", 0, 0, 1_000_000_000),
+    manualRate: readNumber(item, "manualRate", 0, 0, 1_000_000_000),
+    complexityCoefficient: readNumber(item, "complexityCoefficient", 1, 0.1, 10),
+    sourceCoefficient: readNumber(item, "sourceCoefficient", 1, 0.1, 10),
+    urgencyCoefficient: readNumber(item, "urgencyCoefficient", 1, 0.1, 10),
+    rightsCoefficient: readNumber(item, "rightsCoefficient", 1, 0.1, 10),
+    itemDiscountPercent: readNumber(item, "itemDiscountPercent", 0, 0, 100),
+    fixedCost: readNumber(item, "fixedCost", 0, 0, 1_000_000_000),
+    hours: readNumber(item, "hours", 0, 0, 10000),
+    internalHourRate: readNumber(item, "internalHourRate", 0, 0, 10_000_000),
+    externalCost: readNumber(item, "externalCost", 0, 0, 1_000_000_000),
+    comment: readText(item, "comment", 800) || `Позиция ${index + 1}`,
+  };
+}
+
+function calculationResponse(row: CalculationRow, items: CalculationItemRow[]) {
+  const normalizedItems = items.map((item) => {
+    const normalized: CalculationItemInput = {
+      tariffId: item.tariff_id || "",
+      name: item.name,
+      unit: item.unit,
+      quantity: Number(item.quantity),
+      tariffRate: Number(item.tariff_rate),
+      manualRate: Number(item.manual_rate),
+      complexityCoefficient: Number(item.complexity_coefficient),
+      sourceCoefficient: Number(item.source_coefficient),
+      urgencyCoefficient: Number(item.urgency_coefficient),
+      rightsCoefficient: Number(item.rights_coefficient),
+      itemDiscountPercent: Number(item.item_discount_percent),
+      fixedCost: Number(item.fixed_cost),
+      hours: Number(item.hours),
+      internalHourRate: Number(item.internal_hour_rate),
+      externalCost: Number(item.external_cost),
+      comment: item.comment || "",
+    };
+    return { id: item.id, ...normalized, ...calculateLine(normalized) };
+  });
+  const subtotal = roundMoney(normalizedItems.reduce((sum, item) => sum + item.total, 0));
+  const afterDiscount = roundMoney(subtotal * (1 - Number(row.discount_percent) / 100));
+  const calculatedTotal = roundMoney(afterDiscount + Number(row.manual_adjustment) + Number(row.external_project_cost));
+  const total = roundMoney(Math.max(0, Number(row.minimum_price), calculatedTotal));
+  const prepayment = roundMoney(total * Number(row.prepayment_percent) / 100);
+
+  return {
+    calculation: {
+      id: row.id,
+      clientId: row.client_id,
+      clientName: row.client_name,
+      diagnosticSessionId: row.diagnostic_session_id,
+      title: row.title || "Расчёт проекта",
+      currency: row.currency,
+      projectType: row.project_type,
+      status: row.status,
+      discountPercent: Number(row.discount_percent),
+      manualAdjustment: Number(row.manual_adjustment),
+      minimumPrice: Number(row.minimum_price),
+      externalProjectCost: Number(row.external_project_cost),
+      prepaymentPercent: Number(row.prepayment_percent),
+      ethicalStatus: row.ethical_status,
+      validUntil: row.valid_until,
+      comment: row.comment,
+      subtotal,
+      afterDiscount,
+      total,
+      prepayment,
+      createdAt: row.created_at,
+      updatedAt: row.updated_at,
+    },
+    items: normalizedItems,
+  };
+}
+
+async function handlePricingBootstrap(env: Env): Promise<Response> {
+  const db = requireDatabase(env);
+  if (db instanceof Response) return db;
+
+  const [clientsResult, tariffsResult, recentResult] = await Promise.all([
+    db.prepare(`
+      SELECT id, name, crm_status, priority
+      FROM clients
+      WHERE crm_status != 'archived'
+      ORDER BY CASE priority WHEN 'A' THEN 0 WHEN 'B' THEN 1 ELSE 2 END, updated_at DESC
+      LIMIT 200
+    `).all<PricingClientRow>(),
+    db.prepare(`
+      SELECT id, name, category, unit, working_rate, minimum_rate, rate_status, includes_text, excludes_text
+      FROM pricing_tariffs
+      WHERE is_active = 1 AND rate_status != 'disabled'
+      ORDER BY category, name
+      LIMIT 200
+    `).all<PricingTariffRow>(),
+    db.prepare(`
+      SELECT
+        pc.id,
+        pc.title,
+        c.name AS client_name,
+        pc.status,
+        pc.currency,
+        MAX(
+          pc.minimum_price,
+          COALESCE(SUM(
+            (
+              ci.quantity * CASE WHEN ci.manual_rate > 0 THEN ci.manual_rate ELSE ci.tariff_rate END *
+              ci.complexity_coefficient * ci.source_coefficient * ci.urgency_coefficient * ci.rights_coefficient +
+              ci.fixed_cost + ci.hours * ci.internal_hour_rate + ci.external_cost
+            ) * (1 - ci.item_discount_percent / 100)
+          ), 0) * (1 - pc.discount_percent / 100) + pc.manual_adjustment + pc.external_project_cost
+        ) AS total,
+        COUNT(ci.id) AS item_count,
+        pc.updated_at
+      FROM project_calculations pc
+      LEFT JOIN clients c ON c.id = pc.client_id
+      LEFT JOIN calculation_items ci ON ci.calculation_id = pc.id
+      WHERE pc.status != 'archived'
+      GROUP BY pc.id
+      ORDER BY pc.updated_at DESC
+      LIMIT 20
+    `).all<RecentCalculationRow>(),
+  ]);
+
+  return json({
+    clients: (clientsResult.results ?? []).map((client) => ({
+      id: client.id,
+      name: client.name,
+      crmStatus: client.crm_status,
+      priority: client.priority,
+    })),
+    tariffs: (tariffsResult.results ?? []).map((tariff) => ({
+      id: tariff.id,
+      name: tariff.name,
+      category: tariff.category,
+      unit: tariff.unit,
+      workingRate: Number(tariff.working_rate),
+      minimumRate: Number(tariff.minimum_rate),
+      rateStatus: tariff.rate_status,
+      includes: tariff.includes_text,
+      excludes: tariff.excludes_text,
+    })),
+    recent: (recentResult.results ?? []).map((calculation) => ({
+      id: calculation.id,
+      title: calculation.title || "Расчёт проекта",
+      clientName: calculation.client_name,
+      status: calculation.status,
+      currency: calculation.currency,
+      total: roundMoney(Number(calculation.total ?? 0)),
+      itemCount: Number(calculation.item_count ?? 0),
+      updatedAt: calculation.updated_at,
+    })),
+  });
+}
+
+async function handleCalculationDetail(calculationId: string, env: Env): Promise<Response> {
+  const db = requireDatabase(env);
+  if (db instanceof Response) return db;
+
+  const [row, itemsResult] = await Promise.all([
+    db.prepare(`
+      SELECT pc.*, c.name AS client_name
+      FROM project_calculations pc
+      LEFT JOIN clients c ON c.id = pc.client_id
+      WHERE pc.id = ?
+      LIMIT 1
+    `).bind(calculationId).first<CalculationRow>(),
+    db.prepare(`
+      SELECT id, tariff_id, name, unit, quantity, tariff_rate, manual_rate,
+        complexity_coefficient, source_coefficient, urgency_coefficient, rights_coefficient,
+        item_discount_percent, fixed_cost, hours, internal_hour_rate, external_cost,
+        sort_order, comment
+      FROM calculation_items
+      WHERE calculation_id = ?
+      ORDER BY sort_order, created_at
+    `).bind(calculationId).all<CalculationItemRow>(),
+  ]);
+
+  if (!row?.id) return constructorError(404, "CALCULATION_NOT_FOUND", "Сохранённый расчёт не найден.");
+  return json(calculationResponse(row, itemsResult.results ?? []));
+}
+
+async function handleCalculationCreate(request: Request, env: Env, identity: ConstructorIdentity): Promise<Response> {
+  const db = requireDatabase(env);
+  if (db instanceof Response) return db;
+
+  let body: Record<string, unknown>;
+  try {
+    body = (await request.json()) as Record<string, unknown>;
+  } catch {
+    return constructorError(400, "INVALID_JSON", "Не удалось прочитать данные расчёта.");
+  }
+
+  const rawItems = Array.isArray(body.items) ? body.items.slice(0, 50) : [];
+  const items = rawItems.map(parseCalculationItem).filter((item): item is CalculationItemInput => Boolean(item));
+  if (items.length === 0 || items.length !== rawItems.length) {
+    return constructorError(422, "CALCULATION_ITEMS_REQUIRED", "Добавьте хотя бы одну позицию и заполните её название.");
+  }
+
+  const title = readText(body, "title", 240) || "Расчёт проекта";
+  const clientId = readText(body, "clientId", 80);
+  const projectType = readText(body, "projectType", 40) || "individual";
+  const validProjectTypes = new Set(["test", "main", "system", "recurring", "individual"]);
+  if (!validProjectTypes.has(projectType)) {
+    return constructorError(422, "INVALID_PROJECT_TYPE", "Выберите корректный тип проекта.");
+  }
+
+  if (clientId) {
+    const client = await db.prepare("SELECT id FROM clients WHERE id = ? LIMIT 1").bind(clientId).first<{ id: string }>();
+    if (!client?.id) return constructorError(422, "CLIENT_NOT_FOUND", "Выбранный клиент не найден.");
+  }
+
+  const discountPercent = readNumber(body, "discountPercent", 0, 0, 100);
+  const manualAdjustment = readNumber(body, "manualAdjustment", 0, -1_000_000_000, 1_000_000_000);
+  const minimumPrice = readNumber(body, "minimumPrice", 0, 0, 1_000_000_000);
+  const externalProjectCost = readNumber(body, "externalProjectCost", 0, 0, 1_000_000_000);
+  const prepaymentPercent = readNumber(body, "prepaymentPercent", 50, 0, 100);
+  const validUntil = readText(body, "validUntil", 80);
+  const comment = readText(body, "comment", 3000);
+  if (validUntil && Number.isNaN(Date.parse(validUntil))) {
+    return constructorError(422, "INVALID_VALID_UNTIL", "Укажите корректный срок действия расчёта.");
+  }
+
+  const calculationId = crypto.randomUUID();
+  const now = new Date().toISOString();
+  const statements = [
+    db.prepare(`
+      INSERT INTO project_calculations (
+        id, client_id, title, currency, project_type, status, discount_percent,
+        manual_adjustment, minimum_price, external_project_cost, prepayment_percent,
+        ethical_status, valid_until, comment, created_at, updated_at
+      ) VALUES (?, ?, ?, 'RUB', ?, 'ready', ?, ?, ?, ?, ?, 'approved', ?, ?, ?, ?)
+    `).bind(
+      calculationId,
+      clientId || null,
+      title,
+      projectType,
+      discountPercent,
+      manualAdjustment,
+      minimumPrice,
+      externalProjectCost,
+      prepaymentPercent,
+      validUntil || null,
+      comment || null,
+      now,
+      now,
+    ),
+  ];
+
+  items.forEach((item, index) => {
+    statements.push(db.prepare(`
+      INSERT INTO calculation_items (
+        id, calculation_id, tariff_id, name, unit, quantity, tariff_rate, manual_rate,
+        complexity_coefficient, source_coefficient, urgency_coefficient, rights_coefficient,
+        item_discount_percent, fixed_cost, hours, internal_hour_rate, external_cost,
+        sort_order, comment, created_at, updated_at
+      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+    `).bind(
+      crypto.randomUUID(), calculationId, item.tariffId || null, item.name, item.unit,
+      item.quantity, item.tariffRate, item.manualRate, item.complexityCoefficient,
+      item.sourceCoefficient, item.urgencyCoefficient, item.rightsCoefficient,
+      item.itemDiscountPercent, item.fixedCost, item.hours, item.internalHourRate,
+      item.externalCost, index + 1, item.comment || null, now, now,
+    ));
+  });
+
+  const subtotal = roundMoney(items.reduce((sum, item) => sum + calculateLine(item).total, 0));
+  const total = roundMoney(Math.max(0, minimumPrice, subtotal * (1 - discountPercent / 100) + manualAdjustment + externalProjectCost));
+  statements.push(db.prepare(`
+    INSERT INTO audit_log (id, actor_email, action, entity_type, entity_id, new_value_json, created_at)
+    VALUES (?, ?, 'create', 'project_calculation', ?, ?, ?)
+  `).bind(
+    crypto.randomUUID(), identity.email, calculationId,
+    JSON.stringify({ title, clientId: clientId || null, itemCount: items.length, total, currency: "RUB" }),
+    now,
+  ));
+
+  await db.batch(statements);
+  const response = await handleCalculationDetail(calculationId, env);
+  return new Response(response.body, { status: 201, headers: response.headers });
+}
+
 async function handleConstructorApi(request: Request, env: Env, identity: ConstructorIdentity): Promise<Response> {
   const url = new URL(request.url);
 
@@ -1541,6 +1951,19 @@ async function handleConstructorApi(request: Request, env: Env, identity: Constr
 
   if (url.pathname === "/api/constructor/clients" && request.method === "GET") {
     return handleClientList(request, env);
+  }
+
+  if (url.pathname === "/api/constructor/pricing/bootstrap" && request.method === "GET") {
+    return handlePricingBootstrap(env);
+  }
+
+  if (url.pathname === "/api/constructor/calculations" && request.method === "POST") {
+    return handleCalculationCreate(request, env, identity);
+  }
+
+  const calculationMatch = url.pathname.match(/^\/api\/constructor\/calculations\/([^/]+)$/);
+  if (calculationMatch && request.method === "GET") {
+    return handleCalculationDetail(calculationMatch[1].slice(0, 80), env);
   }
 
   const clientMatch = url.pathname.match(/^\/api\/constructor\/clients\/([^/]+)$/);

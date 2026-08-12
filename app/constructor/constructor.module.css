@@ -1752,6 +1752,351 @@
   background: rgba(118, 127, 48, 0.08);
 }
 
+.pricingWorkspace {
+  display: grid;
+  gap: 22px;
+}
+
+.pricingHeadlineTotal {
+  display: grid;
+  min-width: 230px;
+  padding: 16px 20px;
+  border-radius: 20px;
+  background: var(--constructor-brown);
+  color: #fffaf3;
+  text-align: right;
+}
+
+.pricingHeadlineTotal span,
+.pricingHeadlineTotal small {
+  font-size: 0.68rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  opacity: 0.72;
+}
+
+.pricingHeadlineTotal strong {
+  margin: 3px 0;
+  font-family: var(--font-cormorant), Georgia, serif;
+  font-size: 2.15rem;
+  line-height: 1;
+}
+
+.pricingLayout {
+  display: grid;
+  grid-template-columns: minmax(0, 1.8fr) minmax(300px, 0.75fr);
+  gap: 20px;
+  align-items: start;
+}
+
+.pricingMain,
+.pricingSummary,
+.pricingSaved,
+.pricingRecent {
+  border: 1px solid var(--constructor-line);
+  border-radius: 24px;
+  background: rgba(255, 253, 248, 0.78);
+  box-shadow: 0 18px 55px rgba(61, 39, 31, 0.06);
+}
+
+.pricingMain {
+  padding: 24px;
+}
+
+.pricingProjectFields,
+.pricingLineGrid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 13px;
+}
+
+.pricingProjectFields {
+  margin-bottom: 28px;
+  padding-bottom: 24px;
+  border-bottom: 1px solid var(--constructor-line);
+}
+
+.pricingProjectFields label,
+.pricingLine label,
+.pricingControls label {
+  display: grid;
+  gap: 7px;
+  color: var(--constructor-muted);
+  font-size: 0.68rem;
+  font-weight: 750;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.pricingProjectFields input,
+.pricingProjectFields select,
+.pricingLine input,
+.pricingLine select,
+.pricingControls input,
+.pricingControls textarea {
+  width: 100%;
+  border: 1px solid var(--constructor-line);
+  border-radius: 12px;
+  background: #fffdf9;
+  color: var(--constructor-text);
+  font: inherit;
+  font-size: 0.8rem;
+  font-weight: 500;
+  letter-spacing: 0;
+  text-transform: none;
+}
+
+.pricingProjectFields input,
+.pricingProjectFields select,
+.pricingLine input,
+.pricingLine select,
+.pricingControls input {
+  min-height: 42px;
+  padding: 0 11px;
+}
+
+.pricingControls textarea {
+  padding: 11px;
+  resize: vertical;
+}
+
+.pricingProjectFields input:focus,
+.pricingProjectFields select:focus,
+.pricingLine input:focus,
+.pricingLine select:focus,
+.pricingControls input:focus,
+.pricingControls textarea:focus {
+  outline: 2px solid rgba(118, 127, 48, 0.2);
+  border-color: var(--constructor-olive);
+}
+
+.pricingSectionHeading,
+.pricingLineHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+}
+
+.pricingSectionHeading > div {
+  display: grid;
+  gap: 3px;
+}
+
+.pricingSectionHeading span {
+  color: var(--constructor-muted);
+  font-size: 0.64rem;
+  font-weight: 800;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+}
+
+.pricingSectionHeading h2 {
+  margin: 0;
+  font-family: var(--font-cormorant), Georgia, serif;
+  font-size: 1.7rem;
+}
+
+.pricingLines {
+  display: grid;
+  gap: 15px;
+  margin-top: 18px;
+}
+
+.pricingLine {
+  display: grid;
+  gap: 15px;
+  padding: 19px;
+  border: 1px solid var(--constructor-line);
+  border-radius: 18px;
+  background: #fffdf9;
+}
+
+.pricingLineHeader {
+  padding-bottom: 12px;
+  border-bottom: 1px solid var(--constructor-line);
+}
+
+.pricingLineHeader strong {
+  min-width: 0;
+  font-size: 0.88rem;
+}
+
+.pricingLineHeader span {
+  margin-left: auto;
+  color: var(--constructor-olive-dark);
+  font-family: var(--font-cormorant), Georgia, serif;
+  font-size: 1.35rem;
+  font-weight: 800;
+  white-space: nowrap;
+}
+
+.pricingLineHeader button {
+  display: grid;
+  place-items: center;
+  width: 28px;
+  height: 28px;
+  border: 1px solid var(--constructor-line);
+  border-radius: 50%;
+  background: transparent;
+  color: var(--constructor-muted);
+  cursor: pointer;
+}
+
+.pricingLineName {
+  grid-column: span 2;
+}
+
+.pricingWide {
+  grid-column: 1 / -1;
+}
+
+.pricingSidebar {
+  position: sticky;
+  top: 22px;
+  display: grid;
+  gap: 16px;
+}
+
+.pricingSummary,
+.pricingSaved,
+.pricingRecent {
+  padding: 22px;
+}
+
+.pricingSummary dl {
+  display: grid;
+  gap: 0;
+  margin: 18px 0;
+}
+
+.pricingSummary dl div {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 9px 0;
+  border-bottom: 1px solid var(--constructor-line);
+}
+
+.pricingSummary dt {
+  color: var(--constructor-muted);
+  font-size: 0.73rem;
+}
+
+.pricingSummary dd {
+  margin: 0;
+  font-size: 0.8rem;
+  font-weight: 750;
+}
+
+.pricingSummary .pricingFinal {
+  padding: 15px 0;
+  color: var(--constructor-brown);
+}
+
+.pricingSummary .pricingFinal dt {
+  color: inherit;
+  font-weight: 800;
+  text-transform: uppercase;
+}
+
+.pricingSummary .pricingFinal dd {
+  font-family: var(--font-cormorant), Georgia, serif;
+  font-size: 1.65rem;
+}
+
+.pricingControls {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 11px;
+  margin: 18px 0;
+}
+
+.pricingControls label:last-child {
+  grid-column: 1 / -1;
+}
+
+.pricingSummary > .primaryButton {
+  width: 100%;
+}
+
+.pricingSaved {
+  display: grid;
+  gap: 7px;
+  background: linear-gradient(145deg, rgba(118, 127, 48, 0.14), rgba(255, 253, 248, 0.9));
+}
+
+.pricingSaved > span {
+  color: var(--constructor-olive-dark);
+  font-size: 0.65rem;
+  font-weight: 800;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+}
+
+.pricingSaved h2,
+.pricingSaved p {
+  margin: 0;
+}
+
+.pricingSaved h2 {
+  font-family: var(--font-cormorant), Georgia, serif;
+  font-size: 1.55rem;
+}
+
+.pricingSaved > strong {
+  color: var(--constructor-brown);
+  font-family: var(--font-cormorant), Georgia, serif;
+  font-size: 2rem;
+}
+
+.pricingSaved p,
+.pricingSaved small {
+  color: var(--constructor-muted);
+  font-size: 0.73rem;
+}
+
+.pricingRecent {
+  display: grid;
+  gap: 11px;
+}
+
+.pricingRecent button {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  width: 100%;
+  padding: 12px 0;
+  border: 0;
+  border-bottom: 1px solid var(--constructor-line);
+  background: transparent;
+  color: var(--constructor-text);
+  text-align: left;
+  cursor: pointer;
+}
+
+.pricingRecent button > span {
+  display: grid;
+  gap: 4px;
+}
+
+.pricingRecent button strong {
+  font-size: 0.78rem;
+}
+
+.pricingRecent button small {
+  color: var(--constructor-muted);
+  font-size: 0.66rem;
+}
+
+.pricingRecent button b {
+  color: var(--constructor-olive-dark);
+  font-size: 0.76rem;
+  white-space: nowrap;
+}
+
 @media (max-width: 1280px) {
   .filters {
     grid-template-columns: minmax(230px, 2fr) repeat(3, minmax(135px, 1fr));
@@ -1783,6 +2128,14 @@
 
   .clientList {
     max-height: 440px;
+  }
+
+  .pricingLayout {
+    grid-template-columns: 1fr;
+  }
+
+  .pricingSidebar {
+    position: static;
   }
 
   .preparationForm {
@@ -1920,6 +2273,34 @@
   .clientHistory,
   .clientDetailHeader {
     padding: 20px 16px;
+  }
+
+  .pricingProjectFields,
+  .pricingLineGrid,
+  .pricingControls {
+    grid-template-columns: 1fr;
+  }
+
+  .pricingLineName,
+  .pricingControls label:last-child {
+    grid-column: auto;
+  }
+
+  .pricingMain,
+  .pricingSummary,
+  .pricingSaved,
+  .pricingRecent {
+    padding: 18px 14px;
+  }
+
+  .pricingHeadlineTotal {
+    width: 100%;
+    text-align: left;
+  }
+
+  .pricingLineHeader {
+    align-items: flex-start;
+    flex-wrap: wrap;
   }
 
   .preparationForm > .primaryButton {
