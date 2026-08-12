@@ -196,8 +196,6 @@ interface CalculationRow {
   client_id: string | null;
   client_name: string | null;
   diagnostic_session_id: string | null;
-  title: string | null;
-  currency: string;
   project_type: string;
   status: string;
   discount_percent: number;
@@ -216,7 +214,6 @@ interface CalculationItemRow {
   id: string;
   tariff_id: string | null;
   name: string;
-  unit: string;
   quantity: number;
   tariff_rate: number;
   manual_rate: number;
@@ -235,10 +232,9 @@ interface CalculationItemRow {
 
 interface RecentCalculationRow {
   id: string;
-  title: string | null;
   client_name: string | null;
   status: string;
-  currency: string;
+  comment: string | null;
   total: number;
   item_count: number;
   updated_at: string;
@@ -260,6 +256,17 @@ interface CalculationItemInput {
   hours: number;
   internalHourRate: number;
   externalCost: number;
+  comment: string;
+}
+
+interface CalculationMetadata {
+  title: string;
+  currency: string;
+  comment: string;
+}
+
+interface CalculationItemMetadata {
+  unit: string;
   comment: string;
 }
 
@@ -385,6 +392,37 @@ function asRecord(value: unknown): Record<string, unknown> | null {
 
 function roundMoney(value: number): number {
   return Math.round((value + Number.EPSILON) * 100) / 100;
+}
+
+function parseCalculationMetadata(value: string | null): CalculationMetadata {
+  if (!value) return { title: "Расчёт проекта", currency: "RUB", comment: "" };
+  try {
+    const parsed = JSON.parse(value) as unknown;
+    const record = asRecord(parsed);
+    if (!record) return { title: "Расчёт проекта", currency: "RUB", comment: value };
+    return {
+      title: readText(record, "title", 240) || "Расчёт проекта",
+      currency: readText(record, "currency", 8) || "RUB",
+      comment: readText(record, "comment", 3000),
+    };
+  } catch {
+    return { title: "Расчёт проекта", currency: "RUB", comment: value };
+  }
+}
+
+function parseCalculationItemMetadata(value: string | null): CalculationItemMetadata {
+  if (!value) return { unit: "услуга", comment: "" };
+  try {
+    const parsed = JSON.parse(value) as unknown;
+    const record = asRecord(parsed);
+    if (!record) return { unit: "услуга", comment: value };
+    return {
+      unit: readText(record, "unit", 80) || "услуга",
+      comment: readText(record, "comment", 800),
+    };
+  } catch {
+    return { unit: "услуга", comment: value };
+  }
 }
 
 function isHttpUrl(value: string): boolean {
@@ -1652,10 +1690,11 @@ function parseCalculationItem(value: unknown, index: number): CalculationItemInp
 
 function calculationResponse(row: CalculationRow, items: CalculationItemRow[]) {
   const normalizedItems = items.map((item) => {
+    const metadata = parseCalculationItemMetadata(item.comment);
     const normalized: CalculationItemInput = {
       tariffId: item.tariff_id || "",
       name: item.name,
-      unit: item.unit,
+      unit: metadata.unit,
       quantity: Number(item.quantity),
       tariffRate: Number(item.tariff_rate),
       manualRate: Number(item.manual_rate),
@@ -1668,7 +1707,7 @@ function calculationResponse(row: CalculationRow, items: CalculationItemRow[]) {
       hours: Number(item.hours),
       internalHourRate: Number(item.internal_hour_rate),
       externalCost: Number(item.external_cost),
-      comment: item.comment || "",
+      comment: metadata.comment,
     };
     return { id: item.id, ...normalized, ...calculateLine(normalized) };
   });
@@ -1677,6 +1716,7 @@ function calculationResponse(row: CalculationRow, items: CalculationItemRow[]) {
   const calculatedTotal = roundMoney(afterDiscount + Number(row.manual_adjustment) + Number(row.external_project_cost));
   const total = roundMoney(Math.max(0, Number(row.minimum_price), calculatedTotal));
   const prepayment = roundMoney(total * Number(row.prepayment_percent) / 100);
+  const metadata = parseCalculationMetadata(row.comment);
 
   return {
     calculation: {
@@ -1684,8 +1724,8 @@ function calculationResponse(row: CalculationRow, items: CalculationItemRow[]) {
       clientId: row.client_id,
       clientName: row.client_name,
       diagnosticSessionId: row.diagnostic_session_id,
-      title: row.title || "Расчёт проекта",
-      currency: row.currency,
+      title: metadata.title,
+      currency: metadata.currency,
       projectType: row.project_type,
       status: row.status,
       discountPercent: Number(row.discount_percent),
@@ -1695,7 +1735,7 @@ function calculationResponse(row: CalculationRow, items: CalculationItemRow[]) {
       prepaymentPercent: Number(row.prepayment_percent),
       ethicalStatus: row.ethical_status,
       validUntil: row.valid_until,
-      comment: row.comment,
+      comment: metadata.comment,
       subtotal,
       afterDiscount,
       total,
@@ -1729,10 +1769,9 @@ async function handlePricingBootstrap(env: Env): Promise<Response> {
     db.prepare(`
       SELECT
         pc.id,
-        pc.title,
         c.name AS client_name,
         pc.status,
-        pc.currency,
+        pc.comment,
         MAX(
           pc.minimum_price,
           COALESCE(SUM(
@@ -1774,11 +1813,13 @@ async function handlePricingBootstrap(env: Env): Promise<Response> {
       excludes: tariff.excludes_text,
     })),
     recent: (recentResult.results ?? []).map((calculation) => ({
+      ...(() => {
+        const metadata = parseCalculationMetadata(calculation.comment);
+        return { title: metadata.title, currency: metadata.currency };
+      })(),
       id: calculation.id,
-      title: calculation.title || "Расчёт проекта",
       clientName: calculation.client_name,
       status: calculation.status,
-      currency: calculation.currency,
       total: roundMoney(Number(calculation.total ?? 0)),
       itemCount: Number(calculation.item_count ?? 0),
       updatedAt: calculation.updated_at,
@@ -1799,7 +1840,7 @@ async function handleCalculationDetail(calculationId: string, env: Env): Promise
       LIMIT 1
     `).bind(calculationId).first<CalculationRow>(),
     db.prepare(`
-      SELECT id, tariff_id, name, unit, quantity, tariff_rate, manual_rate,
+      SELECT id, tariff_id, name, quantity, tariff_rate, manual_rate,
         complexity_coefficient, source_coefficient, urgency_coefficient, rights_coefficient,
         item_discount_percent, fixed_cost, hours, internal_hour_rate, external_cost,
         sort_order, comment
@@ -1859,14 +1900,13 @@ async function handleCalculationCreate(request: Request, env: Env, identity: Con
   const statements = [
     db.prepare(`
       INSERT INTO project_calculations (
-        id, client_id, title, currency, project_type, status, discount_percent,
+        id, client_id, project_type, status, discount_percent,
         manual_adjustment, minimum_price, external_project_cost, prepayment_percent,
         ethical_status, valid_until, comment, created_at, updated_at
-      ) VALUES (?, ?, ?, 'RUB', ?, 'ready', ?, ?, ?, ?, ?, 'approved', ?, ?, ?, ?)
+      ) VALUES (?, ?, ?, 'ready', ?, ?, ?, ?, ?, 'approved', ?, ?, ?, ?)
     `).bind(
       calculationId,
       clientId || null,
-      title,
       projectType,
       discountPercent,
       manualAdjustment,
@@ -1874,7 +1914,7 @@ async function handleCalculationCreate(request: Request, env: Env, identity: Con
       externalProjectCost,
       prepaymentPercent,
       validUntil || null,
-      comment || null,
+      JSON.stringify({ title, currency: "RUB", comment }),
       now,
       now,
     ),
@@ -1883,17 +1923,17 @@ async function handleCalculationCreate(request: Request, env: Env, identity: Con
   items.forEach((item, index) => {
     statements.push(db.prepare(`
       INSERT INTO calculation_items (
-        id, calculation_id, tariff_id, name, unit, quantity, tariff_rate, manual_rate,
+        id, calculation_id, tariff_id, name, quantity, tariff_rate, manual_rate,
         complexity_coefficient, source_coefficient, urgency_coefficient, rights_coefficient,
         item_discount_percent, fixed_cost, hours, internal_hour_rate, external_cost,
         sort_order, comment, created_at, updated_at
-      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
     `).bind(
-      crypto.randomUUID(), calculationId, item.tariffId || null, item.name, item.unit,
+      crypto.randomUUID(), calculationId, item.tariffId || null, item.name,
       item.quantity, item.tariffRate, item.manualRate, item.complexityCoefficient,
       item.sourceCoefficient, item.urgencyCoefficient, item.rightsCoefficient,
       item.itemDiscountPercent, item.fixedCost, item.hours, item.internalHourRate,
-      item.externalCost, index + 1, item.comment || null, now, now,
+      item.externalCost, index + 1, JSON.stringify({ unit: item.unit, comment: item.comment }), now, now,
     ));
   });
 
