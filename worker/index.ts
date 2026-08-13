@@ -92,6 +92,19 @@ interface KnowledgeRow {
   niche_names: string | null;
   stage_slugs: string | null;
   stage_names: string | null;
+  is_favorite: number;
+}
+
+interface AuditLogRow {
+  id: string;
+  actor_email: string | null;
+  action: string;
+  entity_type: string;
+  entity_id: string;
+  entity_title: string | null;
+  old_value_json: string | null;
+  new_value_json: string | null;
+  created_at: string;
 }
 
 interface PreparationKnowledgeRow {
@@ -469,6 +482,7 @@ function splitList(value: string | null): string[] {
 function toKnowledgeItem(row: KnowledgeRow) {
   return {
     ...row,
+    isFavorite: Boolean(row.is_favorite),
     niches: splitList(row.niche_names),
     nicheSlugs: splitList(row.niche_slugs),
     stages: splitList(row.stage_names),
@@ -477,7 +491,17 @@ function toKnowledgeItem(row: KnowledgeRow) {
     niche_slugs: undefined,
     stage_names: undefined,
     stage_slugs: undefined,
+    is_favorite: undefined,
   };
+}
+
+function parseAuditValue(value: string | null): unknown {
+  if (!value) return null;
+  try {
+    return JSON.parse(value) as unknown;
+  } catch {
+    return value;
+  }
 }
 
 function parsePositiveInteger(value: string | null, fallback: number, maximum: number): number {
@@ -986,6 +1010,7 @@ async function handleKnowledgeList(request: Request, env: Env): Promise<Response
   const itemType = url.searchParams.get("type")?.trim() ?? "";
   const risk = url.searchParams.get("risk")?.trim() ?? "";
   const category = url.searchParams.get("category")?.trim() ?? "";
+  const favoriteOnly = url.searchParams.get("favorite") === "true";
   const status = url.searchParams.get("status")?.trim() ?? "approved";
   const page = parsePositiveInteger(url.searchParams.get("page"), 1, 100000);
   const limit = parsePositiveInteger(url.searchParams.get("limit"), 30, 100);
@@ -1045,6 +1070,10 @@ async function handleKnowledgeList(request: Request, env: Env): Promise<Response
     bindings.push(category);
   }
 
+  if (favoriteOnly) {
+    filters.push("EXISTS (SELECT 1 FROM favorites f WHERE f.knowledge_item_id = ki.id)");
+  }
+
   const where = filters.join(" AND ");
   const selectSql = `
     SELECT
@@ -1073,6 +1102,9 @@ async function handleKnowledgeList(request: Request, env: Env): Promise<Response
       ki.version,
       ki.reviewed_at,
       ki.updated_at,
+      EXISTS (
+        SELECT 1 FROM favorites f WHERE f.knowledge_item_id = ki.id
+      ) AS is_favorite,
       (
         SELECT GROUP_CONCAT(n.slug, '${listDelimiter}')
         FROM knowledge_item_niches kin
@@ -1202,6 +1234,9 @@ async function handleKnowledgeDetail(itemId: string, env: Env): Promise<Response
       ki.version,
       ki.reviewed_at,
       ki.updated_at,
+      EXISTS (
+        SELECT 1 FROM favorites f WHERE f.knowledge_item_id = ki.id
+      ) AS is_favorite,
       (
         SELECT GROUP_CONCAT(n.slug, '${listDelimiter}')
         FROM knowledge_item_niches kin
@@ -1478,6 +1513,147 @@ async function handleKnowledgeUpdate(request: Request, itemId: string, env: Env,
 
   await db.batch(statements);
   return handleKnowledgeDetail(itemId, env);
+}
+
+async function handleFavoriteChange(
+  request: Request,
+  itemId: string,
+  env: Env,
+  identity: ConstructorIdentity,
+): Promise<Response> {
+  const db = requireDatabase(env);
+  if (db instanceof Response) return db;
+
+  const item = await db.prepare("SELECT id, title FROM knowledge_items WHERE id = ? LIMIT 1")
+    .bind(itemId)
+    .first<{ id: string; title: string }>();
+  if (!item?.id) return constructorError(404, "KNOWLEDGE_NOT_FOUND", "Запись базы знаний не найдена.");
+
+  const now = new Date().toISOString();
+  const adding = request.method === "PUT";
+  await db.batch([
+    adding
+      ? db.prepare(`
+          INSERT INTO favorites (id, knowledge_item_id, created_at)
+          VALUES (?, ?, ?)
+          ON CONFLICT(knowledge_item_id) DO NOTHING
+        `).bind(crypto.randomUUID(), itemId, now)
+      : db.prepare("DELETE FROM favorites WHERE knowledge_item_id = ?").bind(itemId),
+    db.prepare(`
+      INSERT INTO audit_log (id, actor_email, action, entity_type, entity_id, new_value_json, created_at)
+      VALUES (?, ?, ?, 'knowledge_item', ?, ?, ?)
+    `).bind(
+      crypto.randomUUID(),
+      identity.email,
+      adding ? "favorite_add" : "favorite_remove",
+      itemId,
+      JSON.stringify({ title: item.title, favorite: adding }),
+      now,
+    ),
+  ]);
+
+  return json({ itemId, isFavorite: adding });
+}
+
+async function handleActivity(request: Request, env: Env): Promise<Response> {
+  const db = requireDatabase(env);
+  if (db instanceof Response) return db;
+
+  const url = new URL(request.url);
+  const action = (url.searchParams.get("action") || "").trim().slice(0, 80);
+  const entityType = (url.searchParams.get("entity") || "").trim().slice(0, 80);
+  const page = parsePositiveInteger(url.searchParams.get("page"), 1, 100000);
+  const limit = parsePositiveInteger(url.searchParams.get("limit"), 30, 100);
+  const offset = (page - 1) * limit;
+  const filters = ["1 = 1"];
+  const bindings: string[] = [];
+
+  if (action) {
+    filters.push("al.action = ?");
+    bindings.push(action);
+  }
+  if (entityType) {
+    filters.push("al.entity_type = ?");
+    bindings.push(entityType);
+  }
+
+  const where = filters.join(" AND ");
+  const [itemsResult, countResult, facetsResult] = await db.batch([
+    db.prepare(`
+      SELECT
+        al.id,
+        al.actor_email,
+        al.action,
+        al.entity_type,
+        al.entity_id,
+        al.old_value_json,
+        al.new_value_json,
+        al.created_at,
+        COALESCE(
+          CASE WHEN al.entity_type = 'knowledge_item' THEN (
+            SELECT ki.title FROM knowledge_items ki WHERE ki.id = al.entity_id LIMIT 1
+          ) END,
+          CASE WHEN al.entity_type = 'client' THEN (
+            SELECT c.name FROM clients c WHERE c.id = al.entity_id LIMIT 1
+          ) END,
+          CASE WHEN al.entity_type IN ('diagnostic_session', 'client_preparation') THEN (
+            SELECT c.name
+            FROM diagnostic_sessions ds
+            JOIN clients c ON c.id = ds.client_id
+            WHERE ds.id = al.entity_id
+            LIMIT 1
+          ) END,
+          CASE WHEN al.entity_type = 'proposal' THEN (
+            SELECT p.title FROM proposals p WHERE p.id = al.entity_id LIMIT 1
+          ) END,
+          CASE WHEN al.entity_type = 'project_calculation' THEN (
+            SELECT COALESCE(c.name, pc.project_type)
+            FROM project_calculations pc
+            LEFT JOIN clients c ON c.id = pc.client_id
+            WHERE pc.id = al.entity_id
+            LIMIT 1
+          ) END,
+          CASE WHEN al.entity_type = 'import_batch' THEN (
+            SELECT COALESCE(ib.source_reference, ib.source_kind)
+            FROM import_batches ib WHERE ib.id = al.entity_id LIMIT 1
+          ) END
+        ) AS entity_title
+      FROM audit_log al
+      WHERE ${where}
+      ORDER BY datetime(al.created_at) DESC, al.id DESC
+      LIMIT ? OFFSET ?
+    `).bind(...bindings, limit, offset),
+    db.prepare(`SELECT COUNT(*) AS total FROM audit_log al WHERE ${where}`).bind(...bindings),
+    db.prepare(`
+      SELECT action, entity_type, COUNT(*) AS total
+      FROM audit_log
+      GROUP BY action, entity_type
+      ORDER BY total DESC, action, entity_type
+    `),
+  ]);
+
+  const rows = (itemsResult.results ?? []) as unknown as AuditLogRow[];
+  const total = Number((countResult.results?.[0] as { total?: number } | undefined)?.total ?? 0);
+  return json({
+    items: rows.map((row) => ({
+      id: row.id,
+      actorEmail: row.actor_email,
+      action: row.action,
+      entityType: row.entity_type,
+      entityId: row.entity_id,
+      entityTitle: row.entity_title,
+      oldValue: parseAuditValue(row.old_value_json),
+      newValue: parseAuditValue(row.new_value_json),
+      createdAt: row.created_at,
+    })),
+    facets: facetsResult.results ?? [],
+    pagination: {
+      page,
+      limit,
+      total,
+      pages: Math.max(1, Math.ceil(total / limit)),
+    },
+  });
 }
 
 async function handlePreparationCreate(request: Request, env: Env, identity: ConstructorIdentity): Promise<Response> {
@@ -3360,6 +3536,10 @@ async function handleConstructorApi(request: Request, env: Env, identity: Constr
     return handleQualityDashboard(env);
   }
 
+  if (url.pathname === "/api/constructor/activity" && request.method === "GET") {
+    return handleActivity(request, env);
+  }
+
   if (url.pathname === "/api/constructor/import/preview" && request.method === "POST") {
     return handleImportPreview(request, env);
   }
@@ -3385,6 +3565,11 @@ async function handleConstructorApi(request: Request, env: Env, identity: Constr
     const itemId = knowledgeMatch[1].slice(0, 80);
     if (request.method === "GET") return handleKnowledgeDetail(itemId, env);
     if (request.method === "PATCH") return handleKnowledgeUpdate(request, itemId, env, identity);
+  }
+
+  const favoriteMatch = url.pathname.match(/^\/api\/constructor\/favorites\/([^/]+)$/);
+  if (favoriteMatch && (request.method === "PUT" || request.method === "DELETE")) {
+    return handleFavoriteChange(request, favoriteMatch[1].slice(0, 80), env, identity);
   }
 
   if (url.pathname === "/api/constructor/answers" && request.method === "GET") {

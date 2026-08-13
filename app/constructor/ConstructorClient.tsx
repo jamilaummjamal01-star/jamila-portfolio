@@ -4,6 +4,7 @@ import { FormEvent, useCallback, useEffect, useMemo, useState } from "react";
 import ClientWorkspace from "./ClientWorkspace";
 import DashboardWorkspace, { ConstructorSection } from "./DashboardWorkspace";
 import DiagnosticWorkspace from "./DiagnosticWorkspace";
+import FavoritesHistoryWorkspace from "./FavoritesHistoryWorkspace";
 import ImportQualityWorkspace from "./ImportQualityWorkspace";
 import KnowledgeEditor, { KnowledgeUpdatePayload } from "./KnowledgeEditor";
 import PreparationWorkspace from "./PreparationWorkspace";
@@ -27,7 +28,7 @@ type BootstrapData = {
   };
 };
 
-type KnowledgeItem = {
+export type KnowledgeItem = {
   id: string;
   item_type: string;
   speaker: string;
@@ -53,6 +54,7 @@ type KnowledgeItem = {
   version: number;
   reviewed_at: string | null;
   updated_at: string;
+  isFavorite: boolean;
   niches: string[];
   nicheSlugs: string[];
   stages: string[];
@@ -112,6 +114,7 @@ const statusLabels: Record<string, string> = {
 const navigation = [
   ["Главная", "home", true],
   ["База знаний", "knowledge", true],
+  ["Избранное и история", "library", true],
   ["Подготовиться к клиенту", "prepare", true],
   ["Клиент задал вопрос", "answer", true],
   ["Диагностика", "diagnostic", true],
@@ -157,6 +160,7 @@ export default function ConstructorClient() {
   const [stage, setStage] = useState("");
   const [itemType, setItemType] = useState("");
   const [risk, setRisk] = useState("");
+  const [favoriteOnly, setFavoriteOnly] = useState(false);
   const [status, setStatus] = useState("approved");
   const [page, setPage] = useState(1);
   const [selected, setSelected] = useState<KnowledgeItem | null>(null);
@@ -202,6 +206,7 @@ export default function ConstructorClient() {
     if (stage) params.set("stage", stage);
     if (itemType) params.set("type", itemType);
     if (risk) params.set("risk", risk);
+    if (favoriteOnly) params.set("favorite", "true");
 
     const response = await fetch(`/api/constructor/knowledge?${params.toString()}`, {
       credentials: "same-origin",
@@ -211,7 +216,7 @@ export default function ConstructorClient() {
     const payload = (await response.json()) as KnowledgeResponse;
     setItems(payload.items);
     setPagination(payload.pagination);
-  }, [debouncedQuery, itemType, niche, page, risk, stage, status]);
+  }, [debouncedQuery, favoriteOnly, itemType, niche, page, risk, stage, status]);
 
   useEffect(() => {
     let cancelled = false;
@@ -318,7 +323,25 @@ export default function ConstructorClient() {
     await Promise.all([loadBootstrap(), loadItems()]);
   }
 
-  const hasFilters = Boolean(query || niche || stage || itemType || risk || status !== "approved");
+  async function toggleFavorite(item: KnowledgeItem): Promise<boolean> {
+    setError("");
+    const response = await fetch(`/api/constructor/favorites/${encodeURIComponent(item.id)}`, {
+      method: item.isFavorite ? "DELETE" : "PUT",
+      credentials: "same-origin",
+    });
+    if (!response.ok) throw new Error(await parseError(response));
+    const payload = (await response.json()) as { isFavorite: boolean };
+    const nextItem = { ...item, isFavorite: payload.isFavorite };
+    setItems((current) => favoriteOnly && !payload.isFavorite
+      ? current.filter((candidate) => candidate.id !== item.id)
+      : current.map((candidate) => candidate.id === item.id ? nextItem : candidate));
+    setSelected((current) => current?.id === item.id ? { ...current, isFavorite: payload.isFavorite } : current);
+    setToast(payload.isFavorite ? "Добавлено в избранное" : "Удалено из избранного");
+    if (favoriteOnly && !payload.isFavorite) setPagination((current) => ({ ...current, total: Math.max(0, current.total - 1) }));
+    return payload.isFavorite;
+  }
+
+  const hasFilters = Boolean(query || niche || stage || itemType || risk || favoriteOnly || status !== "approved");
 
   function resetFilters() {
     setQuery("");
@@ -326,6 +349,7 @@ export default function ConstructorClient() {
     setStage("");
     setItemType("");
     setRisk("");
+    setFavoriteOnly(false);
     setStatus("approved");
     setPage(1);
   }
@@ -460,6 +484,15 @@ export default function ConstructorClient() {
             </select>
           </label>
 
+          <button
+            className={`${styles.favoriteFilterButton} ${favoriteOnly ? styles.favoriteFilterButtonActive : ""}`}
+            type="button"
+            aria-pressed={favoriteOnly}
+            onClick={() => { setFavoriteOnly((value) => !value); setPage(1); }}
+          >
+            <span>★</span> Только избранные
+          </button>
+
           {hasFilters && (
             <button className={styles.resetButton} type="button" onClick={resetFilters}>
               Сбросить фильтры
@@ -495,9 +528,18 @@ export default function ConstructorClient() {
             <article className={styles.knowledgeCard} key={item.id}>
               <div className={styles.cardMeta}>
                 <span className={styles.typeBadge}>{itemTypeLabels[item.item_type] || item.item_type}</span>
-                <span className={`${styles.riskBadge} ${styles[`risk_${item.risk_level}`] || ""}`}>
-                  {riskLabels[item.risk_level] || item.risk_level}
-                </span>
+                <div className={styles.cardMetaActions}>
+                  <button
+                    className={`${styles.favoriteButton} ${item.isFavorite ? styles.favoriteButtonActive : ""}`}
+                    type="button"
+                    aria-label={item.isFavorite ? "Удалить из избранного" : "Добавить в избранное"}
+                    title={item.isFavorite ? "Удалить из избранного" : "Добавить в избранное"}
+                    onClick={() => void toggleFavorite(item).catch((reason: unknown) => setError(reason instanceof Error ? reason.message : "Не удалось изменить избранное."))}
+                  >★</button>
+                  <span className={`${styles.riskBadge} ${styles[`risk_${item.risk_level}`] || ""}`}>
+                    {riskLabels[item.risk_level] || item.risk_level}
+                  </span>
+                </div>
               </div>
 
               <div className={styles.cardTitleBlock}>
@@ -532,6 +574,12 @@ export default function ConstructorClient() {
           </>
         ) : activeSection === "prepare" ? (
           <PreparationWorkspace bootstrap={bootstrap} onToast={setToast} />
+        ) : activeSection === "library" ? (
+          <FavoritesHistoryWorkspace
+            onOpen={(item) => { setSelected(item); setEditingSelected(false); }}
+            onToggleFavorite={toggleFavorite}
+            onToast={setToast}
+          />
         ) : activeSection === "answer" ? (
           <QuestionAnswerWorkspace bootstrap={bootstrap} onToast={setToast} />
         ) : activeSection === "diagnostic" ? (
@@ -542,9 +590,9 @@ export default function ConstructorClient() {
           <PricingWorkspace onToast={setToast} />
         ) : activeSection === "proposals" ? (
           <ProposalWorkspace onToast={setToast} />
-        ) : (
+        ) : activeSection === "quality" ? (
           <ImportQualityWorkspace onToast={setToast} />
-        )}
+        ) : null}
       </section>
 
       {selected && (
@@ -567,7 +615,14 @@ export default function ConstructorClient() {
                     <p className={styles.eyebrow}>{itemTypeLabels[selected.item_type] || selected.item_type}</p>
                     <h2>{selected.title}</h2>
                   </div>
-                  <button className={styles.primaryButton} type="button" onClick={() => setEditingSelected(true)}>Редактировать</button>
+                  <div className={styles.drawerHeadingActions}>
+                    <button
+                      className={`${styles.favoriteButton} ${selected.isFavorite ? styles.favoriteButtonActive : ""}`}
+                      type="button"
+                      onClick={() => void toggleFavorite(selected).catch((reason: unknown) => setError(reason instanceof Error ? reason.message : "Не удалось изменить избранное."))}
+                    >★ <span>{selected.isFavorite ? "В избранном" : "В избранное"}</span></button>
+                    <button className={styles.primaryButton} type="button" onClick={() => setEditingSelected(true)}>Редактировать</button>
+                  </div>
                 </div>
 
                 <dl className={styles.detailMeta}>
