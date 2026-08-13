@@ -4,7 +4,7 @@ import { useCallback, useEffect, useMemo, useState } from "react";
 import type { ReactNode } from "react";
 import styles from "./constructor.module.css";
 
-export type ConstructorSection = "home" | "knowledge" | "library" | "prepare" | "answer" | "diagnostic" | "clients" | "pricing" | "proposals" | "quality";
+export type ConstructorSection = "home" | "followups" | "knowledge" | "library" | "prepare" | "answer" | "diagnostic" | "clients" | "pricing" | "proposals" | "quality";
 
 type DashboardData = {
   generatedAt: string;
@@ -150,7 +150,7 @@ export default function DashboardWorkspace({ onNavigate }: { onNavigate: (sectio
   const today = useMemo(() => new Intl.DateTimeFormat("ru-RU", { weekday: "long", day: "numeric", month: "long" }).format(new Date()), []);
 
   const summaryCards = [
-    { label: "Следующие контакты", value: data?.summary.follow_ups ?? 0, section: "clients" as const, hint: "на ближайшие 14 дней" },
+    { label: "Следующие контакты", value: data?.summary.follow_ups ?? 0, section: "followups" as const, hint: "на ближайшие 14 дней" },
     { label: "Диагностики", value: data?.summary.active_diagnostics ?? 0, section: "diagnostic" as const, hint: "не завершены" },
     { label: "Активные КП", value: data?.summary.active_proposals ?? 0, section: "proposals" as const, hint: "в работе и обсуждении" },
     { label: "Проверка знаний", value: data?.summary.knowledge_review ?? 0, section: "knowledge" as const, hint: "черновики и проверка" },
@@ -189,11 +189,11 @@ export default function DashboardWorkspace({ onNavigate }: { onNavigate: (sectio
       </section>
 
       <div className={styles.dashboardGrid} aria-busy={loading}>
-        <DashboardPanel title="Следующие контакты" count={data?.followUps.length ?? 0} action="Все клиенты" onAction={() => onNavigate("clients")}>
+        <DashboardPanel title="Следующие контакты" count={data?.followUps.length ?? 0} action="План контактов" onAction={() => onNavigate("followups")}>
           {!loading && data?.followUps.length === 0 ? <DashboardEmpty text="Ближайшие контакты не запланированы." /> : (
             <div className={styles.dashboardList}>
               {data?.followUps.map((client) => (
-                <button key={client.id} type="button" onClick={() => onNavigate("clients")}>
+                <button key={client.id} type="button" onClick={() => onNavigate("followups")}>
                   <span className={`${styles.dashboardPriority} ${styles[`dashboardPriority${client.priority}`] || ""}`}>{client.priority}</span>
                   <div><strong>{client.name}</strong><small>{client.next_action || client.niche_name || "Уточнить следующий шаг"}</small></div>
                   <time className={isOverdue(client.next_contact_at) ? styles.dashboardOverdue : ""}>{isOverdue(client.next_contact_at) ? "Просрочено · " : ""}{displayDate(client.next_contact_at, true)}</time>

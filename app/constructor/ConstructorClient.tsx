@@ -5,6 +5,7 @@ import ClientWorkspace from "./ClientWorkspace";
 import DashboardWorkspace, { ConstructorSection } from "./DashboardWorkspace";
 import DiagnosticWorkspace from "./DiagnosticWorkspace";
 import FavoritesHistoryWorkspace from "./FavoritesHistoryWorkspace";
+import FollowUpWorkspace from "./FollowUpWorkspace";
 import ImportQualityWorkspace from "./ImportQualityWorkspace";
 import KnowledgeEditor, { KnowledgeUpdatePayload } from "./KnowledgeEditor";
 import PreparationWorkspace from "./PreparationWorkspace";
@@ -113,6 +114,7 @@ const statusLabels: Record<string, string> = {
 
 const navigation = [
   ["Главная", "home", true],
+  ["План контактов", "followups", true],
   ["База знаний", "knowledge", true],
   ["Избранное и история", "library", true],
   ["Подготовиться к клиенту", "prepare", true],
@@ -396,6 +398,8 @@ export default function ConstructorClient() {
       <section className={styles.workspace}>
         {activeSection === "home" ? (
           <DashboardWorkspace onNavigate={navigateToSection} />
+        ) : activeSection === "followups" ? (
+          <FollowUpWorkspace onToast={setToast} />
         ) : activeSection === "knowledge" ? (
           <>
         <header className={styles.topbar}>

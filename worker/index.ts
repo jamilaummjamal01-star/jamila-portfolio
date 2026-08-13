@@ -107,6 +107,20 @@ interface AuditLogRow {
   created_at: string;
 }
 
+interface FollowUpRow {
+  kind: "client" | "proposal";
+  id: string;
+  title: string;
+  client_name: string;
+  action_text: string;
+  due_at: string;
+  priority: string;
+  status: string;
+  contact_name: string | null;
+  contact_channel: string | null;
+  contact_value: string | null;
+}
+
 interface PreparationKnowledgeRow {
   id: string;
   item_type: string;
@@ -850,6 +864,153 @@ async function handleBootstrap(env: Env, identity: ConstructorIdentity): Promise
   });
 }
 
+function moscowDateKey(value: Date): string {
+  return new Intl.DateTimeFormat("en-CA", {
+    timeZone: "Europe/Moscow",
+    year: "numeric",
+    month: "2-digit",
+    day: "2-digit",
+  }).format(value);
+}
+
+function followUpBucket(dueAt: string, now: Date): "overdue" | "today" | "week" | "later" {
+  const due = new Date(dueAt);
+  if (Number.isNaN(due.valueOf())) return "later";
+  if (due.valueOf() <= now.valueOf()) return "overdue";
+  if (moscowDateKey(due) === moscowDateKey(now)) return "today";
+  if (due.valueOf() <= now.valueOf() + 7 * 24 * 60 * 60 * 1000) return "week";
+  return "later";
+}
+
+async function handleFollowUps(env: Env): Promise<Response> {
+  const db = requireDatabase(env);
+  if (db instanceof Response) return db;
+
+  const result = await db.prepare(`
+    SELECT * FROM (
+      SELECT
+        'client' AS kind,
+        c.id AS id,
+        c.name AS title,
+        c.name AS client_name,
+        COALESCE(NULLIF(c.next_action, ''), 'Связаться с клиентом') AS action_text,
+        c.next_contact_at AS due_at,
+        c.priority AS priority,
+        c.crm_status AS status,
+        c.contact_name AS contact_name,
+        c.contact_channel AS contact_channel,
+        c.contact_value AS contact_value
+      FROM clients c
+      WHERE c.next_contact_at IS NOT NULL
+        AND LOWER(c.crm_status) NOT IN ('archived', 'lost')
+
+      UNION ALL
+
+      SELECT
+        'proposal' AS kind,
+        p.id AS id,
+        p.title AS title,
+        COALESCE(c.name, 'Клиент не указан') AS client_name,
+        COALESCE(NULLIF(p.next_step_text, ''), 'Уточнить решение по коммерческому предложению') AS action_text,
+        p.follow_up_at AS due_at,
+        COALESCE(c.priority, 'B') AS priority,
+        p.status AS status,
+        c.contact_name AS contact_name,
+        c.contact_channel AS contact_channel,
+        c.contact_value AS contact_value
+      FROM proposals p
+      LEFT JOIN clients c ON c.id = p.client_id
+      WHERE p.follow_up_at IS NOT NULL
+        AND LOWER(p.status) NOT IN ('archived', 'rejected')
+    ) reminders
+    ORDER BY datetime(due_at), CASE priority WHEN 'A' THEN 0 WHEN 'B' THEN 1 ELSE 2 END, title
+    LIMIT 500
+  `).all<FollowUpRow>();
+
+  const now = new Date();
+  const rows = (result.results ?? []) as unknown as FollowUpRow[];
+  const items = rows.map((item) => ({
+    kind: item.kind,
+    id: item.id,
+    title: item.title,
+    clientName: item.client_name,
+    actionText: item.action_text,
+    dueAt: item.due_at,
+    bucket: followUpBucket(item.due_at, now),
+    priority: item.priority,
+    status: item.status,
+    contactName: item.contact_name,
+    contactChannel: item.contact_channel,
+    contactValue: item.contact_value,
+  }));
+  const summary = {
+    total: items.length,
+    overdue: items.filter((item) => item.bucket === "overdue").length,
+    today: items.filter((item) => item.bucket === "today").length,
+    week: items.filter((item) => item.bucket === "week").length,
+    later: items.filter((item) => item.bucket === "later").length,
+  };
+
+  return json({ generatedAt: now.toISOString(), summary, items });
+}
+
+async function handleFollowUpUpdate(
+  request: Request,
+  kind: "client" | "proposal",
+  entityId: string,
+  env: Env,
+  identity: ConstructorIdentity,
+): Promise<Response> {
+  const db = requireDatabase(env);
+  if (db instanceof Response) return db;
+
+  let body: Record<string, unknown>;
+  try {
+    body = (await request.json()) as Record<string, unknown>;
+  } catch {
+    return constructorError(400, "INVALID_JSON", "Не удалось прочитать изменение напоминания.");
+  }
+
+  const action = readText(body, "action", 40);
+  const nextAt = readText(body, "nextAt", 80);
+  if (action !== "complete" && action !== "reschedule") {
+    return constructorError(422, "FOLLOW_UP_ACTION_INVALID", "Выберите завершение или перенос контакта.");
+  }
+  if (action === "reschedule" && (!nextAt || Number.isNaN(Date.parse(nextAt)))) {
+    return constructorError(422, "FOLLOW_UP_DATE_INVALID", "Укажите корректную дату следующего контакта.");
+  }
+
+  const table = kind === "client" ? "clients" : "proposals";
+  const dateColumn = kind === "client" ? "next_contact_at" : "follow_up_at";
+  const existing = await db.prepare(`SELECT id, ${kind === "client" ? "name" : "title"} AS title, ${dateColumn} AS due_at FROM ${table} WHERE id = ? LIMIT 1`)
+    .bind(entityId)
+    .first<{ id: string; title: string; due_at: string | null }>();
+  if (!existing?.id) {
+    return constructorError(404, kind === "client" ? "CLIENT_NOT_FOUND" : "PROPOSAL_NOT_FOUND", kind === "client" ? "Карточка клиента не найдена." : "Коммерческое предложение не найдено.");
+  }
+
+  const now = new Date().toISOString();
+  const dueAt = action === "complete" ? null : new Date(nextAt).toISOString();
+  await db.batch([
+    db.prepare(`UPDATE ${table} SET ${dateColumn} = ?, updated_at = ? WHERE id = ?`).bind(dueAt, now, entityId),
+    db.prepare(`
+      INSERT INTO audit_log (id, actor_email, action, entity_type, entity_id, old_value_json, new_value_json, created_at)
+      VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+    `).bind(
+      crypto.randomUUID(),
+      identity.email,
+      action === "complete" ? "follow_up_complete" : "follow_up_reschedule",
+      kind,
+      entityId,
+      JSON.stringify({ dueAt: existing.due_at }),
+      JSON.stringify({ dueAt, title: existing.title }),
+      now,
+    ),
+  ]);
+
+  return json({ ok: true, kind, id: entityId, dueAt });
+}
+
 async function handleDashboard(env: Env): Promise<Response> {
   const db = requireDatabase(env);
   if (db instanceof Response) return db;
@@ -858,11 +1019,19 @@ async function handleDashboard(env: Env): Promise<Response> {
     db.prepare(`
       SELECT
         (
-          SELECT COUNT(*)
-          FROM clients
-          WHERE next_contact_at IS NOT NULL
-            AND datetime(next_contact_at) <= datetime('now', '+14 days')
-            AND LOWER(crm_status) NOT IN ('archived', 'refused', 'rejected', 'lost', 'completed')
+          SELECT COUNT(*) FROM (
+            SELECT c.id
+            FROM clients c
+            WHERE c.next_contact_at IS NOT NULL
+              AND datetime(c.next_contact_at) <= datetime('now', '+14 days')
+              AND LOWER(c.crm_status) NOT IN ('archived', 'lost')
+            UNION ALL
+            SELECT p.id
+            FROM proposals p
+            WHERE p.follow_up_at IS NOT NULL
+              AND datetime(p.follow_up_at) <= datetime('now', '+14 days')
+              AND LOWER(p.status) NOT IN ('archived', 'rejected')
+          )
         ) AS follow_ups,
         (
           SELECT COUNT(*)
@@ -3530,6 +3699,15 @@ async function handleConstructorApi(request: Request, env: Env, identity: Constr
 
   if (url.pathname === "/api/constructor/dashboard" && request.method === "GET") {
     return handleDashboard(env);
+  }
+
+  if (url.pathname === "/api/constructor/follow-ups" && request.method === "GET") {
+    return handleFollowUps(env);
+  }
+
+  const followUpMatch = url.pathname.match(/^\/api\/constructor\/follow-ups\/(client|proposal)\/([^/]+)$/);
+  if (followUpMatch && request.method === "PATCH") {
+    return handleFollowUpUpdate(request, followUpMatch[1] as "client" | "proposal", followUpMatch[2].slice(0, 80), env, identity);
   }
 
   if (url.pathname === "/api/constructor/quality" && request.method === "GET") {

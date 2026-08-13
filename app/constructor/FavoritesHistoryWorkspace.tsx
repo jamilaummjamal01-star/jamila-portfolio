@@ -55,6 +55,8 @@ const actionLabels: Record<string, string> = {
   import: "Импортировано",
   favorite_add: "Добавлено в избранное",
   favorite_remove: "Удалено из избранного",
+  follow_up_complete: "Контакт выполнен",
+  follow_up_reschedule: "Контакт перенесён",
 };
 
 const entityLabels: Record<string, string> = {
