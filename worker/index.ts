@@ -499,11 +499,2992 @@ function readNumber(body: Record<string, unknown>, key: string, fallback: number
 }
 
 function asRecord(value: unknown): Record<string, unknown> | null {
-  return value && typeof value === "object" &&ß®:ÒÚ$z{-®éÜj×WFVEö@¢’dÅTU2ƒòÂòÂòÂv6ö×ÆWFVBrÂòÂòÂòÂòÂòÂòÂò¢’æ&–æB€¢&F6„–BÂ6÷W&6T¶–æBÂ6÷W&6U&VfW&Væ6RÇÂçVÆÂÂ&Wf–Wu&÷w2æÆVæwF‚Â&VG•&÷w2æÆVæwF‚À¢&V¦V7FVE&÷w2Â&Wf–Wu&÷w2æf–ÇFW"‚‡&÷r’Óâ&÷rç7FFRÓÓÒ&W'&÷""’æÆVæwF‚À¢&V¦V7FVE&÷w2ò¥4ôâç7G&–æv–g’‡&Wf–Wu&÷w2æf–ÇFW"‚‡&÷r’Óâ&÷rç7FFRÓÒ'&VG’"’æÖ‚‡&÷r’Óâ‡²&÷s¢&÷rç&÷rÂ7FFS¢&÷rç7FFRÂW'&÷'3¢&÷ræW'&÷'2Ò’’’¢çVÆÂÀ¢æ÷rÂæ÷rÀ¢’“°¢7FFVÖVçG2çW6‚†F"ç&W&R† ¢”å4U%B”åDòVF—EöÆör†–BÂ7F÷%öVÖ–ÂÂ7F–öâÂVçF—G•÷G—RÂVçF—G•ö–BÂæWu÷fÇVUö§6öâÂ7&VFVEöB¢dÅTU2ƒòÂòÂv–×÷'BrÂv–×÷'Eö&F6‚rÂòÂòÂò¢’æ&–æB†7'—Fòç&æFöÕUT”B‚’Â–FVçF—G’æVÖ–ÂÂ&F6„–BÂ¥4ôâç7G&–æv–g’‡²6÷W&6T¶–æBÂ6÷W&6U&VfW&Væ6RÂ–×÷'FVC¢&VG•&÷w2æÆVæwF‚Â6¶—VC¢&V¦V7FVE&÷w2Ò’Âæ÷r’“° ¢v—BF"æ&F6‚‡7FFVÖVçG2“°¢&WGW&â§6öâ‡²&F6„–BÂ–×÷'FVC¢&VG•&÷w2æÆVæwF‚Â6¶—VC¢&V¦V7FVE&÷w2ÒÂ²7FGW3¢#Ò“°§Ğ ¦7–æ2gVæ7F–öâ†æFÆUVÆ—G”F6†&ö&B†Vçc¢Vçb“¢&öÖ—6SÅ&W7öç6Sâ°¢6öç7BF"Ò&WV—&TFF&6R†Vçb“°¢–b†F"–ç7Fæ6Vöb&W7öç6R’&WGW&âF#°¢6öç7B&W7VÇG2Òv—BF"æ&F6‚…°¢F"ç&W&R† ¢4TÄT5@¢4õTåB‚¢’2F÷FÂÀ¢5TÒ„44Rt„Tâ7FGW2Òv&÷fVBrD„TâTÅ4RTäB’2&÷fVBÀ¢5TÒ„44Rt„Tâ7FGW2ÒvG&gBräBFFWF–ÖR‡WFFVEöB’ÂFFWF–ÖR‚væ÷rrÂrÓ3F—2r’D„TâTÅ4RTäB’27FÆUöG&gG2À¢5TÒ„44Rt„Tâ—FVÕ÷G—RÒwVW7F–öåög&öÕö6Æ–VçBräB4ôÄU44R„åTÄÄ”b…E$”Ò‡6†÷'E÷FW‡B’Ârr’ÂåTÄÄ”b…E$”Ò†gVÆÅ÷FW‡B’Ârr’’•2åTÄÂD„TâTÅ4RTäB’2VW7F–öç5÷v—F†÷WEöç7vW"À¢5TÒ„44Rt„Tâ—FVÕ÷G—R”â‚vç7vW"rÂvö&¦V7F–öå÷&W7öç6Rr’äB4ôÄU44R…E$”Ò†æW‡Eö7F–öå÷FW‡B’Ârr’ÒrrD„TâTÅ4RTäB’2ç7vW'5÷v—F†÷WEöæW‡Eö7F–öâÀ¢5TÒ„44Rt„Tâ&—6µöÆWfVÂ”â‚v†–v‚rÂw&VgW6Âr’äB4ôÄU44R…E$”Ò‡&VEöfÆu÷FW‡B’Ârr’ÒrrD„TâTÅ4RTäB’2†–v…÷&—6µ÷v—F†÷WEöW‡ÆæF–öâÀ¢5TÒ„44Rt„TâäõBU„•5E2…4TÄT5Be$ôÒ¶æ÷vÆVFvUö—FVÕöæ–6†W2¶–ât„U$R¶–âæ¶æ÷vÆVFvUö—FVÕö–BÒ¶’æ–B’D„TâTÅ4RTäB’2Ö—76–æuöæ–6†RÀ¢5TÒ„44Rt„Tâ7FGW2Òv&÷fVBräB‡&Wf–WvVEöB•2åTÄÂõ"FFWF–ÖR‡&Wf–WvVEöB’ÂFFWF–ÖR‚væ÷rrÂrÓƒF—2r’’D„TâTÅ4RTäB’27FÆU÷6÷W&6W0¢e$ôÒ¶æ÷vÆVFvUö—FV×2¶¢t„U$R7FGW2Òv&6†—fVBp¢’À¢F"ç&W&R† ¢4TÄT5B4ôÄU44R…5TÒ†—FVÕö6÷VçBÒ’Â’2GWÆ–6FUö—FV×0¢e$ôÒ€¢4TÄT5B4õTåB‚¢’2—FVÕö6÷Vç@¢e$ôÒ¶æ÷vÆVFvUö—FV×0¢t„U$R7FGW2Òv&6†—fVBp¢u$õU%’ÄõtU"†—FVÕ÷G—RÇÂwÂrÇÂ6FVv÷'’ÇÂwÂrÇÂ4ôÄU44R„åTÄÄ”b…E$”Ò‡&ö×E÷FW‡B’Ârr’ÂF—FÆR’¢„d”är4õTåB‚¢’â¢’GWÆ–6FUöw&÷W0¢’À¢F"ç&W&R† ¢4TÄT5B4õTåB‚¢’2F&–fg5öGVP¢e$ôÒ&–6–æu÷F&–fg0¢t„U$R—5ö7F—fRÒäB‡&Wf–WuöB•2åTÄÂõ"FFWF–ÖR‡&Wf–WuöB’ÂFFWF–ÖR‚væ÷rr’¢’À¢F"ç&W&R† ¢t•D‚—77VU÷&÷w22€¢4TÄT5BvÖ—76–æuöæ–6†Rr2—77VRÂ–BÂF—FÆRÂWFFVEöBe$ôÒ¶æ÷vÆVFvUö—FV×2¶¢t„U$R7FGW2Òv&6†—fVBräBäõBU„•5E2…4TÄT5Be$ôÒ¶æ÷vÆVFvUö—FVÕöæ–6†W2¶–ât„U$R¶–âæ¶æ÷vÆVFvUö—FVÕö–BÒ¶’æ–B¢Tä”ôâÄÀ¢4TÄT5BwVW7F–öç5÷v—F†÷WEöç7vW"rÂ–BÂF—FÆRÂWFFVEöBe$ôÒ¶æ÷vÆVFvUö—FV×0¢t„U$R7FGW2Òv&6†—fVBräB—FVÕ÷G—RÒwVW7F–öåög&öÕö6Æ–VçBräB4ôÄU44R„åTÄÄ”b…E$”Ò‡6†÷'E÷FW‡B’Ârr’ÂåTÄÄ”b…E$”Ò†gVÆÅ÷FW‡B’Ârr’’•2åTÄÀ¢Tä”ôâÄÀ¢4TÄT5Bvç7vW'5÷v—F†÷WEöæW‡Eö7F–öârÂ–BÂF—FÆRÂWFFVEöBe$ôÒ¶æ÷vÆVFvUö—FV×0¢t„U$R7FGW2Òv&6†—fVBräB—FVÕ÷G—R”â‚vç7vW"rÂvö&¦V7F–öå÷&W7öç6Rr’äB4ôÄU44R…E$”Ò†æW‡Eö7F–öå÷FW‡B’Ârr’Òrp¢Tä”ôâÄÀ¢4TÄT5Bv†–v…÷&—6µ÷v—F†÷WEöW‡ÆæF–öârÂ–BÂF—FÆRÂWFFVEöBe$ôÒ¶æ÷vÆVFvUö—FV×0¢t„U$R7FGW2Òv&6†—fVBräB&—6µöÆWfVÂ”â‚v†–v‚rÂw&VgW6Âr’äB4ôÄU44R…E$”Ò‡&VEöfÆu÷FW‡B’Ârr’Òrp¢Tä”ôâÄÀ¢4TÄT5Bw7FÆUöG&gG2rÂ–BÂF—FÆRÂWFFVEöBe$ôÒ¶æ÷vÆVFvUö—FV×0¢t„U$R7FGW2ÒvG&gBräBFFWF–ÖR‡WFFVEöB’ÂFFWF–ÖR‚væ÷rrÂrÓ3F—2r¢’Â&æ¶VB2€¢4TÄT5B—77VRÂ–BÂF—FÆRÂ$õuôåTÔ$U"‚’õdU"…%D•D”ôâ%’—77VRõ$DU"%’FFWF–ÖR‡WFFVEöB’ÂF—FÆR’2&÷uöçVÖ&W ¢e$ôÒ—77VU÷&÷w0¢¢4TÄT5B—77VRÂ–BÂF—FÆRe$ôÒ&æ¶VBt„U$R&÷uöçVÖ&W"ÃÒBõ$DU"%’—77VRÂ&÷uöçVÖ&W ¢’À¢F"ç&W&R† ¢4TÄT5@¢âç6ÇVrÂâææÖRÀ¢4õTåB„D•5D”ä5B44Rt„Tâ¶’ç7FGW2Òv&÷fVBrD„Tâ¶’æ–BTäB’2&÷fVBÀ¢4õTåB„D•5D”ä5B44Rt„Tâ¶’ç7FGW2Òv&÷fVBräB¶’æ—FVÕ÷G—R”â‚wVW7F–öå÷Fõö6Æ–VçBrÂv6Æ&–g––æu÷VW7F–öâr’D„Tâ¶’æ–BTäB’2VW7F–öç2À¢4õTåB„D•5D”ä5B44Rt„Tâ¶’ç7FGW2Òv&÷fVBräB¶’æ—FVÕ÷G—R”â‚vç7vW"rÂwVW7F–öåög&öÕö6Æ–VçBrÂvö&¦V7F–öå÷&W7öç6Rr’D„Tâ¶’æ–BTäB’2ç7vW'2À¢4õTåB„D•5D”ä5B44Rt„Tâ¶’ç7FGW2Òv&÷fVBräB¶’æ—FVÕ÷G—R”â‚w&VEöfÆrrÂvWF†–6Å÷'VÆRrÂw&VgW6Å÷&V6öâr’D„Tâ¶’æ–BTäB’2&—6·0¢e$ôÒæ–6†W2à¢ÄTeB¤ô”â¶æ÷vÆVFvUö—FVÕöæ–6†W2¶–âôâ¶–âææ–6†Uö–BÒâæ–@¢ÄTeB¤ô”â¶æ÷vÆVFvUö—FV×2¶’ôâ¶’æ–BÒ¶–âæ¶æ÷vÆVFvUö—FVÕö–@¢t„U$Râæ—5ö7F—fRÒ¢u$õU%’âæ–BÂâç6ÇVrÂâææÖP¢õ$DU"%’âç&–÷&—G’ÂâææÖP¢’À¢F"ç&W&R† ¢4TÄT5B–BÂ6÷W&6Uö¶–æBÂ6÷W&6U÷&VfW&Væ6RÂ7FGW2ÂF÷FÅ÷&÷w2Â–×÷'FVE÷&÷w2Â6¶—VE÷&÷w2ÂW'&÷%÷&÷w2Â7&VFVEöBÂ6ö×ÆWFVEö@¢e$ôÒ–×÷'Eö&F6†W0¢õ$DU"%’FFWF–ÖR†7&VFVEöB’DU40¢Ä”Ô•B€¢’À¢Ò“° ¢6öç7B7VÖÖ'’Ò5&V6÷&B‡&W7VÇG5³Òç&W7VÇG3òå³Ò’óò·Ó°¢6öç7BGWÆ–6FW2Ò5&V6÷&B‡&W7VÇG5³Òç&W7VÇG3òå³Ò’óò·Ó°¢6öç7BF&–fg2Ò5&V6÷&B‡&W7VÇG5³%Òç&W7VÇG3òå³Ò’óò·Ó°¢6öç7B6×ÆW2Ò‡&W7VÇG5³5Òç&W7VÇG2óòµÒ’æÖ†5&V6÷&B’æf–ÇFW"‚‡fÇVR“¢fÇVR—2&V6÷&CÇ7G&–ærÂVæ¶æ÷vãâÓâ&ööÆVâ‡fÇVR’“°¢6öç7B6×ÆTÖÒæWrÖÇ7G&–ærÂ²–C¢7G&–æs²F—FÆS¢7G&–ærÕµÓâ‚“°¢f÷"†6öç7B6×ÆRöb6×ÆW2’°¢6öç7B—77VRÒ–×÷'E7G&–ær‡6×ÆRæ—77VRÂƒ“°¢6öç7B7W'&VçBÒ6×ÆTÖævWB†—77VR’óòµÓ°¢7W'&VçBçW6‚‡²–C¢–×÷'E7G&–ær‡6×ÆRæ–BÂƒ’ÂF—FÆS¢–×÷'E7G&–ær‡6×ÆRçF—FÆRÂ#C’Ò“°¢6×ÆTÖç6WB†—77VRÂ7W'&VçB“°¢Ğ¢6öç7B—77VTFVf–æ—F–öç2Ò°¢²&Ö—76–æuöæ–6†R"Â-	]rı-ı}­‚¢İR"Â-	}ı‚Íí=="½-Â=İ-]½Íİ½Í‚ÂİâR-í"ıí-]-Ââ%ÒÀ¢²'VW7F–öç5÷v—F†÷WEöç7vW""Â-	-íıí²­½]İ-]rí--]-"Â-	M½ò-íıíİ]"­íí-­í=â½‚ıíMíİí=âí--]-â%ÒÀ¢²&ç7vW'5÷v—F†÷WEöæW‡Eö7F–öâ"Â-	í--]-²]r½]M=í]=â="Â-	ıí½Rí--]-­½]İ-2İRı]M½ím]İâ­íİ­]-İíRM]--Râ%ÒÀ¢²&GWÆ–6FUö—FV×2"Â-	-í}Íímİ½RM=½‚"Â-	íMİ­í-½RMíÍ=½í-­‚-]=í"=}İí’ıí-]­‚â%ÒÀ¢²'7FÆUöG&gG2"Â-
--½R}]İí-­‚"Â-
-}]İí-­‚İRíİí-½ı½Âí½ÍR3Mİ]’â%ÒÀ¢²'F&–fg5öGVR"Â-
--M²-]=í"ıí-]­‚"Â-	İ]"M-²½]M=í]’ıí-]­‚½‚íİ=mRİ-=ı½â%ÒÀ¢²&†–v…÷&—6µ÷v—F†÷WEöW‡ÆæF–öâ"Â-	-½í­’¢]rí­ıİ]İò"Â-
-2-½í­í=â­İR}ıí½İ]İâí­ıİ]İR­İí=âM½=â%ÒÀ¢²'7FÆU÷6÷W&6W2"Â-
-=-]-òıí-]­-í}İ­"Â-
-=--]mMİİ½R}ı‚İRıí-]ı½Âí½ÍRƒMİ]’â%ÒÀ¢Ò26öç7C°¢6öç7B6÷VçG3¢&V6÷&CÇ7G&–ærÂçVÖ&W#âÒ°¢ââäö&¦V7Bæg&öÔVçG&–W2„ö&¦V7BæVçG&–W2‡7VÖÖ'’’æÖ‚…¶¶W’ÂfÇVUÒ’Óâ¶¶W’ÂçVÖ&W"‡fÇVRóò•Ò’’À¢GWÆ–6FUö—FV×3¢çVÖ&W"†GWÆ–6FW2æGWÆ–6FUö—FV×2óò’À¢F&–fg5öGVS¢çVÖ&W"‡F&–fg2çF&–fg5öGVRóò’À¢Ó°¢&WGW&â§6öâ‡°¢7VÖÖ'“¢6÷VçG2À¢—77VW3¢—77VTFVf–æ—F–öç2æÖ‚…¶¶W’ÂF—FÆRÂFW67&—F–öåÒ’Óâ‡²¶W’ÂF—FÆRÂFW67&—F–öâÂ6÷VçC¢6÷VçG5¶¶W•ÒóòÂ6×ÆW3¢6×ÆTÖævWB†¶W’’óòµÒÒ’’À¢ÖG&—ƒ¢&W7VÇG5³EÒç&W7VÇG2óòµÒÀ¢&V6VçD–×÷'G3¢&W7VÇG5³UÒç&W7VÇG2óòµÒÀ¢Ò“°§Ğ ¦6öç7B&6·WF&ÆW2Ò°¢'7FvW2"Â&æ–6†W2"Â'7V&æ–6†W2"Â'Fw2"Â&¶æ÷vÆVFvUö—FV×2"Â&¶æ÷vÆVFvUö—FVÕöæ–6†W2"À¢&¶æ÷vÆVFvUö—FVÕ÷7V&æ–6†W2"Â&¶æ÷vÆVFvUö—FVÕ÷7FvW2"Â&¶æ÷vÆVFvUö—FVÕ÷Fw2"Â&6Æ–VçG2"À¢&6Æ–VçEöæ–6†W2"Â&F–væ÷7F–5÷6W76–öç2"Â&F–væ÷7F–5÷6W76–öåö—FV×2"Â&ff÷&—FW2"Â'&–6–æu÷F&–fg2"À¢'&ö¦V7Eö6Æ7VÆF–öç2"Â&6Æ7VÆF–öåö—FV×2"Â'&÷÷6Ç2"Â&–×÷'Eö&F6†W2"Â&VF—EöÆör"À¥Ò26öç7C° ¦7–æ2gVæ7F–öâ†æFÆT6öç7G'V7F÷$W‡÷'B†Vçc¢Vçb“¢&öÖ—6SÅ&W7öç6Sâ°¢6öç7BF"Ò&WV—&TFF&6R†Vçb“°¢–b†F"–ç7Fæ6Vöb&W7öç6R’&WGW&âF#°¢6öç7BW‡÷'FVDBÒæWrFFR‚’çFô•4õ7G&–ær‚“°¢6öç7B&W7VÇG2Òv—BF"æ&F6‚†&6·WF&ÆW2æÖ‚‡F&ÆR’ÓâF"ç&W&R†4TÄT5B¢e$ôÒG·F&ÆWÖ’’“°¢6öç7BFFÒö&¦V7Bæg&öÔVçG&–W2†&6·WF&ÆW2æÖ‚‡F&ÆRÂ–æFW‚’Óâ·F&ÆRÂ&W7VÇG5¶–æFW…Òç&W7VÇG2óòµÕÒ’“°¢6öç7BFFRÒæWr–çFÂäFFUF–ÖTf÷&ÖB‚&VâÔ4"Â²F–ÖU¦öæS¢$WW&÷RôÖ÷66÷r"Ò’æf÷&ÖB†æWrFFR‚’“°¢&WGW&âæWr&W7öç6R„¥4ôâç7G&–æv–g’‡²f÷&ÖC¢&¦Ö–ÆÖ6öç7G'V7F÷"Ö&6·W"ÂfW'6–öã¢ÂW‡÷'FVDBÂFFÒÂçVÆÂÂ"’Â°¢†VFW'3¢°¢$6öçFVçBÕG—R#¢&Æ–6F–öâö§6öã²6†'6WC×WFbÓ‚"À¢$6öçFVçBÔF—7÷6—F–öâ#¢GF6†ÖVçC²f–ÆVæÖSÒ&¦Ö–ÆÖ6öç7G'V7F÷"Ö&6·WÒG¶FFWÒæ§6öâ&À¢$66†RÔ6öçG&öÂ#¢'&—fFRÂæò×7F÷&RÂÖ‚ÖvSÓ"À¢ÒÀ¢Ò“°§Ğ ¦7–æ2gVæ7F–öâ†æFÆT6öç7G'V7F÷$’‡&WVW7C¢&WVW7BÂVçc¢VçbÂ–FVçF—G“¢6öç7G'V7F÷$–FVçF—G’“¢&öÖ—6SÅ&W7öç6Sâ°¢6öç7BW&ÂÒæWrU$Â‡&WVW7BçW&Â“°Ğ Ğ¢–b‡W&ÂçF†æÖRÓÓÒ"ö’ö6öç7G'V7F÷"ö†VÇF‚"bb&WVW7BæÖWF†öBÓÓÒ$tUB"’°Ğ¢&WGW&â§6öâ‡°Ğ¢ö³¢G'VRÀĞ¢–FVçF—G’ÀĞ¢FF&6T6öæf–wW&VC¢&ööÆVâ†VçbäD"’ÀĞ¢66W746öæf–wW&VC¢Vçbä4ôå5E%T5Dõ%ôUD…ôTä$ÄTBÓÓÒ'G'VR"ÀĞ¢Ò“°Ğ¢ĞĞ Ğ¢–b‡W&ÂçF†æÖRÓÓÒ"ö’ö6öç7G'V7F÷"ö&ö÷G7G&"bb&WVW7BæÖWF†öBÓÓÒ$tUB"’°¢&WGW&â†æFÆT&ö÷G7G&†VçbÂ–FVçF—G’“°¢Ğ ¢–b‡W&ÂçF†æÖRÓÓÒ"ö’ö6öç7G'V7F÷"öF6†&ö&B"bb&WVW7BæÖWF†öBÓÓÒ$tUB"’°¢&WGW&â†æFÆTF6†&ö&B†Vçb“°¢Ğ ¢–b‡W&ÂçF†æÖRÓÓÒ"ö’ö6öç7G'V7F÷"÷VÆ—G’"bb&WVW7BæÖWF†öBÓÓÒ$tUB"’°¢&WGW&â†æFÆUVÆ—G”F6†&ö&B†Vçb“°¢Ğ ¢–b‡W&ÂçF†æÖRÓÓÒ"ö’ö6öç7G'V7F÷"ö–×÷'B÷&Wf–Wr"bb&WVW7BæÖWF†öBÓÓÒ%õ5B"’°¢&WGW&â†æFÆT–×÷'E&Wf–Wr‡&WVW7BÂVçb“°¢Ğ ¢–b‡W&ÂçF†æÖRÓÓÒ"ö’ö6öç7G'V7F÷"ö–×÷'Bö6öæf—&Ò"bb&WVW7BæÖWF†öBÓÓÒ%õ5B"’°¢&WGW&â†æFÆT–×÷'D6öæf—&Ò‡&WVW7BÂVçbÂ–FVçF—G’“°¢Ğ ¢–b‡W&ÂçF†æÖRÓÓÒ"ö’ö6öç7G'V7F÷"öW‡÷'B"bb&WVW7BæÖWF†öBÓÓÒ$tUB"’°¢&WGW&â†æFÆT6öç7G'V7F÷$W‡÷'B†Vçb“°¢Ğ ¢–b‡W&ÂçF†æÖRÓÓÒ"ö’ö6öç7G'V7F÷"ö¶æ÷vÆVFvR"bb&WVW7BæÖWF†öBÓÓÒ$tUB"’°¢&WGW&â†æFÆT¶æ÷vÆVFvTÆ—7B‡&WVW7BÂVçb“°Ğ¢ĞĞ Ğ¢–b‡W&ÂçF†æÖRÓÓÒ"ö’ö6öç7G'V7F÷"ö¶æ÷vÆVFvR"bb&WVW7BæÖWF†öBÓÓÒ%õ5B"’°¢&WGW&â†æFÆT¶æ÷vÆVFvT7&VFR‡&WVW7BÂVçbÂ–FVçF—G’“°¢Ğ ¢6öç7B¶æ÷vÆVFvTÖF6‚ÒW&ÂçF†æÖRæÖF6‚‚õåÂö•Âö6öç7G'V7F÷%Âö¶æ÷vÆVFvUÂò…µâõÒ²’Bò“°¢–b†¶æ÷vÆVFvTÖF6‚’°¢6öç7B—FVÔ–BÒ¶æ÷vÆVFvTÖF6…³Òç6Æ–6RƒÂƒ“°¢–b‡&WVW7BæÖWF†öBÓÓÒ$tUB"’&WGW&â†æFÆT¶æ÷vÆVFvTFWF–Â†—FVÔ–BÂVçb“°¢–b‡&WVW7BæÖWF†öBÓÓÒ%D4‚"’&WGW&â†æFÆT¶æ÷vÆVFvUWFFR‡&WVW7BÂ—FVÔ–BÂVçbÂ–FVçF—G’“°¢Ğ ¢–b‡W&ÂçF†æÖRÓÓÒ"ö’ö6öç7G'V7F÷"öç7vW'2"bb&WVW7BæÖWF†öBÓÓÒ$tUB"’°¢&WGW&â†æFÆTç7vW%6V&6‚‡&WVW7BÂVçb“°¢Ğ ¢–b‡W&ÂçF†æÖRÓÓÒ"ö’ö6öç7G'V7F÷"÷&W&F–öç2"bb&WVW7BæÖWF†öBÓÓÒ%õ5B"’°¢&WGW&â†æFÆU&W&F–öä7&VFR‡&WVW7BÂVçbÂ–FVçF—G’“°¢Ğ ¢–b‡W&ÂçF†æÖRÓÓÒ"ö’ö6öç7G'V7F÷"öF–væ÷7F–72"bb&WVW7BæÖWF†öBÓÓÒ%õ5B"’°¢&WGW&â†æFÆTF–væ÷7F–47&VFR‡&WVW7BÂVçbÂ–FVçF—G’“°¢Ğ ¢–b‡W&ÂçF†æÖRÓÓÒ"ö’ö6öç7G'V7F÷"ö6Æ–VçG2"bb&WVW7BæÖWF†öBÓÓÒ$tUB"’°¢&WGW&â†æFÆT6Æ–VçDÆ—7B‡&WVW7BÂVçb“°¢Ğ ¢–b‡W&ÂçF†æÖRÓÓÒ"ö’ö6öç7G'V7F÷"÷&–6–ærö&ö÷G7G&"bb&WVW7BæÖWF†öBÓÓÒ$tUB"’°¢&WGW&â†æFÆU&–6–æt&ö÷G7G&†Vçb“°¢Ğ ¢–b‡W&ÂçF†æÖRÓÓÒ"ö’ö6öç7G'V7F÷"ö6Æ7VÆF–öç2"bb&WVW7BæÖWF†öBÓÓÒ%õ5B"’°¢&WGW&â†æFÆT6Æ7VÆF–öä7&VFR‡&WVW7BÂVçbÂ–FVçF—G’“°¢Ğ ¢–b‡W&ÂçF†æÖRÓÓÒ"ö’ö6öç7G'V7F÷"÷&÷÷6Ç2ö&ö÷G7G&"bb&WVW7BæÖWF†öBÓÓÒ$tUB"’°¢&WGW&â†æFÆU&÷÷6Ä&ö÷G7G&†Vçb“°¢Ğ ¢–b‡W&ÂçF†æÖRÓÓÒ"ö’ö6öç7G'V7F÷"÷&÷÷6Ç2"bb&WVW7BæÖWF†öBÓÓÒ%õ5B"’°¢&WGW&â†æFÆU&÷÷6Ä7&VFR‡&WVW7BÂVçbÂ–FVçF—G’“°¢Ğ ¢6öç7B&÷÷6ÄÖF6‚ÒW&ÂçF†æÖRæÖF6‚‚õåÂö•Âö6öç7G'V7F÷%Â÷&÷÷6Ç5Âò…µâõÒ²’Bò“°¢–b‡&÷÷6ÄÖF6‚’°¢6öç7B&÷÷6Ä–BÒ&÷÷6ÄÖF6…³Òç6Æ–6RƒÂƒ“°¢–b‡&WVW7BæÖWF†öBÓÓÒ$tUB"’&WGW&â†æFÆU&÷÷6ÄFWF–Â‡&÷÷6Ä–BÂVçb“°¢–b‡&WVW7BæÖWF†öBÓÓÒ%D4‚"’&WGW&â†æFÆU&÷÷6ÅWFFR‡&WVW7BÂ&÷÷6Ä–BÂVçbÂ–FVçF—G’“°¢Ğ ¢6öç7B6Æ7VÆF–öäÖF6‚ÒW&ÂçF†æÖRæÖF6‚‚õåÂö•Âö6öç7G'V7F÷%Âö6Æ7VÆF–öç5Âò…µâõÒ²’Bò“°¢–b†6Æ7VÆF–öäÖF6‚bb&WVW7BæÖWF†öBÓÓÒ$tUB"’°¢&WGW&â†æFÆT6Æ7VÆF–öäFWF–Â†6Æ7VÆF–öäÖF6…³Òç6Æ–6RƒÂƒ’ÂVçb“°¢Ğ ¢6öç7B6Æ–VçDÖF6‚ÒW&ÂçF†æÖRæÖF6‚‚õåÂö•Âö6öç7G'V7F÷%Âö6Æ–VçG5Âò…µâõÒ²’Bò“°¢–b†6Æ–VçDÖF6‚’°¢6öç7B6Æ–VçD–BÒ6Æ–VçDÖF6…³Òç6Æ–6RƒÂƒ“°¢–b‡&WVW7BæÖWF†öBÓÓÒ$tUB"’&WGW&â†æFÆT6Æ–VçDFWF–Â†6Æ–VçD–BÂVçb“°¢–b‡&WVW7BæÖWF†öBÓÓÒ%D4‚"’&WGW&â†æFÆT6Æ–VçEWFFR‡&WVW7BÂ6Æ–VçD–BÂVçbÂ–FVçF—G’“°¢Ğ Ğ¢&WGW&â6öç7G'V7F÷$W'&÷"ƒCBÂ$äõEôdõTäB"Â-
-}M]²­íİ-=­-íİRİM]Òâ"“°Ğ§ĞĞ Ğ¦gVæ7F–öâ6V7W&T6öç7G'V7F÷%&W7öç6R‡&W7öç6S¢&W7öç6R“¢&W7öç6R°Ğ¢6öç7B†VFW'2ÒæWr†VFW'2‡&W7öç6Ræ†VFW'2“°Ğ¢†VFW'2ç6WB‚$66†RÔ6öçG&öÂ"Â'&—fFRÂæò×7F÷&RÂÖ‚ÖvSÓ"“°Ğ¢†VFW'2ç6WB‚%&vÖ"Â&æòÖ66†R"“°Ğ¢†VFW'2ç6WB‚%‚Õ&ö&÷G2ÕFr"Â&æö–æFW‚ÂæöföÆÆ÷rÂæö&6†—fR"“°Ğ¢†VFW'2ç6WB‚%‚Ô6öçFVçBÕG—RÔ÷F–öç2"Â&æ÷6æ–fb"“°Ğ¢†VFW'2ç6WB‚%&VfW'&W"ÕöÆ–7’"Â'6ÖRÖ÷&–v–â"“°Ğ¢†VFW'2ç6WB‚%W&Ö—76–öç2ÕöÆ–7’"Â&6ÖW&Ò‚’ÂÖ–7&÷†öæSÒ‚’ÂvVöÆö6F–öãÒ‚’"“°Ğ¢&WGW&âæWr&W7öç6R‡&W7öç6Ræ&öG’Â°Ğ¢7FGW3¢&W7öç6Rç7FGW2ÀĞ¢7FGW5FW‡C¢&W7öç6Rç7FGW5FW‡BÀĞ¢†VFW'2ÀĞ¢Ò“°Ğ§ĞĞ Ğ¦6öç7Bv÷&¶W"Ò°Ğ¢7–æ2fWF6‚‡&WVW7C¢&WVW7BÂVçc¢VçbÂ7Gƒ¢W†V7WF–öä6öçFW‡B“¢&öÖ—6SÅ&W7öç6Sâ°Ğ¢6öç7BW&ÂÒæWrU$Â‡&WVW7BçW&Â“°Ğ Ğ¢–b‡W&ÂçF†æÖRÓÓÒ"õ÷f–æW‡Bö–ÖvR"’°Ğ¢6öç7BÆÆ÷vVEv–GF‡2Ò²ââäDTdTÅEôDUd”4Uõ4•¤U2ÂââäDTdTÅEô”ÔtUõ4•¤U5Ó°Ğ¢&WGW&â†æFÆT–ÖvT÷F–Ö—¦F–öâ‡&WVW7BÂ°Ğ¢fWF6„76WC¢‡F‚’ÓâVçbä54UE2æfWF6‚†æWr&WVW7B†æWrU$Â‡F‚Â&WVW7BçW&Â’’’ÀĞ¢G&ç6f÷&Ô–ÖvS¢7–æ2†&öG’Â²v–GF‚Âf÷&ÖBÂVÆ—G’Ò’Óâ°Ğ¢6öç7B&W7VÇBÒv—BVçbä”ÔtU2æ–çWB†&öG’’çG&ç6f÷&Ò‡v–GF‚âò²v–GF‚Ò¢·Ò’æ÷WGWB‡²f÷&ÖBÂVÆ—G’Ò“°Ğ¢&WGW&â&W7VÇBç&W7öç6R‚“°Ğ¢ÒÀĞ¢ÒÂÆÆ÷vVEv–GF‡2“°Ğ¢ĞĞ Ğ¢–b†—46öç7G'V7F÷%&WVW7B‡W&ÂçF†æÖR’’°Ğ¢6öç7B–FVçF—G’Òv—BWF†VçF–6FT6öç7G'V7F÷"‡&WVW7BÂVçb“°Ğ¢–b†–FVçF—G’–ç7Fæ6Vöb&W7öç6R’&WGW&â–FVçF—G“°Ğ Ğ¢–b‡W&ÂçF†æÖRç7F'G5v—F‚‚"ö’ö6öç7G'V7F÷"ò"’’°Ğ¢&WGW&â†æFÆT6öç7G'V7F÷$’‡&WVW7BÂVçbÂ–FVçF—G’“°Ğ¢ĞĞ Ğ¢6öç7B&W7öç6RÒv—B†æFÆW"æfWF6‚‡&WVW7BÂVçbÂ7G‚“°Ğ¢&WGW&â6V7W&T6öç7G'V7F÷%&W7öç6R‡&W7öç6R“°Ğ¢ĞĞ Ğ¢&WGW&â†æFÆW"æfWF6‚‡&WVW7BÂVçbÂ7G‚“°Ğ¢ÒÀĞ§Ó°Ğ Ğ¦W‡÷'BFVfVÇBv÷&¶W#°Ğ 
+  return value && typeof value === "object" && !Array.isArray(value) ? value as Record<string, unknown> : null;
+}
+
+function roundMoney(value: number): number {
+  return Math.round((value + Number.EPSILON) * 100) / 100;
+}
+
+function parseCalculationMetadata(value: string | null): CalculationMetadata {
+  if (!value) return { title: "Ğ Ğ°ÑÑ‡Ñ‘Ñ‚ Ğ¿Ñ€Ğ¾ĞµĞºÑ‚Ğ°", currency: "RUB", comment: "" };
+  try {
+    const parsed = JSON.parse(value) as unknown;
+    const record = asRecord(parsed);
+    if (!record) return { title: "Ğ Ğ°ÑÑ‡Ñ‘Ñ‚ Ğ¿Ñ€Ğ¾ĞµĞºÑ‚Ğ°", currency: "RUB", comment: value };
+    return {
+      title: readText(record, "title", 240) || "Ğ Ğ°ÑÑ‡Ñ‘Ñ‚ Ğ¿Ñ€Ğ¾ĞµĞºÑ‚Ğ°",
+      currency: readText(record, "currency", 8) || "RUB",
+      comment: readText(record, "comment", 3000),
+    };
+  } catch {
+    return { title: "Ğ Ğ°ÑÑ‡Ñ‘Ñ‚ Ğ¿Ñ€Ğ¾ĞµĞºÑ‚Ğ°", currency: "RUB", comment: value };
+  }
+}
+
+function parseCalculationItemMetadata(value: string | null): CalculationItemMetadata {
+  if (!value) return { unit: "ÑƒÑĞ»ÑƒĞ³Ğ°", comment: "" };
+  try {
+    const parsed = JSON.parse(value) as unknown;
+    const record = asRecord(parsed);
+    if (!record) return { unit: "ÑƒÑĞ»ÑƒĞ³Ğ°", comment: value };
+    return {
+      unit: readText(record, "unit", 80) || "ÑƒÑĞ»ÑƒĞ³Ğ°",
+      comment: readText(record, "comment", 800),
+    };
+  } catch {
+    return { unit: "ÑƒÑĞ»ÑƒĞ³Ğ°", comment: value };
+  }
+}
+
+const proposalStatuses = new Set([
+  "draft",
+  "needs_data",
+  "internal_review",
+  "ready_to_send",
+  "sent",
+  "discussion",
+  "approved",
+  "rejected",
+  "archived",
+]);
+
+function readProposalInput(body: Record<string, unknown>): ProposalInput | Response {
+  const input: ProposalInput = {
+    clientId: readText(body, "clientId", 80),
+    diagnosticSessionId: readText(body, "diagnosticSessionId", 80),
+    calculationId: readText(body, "calculationId", 80),
+    status: readText(body, "status", 40) || "draft",
+    title: readText(body, "title", 240),
+    diagnosisText: readText(body, "diagnosisText", 6000),
+    strategyText: readText(body, "strategyText", 6000),
+    solutionText: readText(body, "solutionText", 6000),
+    scopeText: readText(body, "scopeText", 6000),
+    timelineText: readText(body, "timelineText", 4000),
+    rightsText: readText(body, "rightsText", 4000),
+    limitationsText: readText(body, "limitationsText", 4000),
+    nextStepText: readText(body, "nextStepText", 4000),
+    clientDocument: readText(body, "clientDocument", 30000),
+    internalNotes: readText(body, "internalNotes", 12000),
+    followUpAt: readText(body, "followUpAt", 80),
+    validUntil: readText(body, "validUntil", 80),
+  };
+
+  if (!input.title || !proposalStatuses.has(input.status)) {
+    return constructorError(422, "VALIDATION_FAILED", "Ğ£ĞºĞ°Ğ¶Ğ¸Ñ‚Ğµ Ğ½Ğ°Ğ·Ğ²Ğ°Ğ½Ğ¸Ğµ Ğ¸ ĞºĞ¾Ñ€Ñ€ĞµĞºÑ‚Ğ½Ñ‹Ğ¹ ÑÑ‚Ğ°Ñ‚ÑƒÑ ĞºĞ¾Ğ¼Ğ¼ĞµÑ€Ñ‡ĞµÑĞºĞ¾Ğ³Ğ¾ Ğ¿Ñ€ĞµĞ´Ğ»Ğ¾Ğ¶ĞµĞ½Ğ¸Ñ.");
+  }
+
+  for (const [value, code, message] of [
+    [input.followUpAt, "INVALID_FOLLOW_UP", "Ğ£ĞºĞ°Ğ¶Ğ¸Ñ‚Ğµ ĞºĞ¾Ñ€Ñ€ĞµĞºÑ‚Ğ½ÑƒÑ Ğ´Ğ°Ñ‚Ñƒ ÑĞ»ĞµĞ´ÑƒÑÑ‰ĞµĞ³Ğ¾ ĞºĞ¾Ğ½Ñ‚Ğ°ĞºÑ‚Ğ°."],
+    [input.validUntil, "INVALID_VALID_UNTIL", "Ğ£ĞºĞ°Ğ¶Ğ¸Ñ‚Ğµ ĞºĞ¾Ñ€Ñ€ĞµĞºÑ‚Ğ½Ñ‹Ğ¹ ÑÑ€Ğ¾Ğº Ğ´ĞµĞ¹ÑÑ‚Ğ²Ğ¸Ñ Ğ¿Ñ€ĞµĞ´Ğ»Ğ¾Ğ¶ĞµĞ½Ğ¸Ñ."],
+  ] as const) {
+    if (value && Number.isNaN(Date.parse(value))) return constructorError(422, code, message);
+  }
+
+  return input;
+}
+
+function isHttpUrl(value: string): boolean {
+  if (!value) return true;
+  try {
+    const url = new URL(value);
+    return url.protocol === "http:" || url.protocol === "https:";
+  } catch {
+    return false;
+  }
+}
+
+function preparationText(row: PreparationKnowledgeRow): string {
+  return row.prompt_text || row.short_text || row.full_text || row.red_flag_text || row.title;
+}
+
+function toPreparationItem(row: PreparationKnowledgeRow): PreparationItem {
+  return {
+    id: row.id,
+    itemType: row.item_type,
+    category: row.category,
+    title: row.title,
+    text: preparationText(row),
+    answer: row.short_text || row.full_text,
+    nextAction: row.next_action_text,
+    riskLevel: row.risk_level,
+  };
+}
+
+function groupPreparationItems(rows: PreparationKnowledgeRow[]) {
+  const groups = {
+    auditChecks: [] as PreparationItem[],
+    questionsToAsk: [] as PreparationItem[],
+    likelyClientQuestions: [] as PreparationItem[],
+    firstMessages: [] as PreparationItem[],
+    risks: [] as PreparationItem[],
+    packages: [] as PreparationItem[],
+    nextActions: [] as PreparationItem[],
+  };
+
+  for (const row of rows) {
+    const item = toPreparationItem(row);
+    if (row.item_type === "audit_check") groups.auditChecks.push(item);
+    if (["question_to_client", "clarifying_question", "diagnostic_hint"].includes(row.item_type)) groups.questionsToAsk.push(item);
+    if (["question_from_client", "objection", "objection_response"].includes(row.item_type)) groups.likelyClientQuestions.push(item);
+    if (["first_message", "follow_up"].includes(row.item_type)) groups.firstMessages.push(item);
+    if (["red_flag", "ethical_rule", "refusal_reason"].includes(row.item_type) || ["high", "refusal"].includes(row.risk_level)) groups.risks.push(item);
+    if (["package", "proposal_block"].includes(row.item_type)) groups.packages.push(item);
+    if (row.item_type === "next_action") groups.nextActions.push(item);
+  }
+
+  return groups;
+}
+
+function normalizeSearchText(value: string): string {
+  return value
+    .toLocaleLowerCase("ru")
+    .replace(/Ñ‘/g, "Ğµ")
+    .replace(/[^a-zĞ°-Ñ0-9]+/giu, " ")
+    .trim();
+}
+
+function searchTokens(value: string): string[] {
+  return [...new Set(normalizeSearchText(value).split(" ").filter((token) => token.length >= 3 && !answerStopWords.has(token)))];
+}
+
+function detectAnswerCategory(value: string): string | null {
+  const normalized = normalizeSearchText(value);
+  let bestCategory: string | null = null;
+  let bestScore = 0;
+
+  for (const [category, keywords] of Object.entries(answerCategoryKeywords)) {
+    const score = keywords.reduce((total, keyword) => total + (normalized.includes(normalizeSearchText(keyword)) ? 1 : 0), 0);
+    if (score > bestScore) {
+      bestCategory = category;
+      bestScore = score;
+    }
+  }
+
+  return bestCategory;
+}
+
+function textMatchesToken(text: string, token: string): boolean {
+  return text.split(" ").some((word) => (
+    word === token
+    || (word.length >= 5 && token.length >= 5 && (word.startsWith(token) || token.startsWith(word)))
+  ));
+}
+
+function answerMatchScore(row: AnswerKnowledgeRow, query: string, tokens: string[], category: string | null): number {
+  const prompt = normalizeSearchText(`${row.title} ${row.prompt_text || ""}`);
+  const allText = normalizeSearchText([
+    row.title,
+    row.prompt_text,
+    row.short_text,
+    row.full_text,
+    row.soft_text,
+    row.firm_text,
+    row.clarification_text,
+  ].filter(Boolean).join(" "));
+  const normalizedQuery = normalizeSearchText(query);
+  let score = 0;
+
+  if (category && row.category === category) score += 80;
+  if (normalizedQuery && prompt.includes(normalizedQuery)) score += 120;
+  for (const token of tokens) {
+    if (textMatchesToken(prompt, token)) score += 16;
+    else if (textMatchesToken(allText, token)) score += 6;
+  }
+  if (row.item_type === "question_from_client") score += 8;
+  if (row.risk_level === "normal") score += 2;
+
+  return score;
+}
+
+async function handleAnswerSearch(request: Request, env: Env): Promise<Response> {
+  const db = requireDatabase(env);
+  if (db instanceof Response) return db;
+
+  const url = new URL(request.url);
+  const query = (url.searchParams.get("q") || "").trim().slice(0, 1200);
+  const selectedCategory = (url.searchParams.get("category") || "").trim().slice(0, 80);
+  const niche = (url.searchParams.get("niche") || "").trim().slice(0, 120);
+  const channel = (url.searchParams.get("channel") || "").trim().slice(0, 80);
+
+  if (!query && !selectedCategory) {
+    return constructorError(422, "ANSWER_QUERY_REQUIRED", "Ğ’ÑÑ‚Ğ°Ğ²ÑŒÑ‚Ğµ Ğ²Ğ¾Ğ¿Ñ€Ğ¾Ñ ĞºĞ»Ğ¸ĞµĞ½Ñ‚Ğ° Ğ¸Ğ»Ğ¸ Ğ²Ñ‹Ğ±ĞµÑ€Ğ¸Ñ‚Ğµ Ñ‚ĞµĞ¼Ñƒ.");
+  }
+
+  const detectedCategory = selectedCategory || detectAnswerCategory(query);
+  const filters = [
+    "ki.status = 'approved'",
+    "ki.item_type IN ('question_from_client', 'objection', 'objection_response', 'answer')",
+  ];
+  const bindings: string[] = [];
+
+  if (selectedCategory) {
+    filters.push("ki.category = ?");
+    bindings.push(selectedCategory);
+  }
+
+  if (niche) {
+    filters.push(`(
+      NOT EXISTS (SELECT 1 FROM knowledge_item_niches all_kin WHERE all_kin.knowledge_item_id = ki.id)
+      OR EXISTS (
+        SELECT 1
+        FROM knowledge_item_niches kin
+        JOIN niches n ON n.id = kin.niche_id
+        WHERE kin.knowledge_item_id = ki.id AND n.slug = ?
+      )
+    )`);
+    bindings.push(niche);
+  }
+
+  if (channel) {
+    filters.push("ki.channel IN ('any', ?)");
+    bindings.push(channel);
+  }
+
+  const result = await db.prepare(`
+    SELECT
+      ki.id,
+      ki.item_type,
+      ki.category,
+      ki.title,
+      ki.prompt_text,
+      ki.short_text,
+      ki.full_text,
+      ki.soft_text,
+      ki.firm_text,
+      ki.clarification_text,
+      ki.next_action_text,
+      ki.avoid_text,
+      ki.red_flag_text,
+      ki.risk_level,
+      ki.channel,
+      (
+        SELECT GROUP_CONCAT(n.name, '${listDelimiter}')
+        FROM knowledge_item_niches kin
+        JOIN niches n ON n.id = kin.niche_id
+        WHERE kin.knowledge_item_id = ki.id
+      ) AS niche_names
+    FROM knowledge_items ki
+    WHERE ${filters.join(" AND ")}
+    ORDER BY
+      CASE ki.required_level WHEN 'required' THEN 0 WHEN 'recommended' THEN 1 ELSE 2 END,
+      ki.title
+    LIMIT 120
+  `).bind(...bindings).all<AnswerKnowledgeRow>();
+
+  const tokens = searchTokens(query);
+  const rows = (result.results ?? [])
+    .map((row) => ({ row, score: answerMatchScore(row, query, tokens, detectedCategory) }))
+    .filter(({ score }) => Boolean(selectedCategory) || score > 15)
+    .sort((left, right) => right.score - left.score || left.row.title.localeCompare(right.row.title, "ru"))
+    .slice(0, 10)
+    .map(({ row, score }) => ({
+      id: row.id,
+      itemType: row.item_type,
+      category: row.category,
+      title: row.title,
+      question: row.prompt_text,
+      shortText: row.short_text,
+      fullText: row.full_text,
+      softText: row.soft_text,
+      firmText: row.firm_text,
+      clarificationText: row.clarification_text,
+      nextActionText: row.next_action_text,
+      avoidText: row.avoid_text,
+      redFlagText: row.red_flag_text,
+      riskLevel: row.risk_level,
+      niches: splitList(row.niche_names),
+      score,
+    }));
+
+  return json({ query, recognizedCategory: detectedCategory, items: rows });
+}
+
+async function handleBootstrap(env: Env, identity: ConstructorIdentity): Promise<Response> {
+  const db = requireDatabase(env);
+  if (db instanceof Response) return db;
+
+  const [nichesResult, stagesResult, countsResult] = await db.batch([
+    db.prepare("SELECT slug, name, priority FROM niches WHERE is_active = 1 ORDER BY priority, name"),
+    db.prepare("SELECT slug, name, sort_order FROM stages WHERE is_active = 1 ORDER BY sort_order"),
+    db.prepare(`
+      SELECT
+        COUNT(*) AS total,
+        SUM(CASE WHEN status = 'approved' THEN 1 ELSE 0 END) AS approved,
+        SUM(CASE WHEN status = 'review' THEN 1 ELSE 0 END) AS review,
+        SUM(CASE WHEN risk_level IN ('high', 'refusal') THEN 1 ELSE 0 END) AS high_risk
+      FROM knowledge_items
+      WHERE status <> 'archived'
+    `),
+  ]);
+
+  return json({
+    identity,
+    niches: nichesResult.results ?? [],
+    stages: stagesResult.results ?? [],
+    counts: countsResult.results?.[0] ?? { total: 0, approved: 0, review: 0, high_risk: 0 },
+  });
+}
+
+async function handleDashboard(env: Env): Promise<Response> {
+  const db = requireDatabase(env);
+  if (db instanceof Response) return db;
+
+  const [summaryResult, followUpsResult, diagnosticsResult, proposalsResult, knowledgeResult, coverageResult] = await db.batch([
+    db.prepare(`
+      SELECT
+        (
+          SELECT COUNT(*)
+          FROM clients
+          WHERE next_contact_at IS NOT NULL
+            AND datetime(next_contact_at) <= datetime('now', '+14 days')
+            AND LOWER(crm_status) NOT IN ('archived', 'refused', 'rejected', 'lost', 'completed')
+        ) AS follow_ups,
+        (
+          SELECT COUNT(*)
+          FROM diagnostic_sessions
+          WHERE status IN ('draft', 'scheduled', 'in_progress', 'needs_clarification', 'ready_for_proposal')
+        ) AS active_diagnostics,
+        (
+          SELECT COUNT(*)
+          FROM proposals
+          WHERE status IN ('draft', 'needs_data', 'internal_review', 'ready_to_send', 'sent', 'discussion')
+        ) AS active_proposals,
+        (
+          SELECT COUNT(*)
+          FROM knowledge_items
+          WHERE status IN ('draft', 'review')
+        ) AS knowledge_review,
+        (
+          SELECT COUNT(*)
+          FROM pricing_tariffs
+          WHERE is_active = 1
+            AND (
+              rate_status = 'review_before_proposal'
+              OR (review_at IS NOT NULL AND date(review_at) <= date('now', '+30 days'))
+            )
+        ) AS tariffs_review
+    `),
+    db.prepare(`
+      SELECT
+        c.id,
+        c.name,
+        c.crm_status,
+        c.priority,
+        c.next_action,
+        c.next_contact_at,
+        (
+          SELECT n.name
+          FROM client_niches cn
+          JOIN niches n ON n.id = cn.niche_id
+          WHERE cn.client_id = c.id
+          ORDER BY CASE cn.relation_type WHEN 'primary' THEN 0 ELSE 1 END, n.name
+          LIMIT 1
+        ) AS niche_name
+      FROM clients c
+      WHERE c.next_contact_at IS NOT NULL
+        AND datetime(c.next_contact_at) <= datetime('now', '+14 days')
+        AND LOWER(c.crm_status) NOT IN ('archived', 'refused', 'rejected', 'lost', 'completed')
+      ORDER BY datetime(c.next_contact_at), CASE c.priority WHEN 'A' THEN 0 WHEN 'B' THEN 1 ELSE 2 END, c.name
+      LIMIT 8
+    `),
+    db.prepare(`
+      SELECT
+        ds.id,
+        ds.client_id,
+        c.name AS client_name,
+        ds.status,
+        ds.format,
+        ds.next_action,
+        ds.scheduled_at,
+        ds.updated_at,
+        (
+          SELECT COUNT(*) FROM diagnostic_session_items dsi
+          WHERE dsi.session_id = ds.id
+        ) AS total_items,
+        (
+          SELECT COUNT(*) FROM diagnostic_session_items dsi
+          WHERE dsi.session_id = ds.id AND (dsi.was_asked = 1 OR COALESCE(dsi.client_answer, '') <> '')
+        ) AS answered_items
+      FROM diagnostic_sessions ds
+      JOIN clients c ON c.id = ds.client_id
+      WHERE ds.status IN ('draft', 'scheduled', 'in_progress', 'needs_clarification', 'ready_for_proposal')
+      ORDER BY
+        CASE ds.status WHEN 'in_progress' THEN 0 WHEN 'needs_clarification' THEN 1 WHEN 'ready_for_proposal' THEN 2 WHEN 'scheduled' THEN 3 ELSE 4 END,
+        COALESCE(datetime(ds.scheduled_at), datetime(ds.updated_at)) DESC
+      LIMIT 8
+    `),
+    db.prepare(`
+      SELECT
+        p.id,
+        p.title,
+        p.status,
+        p.version,
+        p.follow_up_at,
+        p.valid_until,
+        p.updated_at,
+        c.name AS client_name
+      FROM proposals p
+      LEFT JOIN clients c ON c.id = p.client_id
+      WHERE p.status IN ('draft', 'needs_data', 'internal_review', 'ready_to_send', 'sent', 'discussion')
+      ORDER BY
+        CASE p.status WHEN 'discussion' THEN 0 WHEN 'sent' THEN 1 WHEN 'ready_to_send' THEN 2 WHEN 'internal_review' THEN 3 WHEN 'needs_data' THEN 4 ELSE 5 END,
+        COALESCE(datetime(p.follow_up_at), datetime(p.updated_at)) DESC
+      LIMIT 8
+    `),
+    db.prepare(`
+      SELECT id, title, item_type, category, status, risk_level, version, updated_at
+      FROM knowledge_items
+      WHERE status IN ('draft', 'review')
+      ORDER BY
+        CASE status WHEN 'review' THEN 0 ELSE 1 END,
+        CASE risk_level WHEN 'refusal' THEN 0 WHEN 'high' THEN 1 WHEN 'elevated' THEN 2 ELSE 3 END,
+        datetime(updated_at) DESC
+      LIMIT 8
+    `),
+    db.prepare(`
+      SELECT
+        n.slug,
+        n.name,
+        n.priority,
+        COUNT(DISTINCT ki.id) AS approved_items
+      FROM niches n
+      LEFT JOIN knowledge_item_niches kin ON kin.niche_id = n.id
+      LEFT JOIN knowledge_items ki ON ki.id = kin.knowledge_item_id AND ki.status = 'approved'
+      WHERE n.is_active = 1
+      GROUP BY n.id, n.slug, n.name, n.priority
+      ORDER BY approved_items, CASE n.priority WHEN 'A' THEN 0 WHEN 'B' THEN 1 ELSE 2 END, n.name
+      LIMIT 8
+    `),
+  ]);
+
+  return json({
+    generatedAt: new Date().toISOString(),
+    summary: summaryResult.results?.[0] ?? {
+      follow_ups: 0,
+      active_diagnostics: 0,
+      active_proposals: 0,
+      knowledge_review: 0,
+      tariffs_review: 0,
+    },
+    followUps: followUpsResult.results ?? [],
+    diagnostics: diagnosticsResult.results ?? [],
+    proposals: proposalsResult.results ?? [],
+    knowledgeReview: knowledgeResult.results ?? [],
+    coverageGaps: coverageResult.results ?? [],
+  });
+}
+
+async function handleKnowledgeList(request: Request, env: Env): Promise<Response> {
+  const db = requireDatabase(env);
+  if (db instanceof Response) return db;
+
+  const url = new URL(request.url);
+  const q = url.searchParams.get("q")?.trim().toLowerCase() ?? "";
+  const niche = url.searchParams.get("niche")?.trim() ?? "";
+  const stage = url.searchParams.get("stage")?.trim() ?? "";
+  const itemType = url.searchParams.get("type")?.trim() ?? "";
+  const risk = url.searchParams.get("risk")?.trim() ?? "";
+  const category = url.searchParams.get("category")?.trim() ?? "";
+  const status = url.searchParams.get("status")?.trim() ?? "approved";
+  const page = parsePositiveInteger(url.searchParams.get("page"), 1, 100000);
+  const limit = parsePositiveInteger(url.searchParams.get("limit"), 30, 100);
+  const offset = (page - 1) * limit;
+
+  const filters: string[] = status === "archived" ? [] : ["ki.status <> 'archived'"];
+  const bindings: Array<string | number> = [];
+
+  if (status !== "all") {
+    filters.push("ki.status = ?");
+    bindings.push(status);
+  }
+
+  if (q) {
+    filters.push(`LOWER(
+      COALESCE(ki.title, '') || ' ' ||
+      COALESCE(ki.prompt_text, '') || ' ' ||
+      COALESCE(ki.short_text, '') || ' ' ||
+      COALESCE(ki.full_text, '') || ' ' ||
+      COALESCE(ki.clarification_text, '')
+    ) LIKE ?`);
+    bindings.push(`%${q}%`);
+  }
+
+  if (niche) {
+    filters.push(`EXISTS (
+      SELECT 1
+      FROM knowledge_item_niches kin
+      JOIN niches n ON n.id = kin.niche_id
+      WHERE kin.knowledge_item_id = ki.id AND n.slug = ?
+    )`);
+    bindings.push(niche);
+  }
+
+  if (stage) {
+    filters.push(`EXISTS (
+      SELECT 1
+      FROM knowledge_item_stages kis
+      JOIN stages s ON s.id = kis.stage_id
+      WHERE kis.knowledge_item_id = ki.id AND s.slug = ?
+    )`);
+    bindings.push(stage);
+  }
+
+  if (itemType) {
+    filters.push("ki.item_type = ?");
+    bindings.push(itemType);
+  }
+
+  if (risk) {
+    filters.push("ki.risk_level = ?");
+    bindings.push(risk);
+  }
+
+  if (category) {
+    filters.push("ki.category = ?");
+    bindings.push(category);
+  }
+
+  const where = filters.join(" AND ");
+  const selectSql = `
+    SELECT
+      ki.id,
+      ki.item_type,
+      ki.speaker,
+      ki.category,
+      ki.title,
+      ki.prompt_text,
+      ki.short_text,
+      ki.full_text,
+      ki.soft_text,
+      ki.firm_text,
+      ki.clarification_text,
+      ki.next_action_text,
+      ki.avoid_text,
+      ki.diagnostic_value,
+      ki.red_flag_text,
+      ki.channel,
+      ki.tone,
+      ki.required_level,
+      ki.risk_level,
+      ki.status,
+      ki.source_kind,
+      ki.source_url,
+      ki.version,
+      ki.reviewed_at,
+      ki.updated_at,
+      (
+        SELECT GROUP_CONCAT(n.slug, '${listDelimiter}')
+        FROM knowledge_item_niches kin
+        JOIN niches n ON n.id = kin.niche_id
+        WHERE kin.knowledge_item_id = ki.id
+      ) AS niche_slugs,
+      (
+        SELECT GROUP_CONCAT(n.name, '${listDelimiter}')
+        FROM knowledge_item_niches kin
+        JOIN niches n ON n.id = kin.niche_id
+        WHERE kin.knowledge_item_id = ki.id
+      ) AS niche_names,
+      (
+        SELECT GROUP_CONCAT(s.slug, '${listDelimiter}')
+        FROM knowledge_item_stages kis
+        JOIN stages s ON s.id = kis.stage_id
+        WHERE kis.knowledge_item_id = ki.id
+      ) AS stage_slugs,
+      (
+        SELECT GROUP_CONCAT(s.name, '${listDelimiter}')
+        FROM knowledge_item_stages kis
+        JOIN stages s ON s.id = kis.stage_id
+        WHERE kis.knowledge_item_id = ki.id
+      ) AS stage_names
+    FROM knowledge_items ki
+    WHERE ${where}
+    ORDER BY
+      CASE ki.required_level WHEN 'required' THEN 0 WHEN 'recommended' THEN 1 ELSE 2 END,
+      CASE ki.risk_level WHEN 'refusal' THEN 0 WHEN 'high' THEN 1 WHEN 'elevated' THEN 2 ELSE 3 END,
+      ki.updated_at DESC,
+      ki.title
+    LIMIT ? OFFSET ?
+  `;
+
+  const countSql = `SELECT COUNT(*) AS total FROM knowledge_items ki WHERE ${where}`;
+  const [itemsResult, countResult] = await db.batch([
+    db.prepare(selectSql).bind(...bindings, limit, offset),
+    db.prepare(countSql).bind(...bindings),
+  ]);
+
+  const items = ((itemsResult.results ?? []) as unknown as KnowledgeRow[]).map(toKnowledgeItem);
+
+  const total = Number((countResult.results?.[0] as { total?: number } | undefined)?.total ?? 0);
+
+  return json({
+    items,
+    pagination: {
+      page,
+      limit,
+      total,
+      pages: Math.max(1, Math.ceil(total / limit)),
+    },
+  });
+}
+
+const knowledgeItemTypes = new Set([
+  "question_to_client",
+  "question_from_client",
+  "answer",
+  "objection",
+  "objection_response",
+  "clarifying_question",
+  "first_message",
+  "follow_up",
+  "diagnostic_hint",
+  "audit_check",
+  "red_flag",
+  "ethical_rule",
+  "proposal_block",
+  "package",
+  "next_action",
+  "refusal_reason",
+]);
+const knowledgeSpeakers = new Set(["creator", "client", "system"]);
+const knowledgeRequiredLevels = new Set(["required", "recommended", "optional", "conditional"]);
+const knowledgeRiskLevels = new Set(["normal", "elevated", "high", "refusal"]);
+const knowledgeStatuses = new Set(["draft", "review", "approved", "archived"]);
+const knowledgeSourceKinds = new Set(["notion", "manual", "real_dialogue", "import"]);
+
+function readKnowledgeStringArray(body: Record<string, unknown>, key: string, maximum = 40): string[] {
+  if (!Array.isArray(body[key])) return [];
+  return [...new Set(
+    body[key]
+      .filter((value): value is string => typeof value === "string")
+      .map((value) => value.trim().slice(0, 120))
+      .filter(Boolean),
+  )].slice(0, maximum);
+}
+
+function knowledgeNormalizedKey(itemType: string, category: string, title: string, promptText: string): string {
+  return `${itemType}|${category}|${promptText || title}`
+    .toLowerCase()
+    .replace(/Ñ‘/g, "Ğµ")
+    .replace(/[^a-zĞ°-Ñ0-9]+/gi, " ")
+    .trim()
+    .slice(0, 500);
+}
+
+async function handleKnowledgeDetail(itemId: string, env: Env): Promise<Response> {
+  const db = requireDatabase(env);
+  if (db instanceof Response) return db;
+
+  const row = await db.prepare(`
+    SELECT
+      ki.id,
+      ki.item_type,
+      ki.speaker,
+      ki.category,
+      ki.title,
+      ki.prompt_text,
+      ki.short_text,
+      ki.full_text,
+      ki.soft_text,
+      ki.firm_text,
+      ki.clarification_text,
+      ki.next_action_text,
+      ki.avoid_text,
+      ki.diagnostic_value,
+      ki.red_flag_text,
+      ki.channel,
+      ki.tone,
+      ki.required_level,
+      ki.risk_level,
+      ki.status,
+      ki.source_kind,
+      ki.source_url,
+      ki.version,
+      ki.reviewed_at,
+      ki.updated_at,
+      (
+        SELECT GROUP_CONCAT(n.slug, '${listDelimiter}')
+        FROM knowledge_item_niches kin
+        JOIN niches n ON n.id = kin.niche_id
+        WHERE kin.knowledge_item_id = ki.id
+      ) AS niche_slugs,
+      (
+        SELECT GROUP_CONCAT(n.name, '${listDelimiter}')
+        FROM knowledge_item_niches kin
+        JOIN niches n ON n.id = kin.niche_id
+        WHERE kin.knowledge_item_id = ki.id
+      ) AS niche_names,
+      (
+        SELECT GROUP_CONCAT(s.slug, '${listDelimiter}')
+        FROM knowledge_item_stages kis
+        JOIN stages s ON s.id = kis.stage_id
+        WHERE kis.knowledge_item_id = ki.id
+      ) AS stage_slugs,
+      (
+        SELECT GROUP_CONCAT(s.name, '${listDelimiter}')
+        FROM knowledge_item_stages kis
+        JOIN stages s ON s.id = kis.stage_id
+        WHERE kis.knowledge_item_id = ki.id
+      ) AS stage_names
+    FROM knowledge_items ki
+    WHERE ki.id = ?
+    LIMIT 1
+  `).bind(itemId).first<KnowledgeRow>();
+
+  if (!row) return constructorError(404, "KNOWLEDGE_NOT_FOUND", "Ğ—Ğ°Ğ¿Ğ¸ÑÑŒ Ğ±Ğ°Ğ·Ñ‹ Ğ·Ğ½Ğ°Ğ½Ğ¸Ğ¹ Ğ½Ğµ Ğ½Ğ°Ğ¹Ğ´ĞµĞ½Ğ°.");
+  return json({ item: toKnowledgeItem(row) });
+}
+
+async function handleKnowledgeCreate(request: Request, env: Env, identity: ConstructorIdentity): Promise<Response> {
+  const db = requireDatabase(env);
+  if (db instanceof Response) return db;
+
+  let body: Record<string, unknown>;
+  try {
+    body = (await request.json()) as Record<string, unknown>;
+  } catch {
+    return constructorError(400, "INVALID_JSON", "ĞĞµ ÑƒĞ´Ğ°Ğ»Ğ¾ÑÑŒ Ğ¿Ñ€Ğ¾Ñ‡Ğ¸Ñ‚Ğ°Ñ‚ÑŒ Ğ´Ğ°Ğ½Ğ½Ñ‹Ğµ Ğ½Ğ¾Ğ²Ğ¾Ğ¹ Ğ·Ğ°Ğ¿Ğ¸ÑĞ¸.");
+  }
+
+  const title = typeof body.title === "string" ? body.title.trim() : "";
+  const category = typeof body.category === "string" ? body.category.trim() : "";
+  const itemType = typeof body.itemType === "string" ? body.itemType.trim() : "";
+  const promptText = typeof body.promptText === "string" ? body.promptText.trim() : null;
+  const shortText = typeof body.shortText === "string" ? body.shortText.trim() : null;
+  const nicheSlugs = Array.isArray(body.nicheSlugs) ? body.nicheSlugs.filter((value): value is string => typeof value === "string") : [];
+  const stageSlugs = Array.isArray(body.stageSlugs) ? body.stageSlugs.filter((value): value is string => typeof value === "string") : [];
+
+  if (!title || !category || !knowledgeItemTypes.has(itemType)) {
+    return constructorError(422, "VALIDATION_FAILED", "Ğ£ĞºĞ°Ğ¶Ğ¸Ñ‚Ğµ Ğ½Ğ°Ğ·Ğ²Ğ°Ğ½Ğ¸Ğµ, ĞºĞ°Ñ‚ĞµĞ³Ğ¾Ñ€Ğ¸Ñ Ğ¸ ĞºĞ¾Ñ€Ñ€ĞµĞºÑ‚Ğ½Ñ‹Ğ¹ Ñ‚Ğ¸Ğ¿ Ğ·Ğ°Ğ¿Ğ¸ÑĞ¸.");
+  }
+
+  const id = crypto.randomUUID();
+  const now = new Date().toISOString();
+  const statements = [
+    db.prepare(`
+      INSERT INTO knowledge_items (
+        id, item_type, speaker, category, title, prompt_text, short_text,
+        channel, tone, required_level, risk_level, source_kind, status,
+        version, created_at, updated_at
+      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'manual', 'draft', 1, ?, ?)
+    `).bind(
+      id,
+      itemType,
+      typeof body.speaker === "string" ? body.speaker : "system",
+      category,
+      title,
+      promptText,
+      shortText,
+      typeof body.channel === "string" ? body.channel : "any",
+      typeof body.tone === "string" ? body.tone : "neutral",
+      typeof body.requiredLevel === "string" ? body.requiredLevel : "recommended",
+      typeof body.riskLevel === "string" ? body.riskLevel : "normal",
+      now,
+      now,
+    ),
+  ];
+
+  for (const slug of nicheSlugs) {
+    statements.push(
+      db.prepare(`
+        INSERT OR IGNORE INTO knowledge_item_niches (knowledge_item_id, niche_id, relevance)
+        SELECT ?, id, 'primary' FROM niches WHERE slug = ?
+      `).bind(id, slug),
+    );
+  }
+
+  for (const slug of stageSlugs) {
+    statements.push(
+      db.prepare(`
+        INSERT OR IGNORE INTO knowledge_item_stages (knowledge_item_id, stage_id)
+        SELECT ?, id FROM stages WHERE slug = ?
+      `).bind(id, slug),
+    );
+  }
+
+  statements.push(
+    db.prepare(`
+      INSERT INTO audit_log (id, actor_email, action, entity_type, entity_id, new_value_json, created_at)
+      VALUES (?, ?, 'create', 'knowledge_item', ?, ?, ?)
+    `).bind(crypto.randomUUID(), identity.email, id, JSON.stringify({ title, category, itemType }), now),
+  );
+
+  await db.batch(statements);
+  return json({ id, status: "draft" }, { status: 201 });
+}
+
+async function handleKnowledgeUpdate(request: Request, itemId: string, env: Env, identity: ConstructorIdentity): Promise<Response> {
+  const db = requireDatabase(env);
+  if (db instanceof Response) return db;
+
+  let body: Record<string, unknown>;
+  try {
+    body = (await request.json()) as Record<string, unknown>;
+  } catch {
+    return constructorError(400, "INVALID_JSON", "ĞĞµ ÑƒĞ´Ğ°Ğ»Ğ¾ÑÑŒ Ğ¿Ñ€Ğ¾Ñ‡Ğ¸Ñ‚Ğ°Ñ‚ÑŒ Ğ¸Ğ·Ğ¼ĞµĞ½ĞµĞ½Ğ¸Ñ Ğ·Ğ°Ğ¿Ğ¸ÑĞ¸.");
+  }
+
+  const existing = await db.prepare(`
+    SELECT id, item_type, category, title, status, version, reviewed_at
+    FROM knowledge_items
+    WHERE id = ?
+    LIMIT 1
+  `).bind(itemId).first<{
+    id: string;
+    item_type: string;
+    category: string;
+    title: string;
+    status: string;
+    version: number;
+    reviewed_at: string | null;
+  }>();
+  if (!existing) return constructorError(404, "KNOWLEDGE_NOT_FOUND", "Ğ—Ğ°Ğ¿Ğ¸ÑÑŒ Ğ±Ğ°Ğ·Ñ‹ Ğ·Ğ½Ğ°Ğ½Ğ¸Ğ¹ Ğ½Ğµ Ğ½Ğ°Ğ¹Ğ´ĞµĞ½Ğ°.");
+
+  const expectedVersion = typeof body.version === "number" && Number.isSafeInteger(body.version) ? body.version : 0;
+  if (expectedVersion < 1) {
+    return constructorError(422, "VERSION_REQUIRED", "ĞĞµ ÑƒĞ´Ğ°Ğ»Ğ¾ÑÑŒ Ğ¾Ğ¿Ñ€ĞµĞ´ĞµĞ»Ğ¸Ñ‚ÑŒ Ğ²ĞµÑ€ÑĞ¸Ñ Ğ·Ğ°Ğ¿Ğ¸ÑĞ¸. ĞĞ±Ğ½Ğ¾Ğ²Ğ¸Ñ‚Ğµ ÑÑ‚Ñ€Ğ°Ğ½Ğ¸Ñ†Ñƒ Ğ¸ Ğ¿Ğ¾Ğ²Ñ‚Ğ¾Ñ€Ğ¸Ñ‚Ğµ Ñ€ĞµĞ´Ğ°ĞºÑ‚Ğ¸Ñ€Ğ¾Ğ²Ğ°Ğ½Ğ¸Ğµ.");
+  }
+  if (expectedVersion !== Number(existing.version)) {
+    return constructorError(409, "VERSION_CONFLICT", "Ğ—Ğ°Ğ¿Ğ¸ÑÑŒ ÑƒĞ¶Ğµ Ğ±Ñ‹Ğ»Ğ° Ğ¸Ğ·Ğ¼ĞµĞ½ĞµĞ½Ğ°. ĞĞ±Ğ½Ğ¾Ğ²Ğ¸Ñ‚Ğµ ÑÑ‚Ñ€Ğ°Ğ½Ğ¸Ñ†Ñƒ Ğ¸ Ğ¿Ğ¾Ğ²Ñ‚Ğ¾Ñ€Ğ¸Ñ‚Ğµ Ñ€ĞµĞ´Ğ°ĞºÑ‚Ğ¸Ñ€Ğ¾Ğ²Ğ°Ğ½Ğ¸Ğµ.");
+  }
+
+  const itemType = readText(body, "itemType", 80);
+  const speaker = readText(body, "speaker", 40) || "system";
+  const category = readText(body, "category", 160);
+  const title = readText(body, "title", 240);
+  const promptText = readText(body, "promptText", 6000);
+  const shortText = readText(body, "shortText", 6000);
+  const fullText = readText(body, "fullText", 12000);
+  const softText = readText(body, "softText", 6000);
+  const firmText = readText(body, "firmText", 6000);
+  const clarificationText = readText(body, "clarificationText", 6000);
+  const nextActionText = readText(body, "nextActionText", 6000);
+  const avoidText = readText(body, "avoidText", 6000);
+  const diagnosticValue = readText(body, "diagnosticValue", 6000);
+  const redFlagText = readText(body, "redFlagText", 6000);
+  const channel = readText(body, "channel", 80) || "any";
+  const tone = readText(body, "tone", 80) || "neutral";
+  const requiredLevel = readText(body, "requiredLevel", 40) || "recommended";
+  const riskLevel = readText(body, "riskLevel", 40) || "normal";
+  const status = readText(body, "status", 40) || "draft";
+  const sourceKind = readText(body, "sourceKind", 40) || "manual";
+  const sourceUrl = readText(body, "sourceUrl", 1000);
+  const nicheSlugs = readKnowledgeStringArray(body, "nicheSlugs", 30);
+  const stageSlugs = readKnowledgeStringArray(body, "stageSlugs", 30);
+
+  if (
+    !title || !category || !knowledgeItemTypes.has(itemType) || !knowledgeSpeakers.has(speaker) ||
+    !knowledgeRequiredLevels.has(requiredLevel) || !knowledgeRiskLevels.has(riskLevel) ||
+    !knowledgeStatuses.has(status) || !knowledgeSourceKinds.has(sourceKind)
+  ) {
+    return constructorError(422, "VALIDATION_FAILED", "ĞŸÑ€Ğ¾Ğ²ĞµÑ€ÑŒÑ‚Ğµ Ğ½Ğ°Ğ·Ğ²Ğ°Ğ½Ğ¸Ğµ, ĞºĞ»Ğ°ÑÑĞ¸Ñ„Ğ¸ĞºĞ°Ñ†Ğ¸Ñ Ğ¸ ÑÑ‚Ğ°Ñ‚ÑƒÑ Ğ·Ğ°Ğ¿Ğ¸ÑĞ¸.");
+  }
+  if (!isHttpUrl(sourceUrl)) {
+    return constructorError(422, "INVALID_SOURCE_URL", "Ğ¡ÑÑ‹Ğ»ĞºĞ° Ğ½Ğ° Ğ¸ÑÑ‚Ğ¾Ñ‡Ğ½Ğ¸Ğº Ğ´Ğ¾Ğ»Ğ¶Ğ½Ğ° Ğ½Ğ°Ñ‡Ğ¸Ğ½Ğ°Ñ‚ÑŒÑÑ Ñ http:// Ğ¸Ğ»Ğ¸ https://.");
+  }
+  if (status === "approved" && !promptText && !shortText && !fullText) {
+    return constructorError(422, "APPROVED_TEXT_REQUIRED", "ĞŸĞµÑ€ĞµĞ´ ÑƒÑ‚Ğ²ĞµÑ€Ğ¶Ğ´ĞµĞ½Ğ¸ĞµĞ¼ Ğ´Ğ¾Ğ±Ğ°Ğ²ÑŒÑ‚Ğµ Ñ„Ğ¾Ñ€Ğ¼ÑƒĞ»Ğ¸Ñ€Ğ¾Ğ²ĞºÑƒ, ĞºĞ¾Ñ€Ğ¾Ñ‚ĞºĞ¸Ğ¹ Ğ¸Ğ»Ğ¸ Ğ¿Ğ¾Ğ´Ñ€Ğ¾Ğ±Ğ½Ñ‹Ğ¹ Ñ‚ĞµĞºÑÑ‚.");
+  }
+  if (status === "approved" && itemType === "question_from_client" && !shortText && !fullText) {
+    return constructorError(422, "ANSWER_REQUIRED", "Ğ”Ğ»Ñ ÑƒÑ‚Ğ²ĞµÑ€Ğ¶Ğ´Ñ‘Ğ½Ğ½Ğ¾Ğ³Ğ¾ Ğ²Ğ¾Ğ¿Ñ€Ğ¾ÑĞ° ĞºĞ»Ğ¸ĞµĞ½Ñ‚Ğ° Ğ½ÑƒĞ¶ĞµĞ½ ĞºĞ¾Ñ€Ğ¾Ñ‚ĞºĞ¸Ğ¹ Ğ¸Ğ»Ğ¸ Ğ¿Ğ¾Ğ´Ñ€Ğ¾Ğ±Ğ½Ñ‹Ğ¹ Ğ¾Ñ‚Ğ²ĞµÑ‚.");
+  }
+  if (status === "approved" && (riskLevel === "high" || riskLevel === "refusal") && !redFlagText) {
+    return constructorError(422, "RISK_EXPLANATION_REQUIRED", "Ğ”Ğ»Ñ Ğ²Ñ‹ÑĞ¾ĞºĞ¾Ğ³Ğ¾ Ñ€Ğ¸ÑĞºĞ° Ğ¸Ğ»Ğ¸ Ğ¾Ñ‚ĞºĞ°Ğ·Ğ° Ğ´Ğ¾Ğ±Ğ°Ğ²ÑŒÑ‚Ğµ Ğ¾Ğ±ÑŠÑÑĞ½ĞµĞ½Ğ¸Ğµ ĞºÑ€Ğ°ÑĞ½Ğ¾Ğ³Ğ¾ Ñ„Ğ»Ğ°Ğ³Ğ°.");
+  }
+
+  const now = new Date().toISOString();
+  const reviewedAt = status === "approved" ? now : null;
+  const nextVersion = Number(existing.version) + 1;
+  const statements = [
+    db.prepare(`
+      UPDATE knowledge_items
+      SET
+        item_type = ?, speaker = ?, category = ?, title = ?, prompt_text = ?, short_text = ?,
+        full_text = ?, soft_text = ?, firm_text = ?, clarification_text = ?, next_action_text = ?,
+        avoid_text = ?, diagnostic_value = ?, red_flag_text = ?, channel = ?, tone = ?,
+        required_level = ?, risk_level = ?, source_kind = ?, source_url = ?, status = ?,
+        version = ?, normalized_key = ?, reviewed_at = ?, updated_at = ?
+      WHERE id = ?
+    `).bind(
+      itemType,
+      speaker,
+      category,
+      title,
+      promptText || null,
+      shortText || null,
+      fullText || null,
+      softText || null,
+      firmText || null,
+      clarificationText || null,
+      nextActionText || null,
+      avoidText || null,
+      diagnosticValue || null,
+      redFlagText || null,
+      channel,
+      tone,
+      requiredLevel,
+      riskLevel,
+      sourceKind,
+      sourceUrl || null,
+      status,
+      nextVersion,
+      knowledgeNormalizedKey(itemType, category, title, promptText),
+      reviewedAt,
+      now,
+      itemId,
+    ),
+    db.prepare("DELETE FROM knowledge_item_niches WHERE knowledge_item_id = ?").bind(itemId),
+    db.prepare("DELETE FROM knowledge_item_stages WHERE knowledge_item_id = ?").bind(itemId),
+  ];
+
+  for (const slug of nicheSlugs) {
+    statements.push(
+      db.prepare(`
+        INSERT OR IGNORE INTO knowledge_item_niches (knowledge_item_id, niche_id, relevance)
+        SELECT ?, id, 'primary' FROM niches WHERE slug = ?
+      `).bind(itemId, slug),
+    );
+  }
+  for (const slug of stageSlugs) {
+    statements.push(
+      db.prepare(`
+        INSERT OR IGNORE INTO knowledge_item_stages (knowledge_item_id, stage_id)
+        SELECT ?, id FROM stages WHERE slug = ?
+      `).bind(itemId, slug),
+    );
+  }
+
+  const action = status === "archived" ? "archive" : status === "approved" && existing.status !== "approved" ? "approve" : "update";
+  statements.push(
+    db.prepare(`
+      INSERT INTO audit_log (id, actor_email, action, entity_type, entity_id, old_value_json, new_value_json, created_at)
+      VALUES (?, ?, ?, 'knowledge_item', ?, ?, ?, ?)
+    `).bind(
+      crypto.randomUUID(),
+      identity.email,
+      action,
+      itemId,
+      JSON.stringify({
+        title: existing.title,
+        category: existing.category,
+        itemType: existing.item_type,
+        status: existing.status,
+        version: Number(existing.version),
+      }),
+      JSON.stringify({ title, category, itemType, status, version: nextVersion, nicheSlugs, stageSlugs }),
+      now,
+    ),
+  );
+
+  await db.batch(statements);
+  return handleKnowledgeDetail(itemId, env);
+}
+
+async function handlePreparationCreate(request: Request, env: Env, identity: ConstructorIdentity): Promise<Response> {
+  const db = requireDatabase(env);
+  if (db instanceof Response) return db;
+
+  let body: Record<string, unknown>;
+  try {
+    body = (await request.json()) as Record<string, unknown>;
+  } catch {
+    return constructorError(400, "INVALID_JSON", "ĞĞµ ÑƒĞ´Ğ°Ğ»Ğ¾ÑÑŒ Ğ¿Ñ€Ğ¾Ñ‡Ğ¸Ñ‚Ğ°Ñ‚ÑŒ Ğ´Ğ°Ğ½Ğ½Ñ‹Ğµ Ğ¿Ğ¾Ğ´Ğ³Ğ¾Ñ‚Ğ¾Ğ²ĞºĞ¸.");
+  }
+
+  const clientName = readText(body, "clientName", 160);
+  const accountUrl = readText(body, "accountUrl", 500);
+  const nicheSlug = readText(body, "nicheSlug", 120);
+  const stageSlug = readText(body, "stageSlug", 120);
+  const businessModel = readText(body, "businessModel", 160);
+  const productSummary = readText(body, "productSummary", 1200);
+  const audienceSummary = readText(body, "audienceSummary", 1200);
+  const commercialGoal = readText(body, "commercialGoal", 1200);
+  const salesChannel = readText(body, "salesChannel", 160);
+  const messageChannel = readText(body, "messageChannel", 80) || "other";
+  const notes = readText(body, "notes", 2000);
+
+  if (!clientName || !nicheSlug || !stageSlug || !productSummary || !commercialGoal) {
+    return constructorError(422, "VALIDATION_FAILED", "Ğ—Ğ°Ğ¿Ğ¾Ğ»Ğ½Ğ¸Ñ‚Ğµ ĞºĞ»Ğ¸ĞµĞ½Ñ‚Ğ°, Ğ½Ğ¸ÑˆÑƒ, ÑÑ‚Ğ°Ğ¿, Ğ¿Ñ€Ğ¾Ğ´ÑƒĞºÑ‚ Ğ¸ ĞºĞ¾Ğ¼Ğ¼ĞµÑ€Ñ‡ĞµÑĞºÑƒÑ Ğ·Ğ°Ğ´Ğ°Ñ‡Ñƒ.");
+  }
+
+  if (!isHttpUrl(accountUrl)) {
+    return constructorError(422, "INVALID_ACCOUNT_URL", "Ğ¡ÑÑ‹Ğ»ĞºĞ° Ğ½Ğ° ĞºĞ»Ğ¸ĞµĞ½Ñ‚Ğ° Ğ´Ğ¾Ğ»Ğ¶Ğ½Ğ° Ğ½Ğ°Ñ‡Ğ¸Ğ½Ğ°Ñ‚ÑŒÑÑ Ñ http:// Ğ¸Ğ»Ğ¸ https://.");
+  }
+
+  const [nicheResult, stageResult] = await db.batch([
+    db.prepare("SELECT id, name FROM niches WHERE slug = ? AND is_active = 1 LIMIT 1").bind(nicheSlug),
+    db.prepare("SELECT slug, name FROM stages WHERE slug = ? AND is_active = 1 LIMIT 1").bind(stageSlug),
+  ]);
+
+  const niche = nicheResult.results?.[0] as { id?: string; name?: string } | undefined;
+  const stage = stageResult.results?.[0] as { slug?: string; name?: string } | undefined;
+  if (!niche?.id || !niche.name || !stage?.slug || !stage.name) {
+    return constructorError(422, "REFERENCE_NOT_FOUND", "Ğ’Ñ‹Ğ±Ñ€Ğ°Ğ½Ğ½Ğ°Ñ Ğ½Ğ¸ÑˆĞ° Ğ¸Ğ»Ğ¸ ÑÑ‚Ğ°Ğ¿ Ğ±Ğ¾Ğ»ÑŒÑˆĞµ Ğ½ĞµĞ´Ğ¾ÑÑ‚ÑƒĞ¿Ğ½Ñ‹. ĞĞ±Ğ½Ğ¾Ğ²Ğ¸Ñ‚Ğµ ÑÑ‚Ñ€Ğ°Ğ½Ğ¸Ñ†Ñƒ Ğ¸ Ğ¿Ğ¾Ğ¿Ñ€Ğ¾Ğ±ÑƒĞ¹Ñ‚Ğµ ÑĞ½Ğ¾Ğ²Ğ°.");
+  }
+
+  const knowledgeResult = await db.prepare(`
+    SELECT
+      ki.id,
+      ki.item_type,
+      ki.category,
+      ki.title,
+      ki.prompt_text,
+      ki.short_text,
+      ki.full_text,
+      ki.next_action_text,
+      ki.red_flag_text,
+      ki.risk_level,
+      ki.required_level
+    FROM knowledge_items ki
+    WHERE ki.status = 'approved'
+      AND (
+        NOT EXISTS (
+          SELECT 1 FROM knowledge_item_niches universal_niche
+          WHERE universal_niche.knowledge_item_id = ki.id
+        )
+        OR EXISTS (
+          SELECT 1
+          FROM knowledge_item_niches kin
+          JOIN niches n ON n.id = kin.niche_id
+          WHERE kin.knowledge_item_id = ki.id AND n.slug = ?
+        )
+      )
+      AND (
+        NOT EXISTS (
+          SELECT 1 FROM knowledge_item_stages universal_stage
+          WHERE universal_stage.knowledge_item_id = ki.id
+        )
+        OR EXISTS (
+          SELECT 1
+          FROM knowledge_item_stages kis
+          JOIN stages s ON s.id = kis.stage_id
+          WHERE kis.knowledge_item_id = ki.id AND s.slug = ?
+        )
+      )
+    ORDER BY
+      CASE ki.required_level WHEN 'required' THEN 0 WHEN 'recommended' THEN 1 ELSE 2 END,
+      CASE ki.risk_level WHEN 'refusal' THEN 0 WHEN 'high' THEN 1 WHEN 'elevated' THEN 2 ELSE 3 END,
+      ki.title
+    LIMIT 60
+  `).bind(nicheSlug, stageSlug).all<PreparationKnowledgeRow>();
+
+  const rows = knowledgeResult.results ?? [];
+  const clientId = crypto.randomUUID();
+  const sessionId = crypto.randomUUID();
+  const now = new Date().toISOString();
+  const statements = [
+    db.prepare(`
+      INSERT INTO clients (
+        id, name, account_url, business_model, product_summary, audience_summary,
+        commercial_goal, desired_action, sales_channel, crm_status, internal_notes,
+        created_at, updated_at
+      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, 'found', ?, ?, ?)
+    `).bind(
+      clientId,
+      clientName,
+      accountUrl || null,
+      businessModel || null,
+      productSummary,
+      audienceSummary || null,
+      commercialGoal,
+      commercialGoal,
+      salesChannel || null,
+      notes || null,
+      now,
+      now,
+    ),
+    db.prepare(`
+      INSERT INTO client_niches (client_id, niche_id, relation_type)
+      VALUES (?, ?, 'primary')
+    `).bind(clientId, niche.id),
+    db.prepare(`
+      INSERT INTO diagnostic_sessions (
+        id, client_id, format, status, channel, stage_slug, goal,
+        ethical_decision, created_at, updated_at
+      ) VALUES (?, ?, 'express', 'draft', ?, ?, ?, 'not_checked', ?, ?)
+    `).bind(sessionId, clientId, messageChannel, stageSlug, commercialGoal, now, now),
+  ];
+
+  rows.forEach((row, index) => {
+    statements.push(
+      db.prepare(`
+        INSERT INTO diagnostic_session_items (
+          id, session_id, knowledge_item_id, sort_order, created_at, updated_at
+        ) VALUES (?, ?, ?, ?, ?, ?)
+      `).bind(crypto.randomUUID(), sessionId, row.id, index + 1, now, now),
+    );
+  });
+
+  statements.push(
+    db.prepare(`
+      INSERT INTO audit_log (id, actor_email, action, entity_type, entity_id, new_value_json, created_at)
+      VALUES (?, ?, 'create', 'client_preparation', ?, ?, ?)
+    `).bind(
+      crypto.randomUUID(),
+      identity.email,
+      sessionId,
+      JSON.stringify({ clientId, clientName, nicheSlug, stageSlug, selectedItems: rows.length }),
+      now,
+    ),
+  );
+
+  await db.batch(statements);
+
+  return json({
+    preparation: {
+      clientId,
+      sessionId,
+      clientName,
+      nicheName: niche.name,
+      stageName: stage.name,
+      createdAt: now,
+    },
+    sections: groupPreparationItems(rows),
+  }, { status: 201 });
+}
+
+async function handleDiagnosticCreate(request: Request, env: Env, identity: ConstructorIdentity): Promise<Response> {
+  const db = requireDatabase(env);
+  if (db instanceof Response) return db;
+
+  let body: Record<string, unknown>;
+  try {
+    body = (await request.json()) as Record<string, unknown>;
+  } catch {
+    return constructorError(400, "INVALID_JSON", "ĞĞµ ÑƒĞ´Ğ°Ğ»Ğ¾ÑÑŒ Ğ¿Ñ€Ğ¾Ñ‡Ğ¸Ñ‚Ğ°Ñ‚ÑŒ Ğ´Ğ°Ğ½Ğ½Ñ‹Ğµ Ğ´Ğ¸Ğ°Ğ³Ğ½Ğ¾ÑÑ‚Ğ¸ĞºĞ¸.");
+  }
+
+  const clientName = readText(body, "clientName", 160);
+  const accountUrl = readText(body, "accountUrl", 500);
+  const nicheSlug = readText(body, "nicheSlug", 120);
+  const format = readText(body, "format", 40) === "full" ? "full" : "express";
+  const channel = readText(body, "channel", 80) || "other";
+  const goal = readText(body, "goal", 1200);
+  const product = readText(body, "product", 1200);
+  const audience = readText(body, "audience", 1200);
+  const materials = readText(body, "materials", 1200);
+  const deadline = readText(body, "deadline", 400);
+  const budget = readText(body, "budget", 400);
+  const approver = readText(body, "approver", 500);
+  const desiredAction = readText(body, "desiredAction", 800);
+  const constraints = readText(body, "constraints", 1500);
+  const rightsStatus = readText(body, "rightsStatus", 40);
+  const notes = readText(body, "notes", 2000);
+
+  if (!clientName || !nicheSlug || !goal) {
+    return constructorError(422, "VALIDATION_FAILED", "Ğ—Ğ°Ğ¿Ğ¾Ğ»Ğ½Ğ¸Ñ‚Ğµ ĞºĞ»Ğ¸ĞµĞ½Ñ‚Ğ°, Ğ½Ğ¸ÑˆÑƒ Ğ¸ Ğ³Ğ»Ğ°Ğ²Ğ½ÑƒÑ Ğ·Ğ°Ğ´Ğ°Ñ‡Ñƒ Ğ´Ğ¸Ğ°Ğ³Ğ½Ğ¾ÑÑ‚Ğ¸ĞºĞ¸.");
+  }
+
+  if (!isHttpUrl(accountUrl)) {
+    return constructorError(422, "INVALID_ACCOUNT_URL", "Ğ¡ÑÑ‹Ğ»ĞºĞ° Ğ½Ğ° ĞºĞ»Ğ¸ĞµĞ½Ñ‚Ğ° Ğ´Ğ¾Ğ»Ğ¶Ğ½Ğ° Ğ½Ğ°Ñ‡Ğ¸Ğ½Ğ°Ñ‚ÑŒÑÑ Ñ http:// Ğ¸Ğ»Ğ¸ https://.");
+  }
+
+  if (!new Set(["confirmed", "unknown", "restricted"]).has(rightsStatus)) {
+    return constructorError(422, "INVALID_RIGHTS_STATUS", "Ğ£ĞºĞ°Ğ¶Ğ¸Ñ‚Ğµ, Ğ¿Ğ¾Ğ´Ñ‚Ğ²ĞµÑ€Ğ¶Ğ´ĞµĞ½Ñ‹ Ğ»Ğ¸ Ğ¿Ñ€Ğ°Ğ²Ğ° Ğ½Ğ° Ğ¸ÑÑ…Ğ¾Ğ´Ğ½Ñ‹Ğµ Ğ¼Ğ°Ñ‚ĞµÑ€Ğ¸Ğ°Ğ»Ñ‹.");
+  }
+
+  const stageSlug = format === "full" ? "full-diagnostic" : "express-diagnostic";
+  const [nicheResult, stageResult] = await db.batch([
+    db.prepare("SELECT id, name FROM niches WHERE slug = ? AND is_active = 1 LIMIT 1").bind(nicheSlug),
+    db.prepare("SELECT slug, name FROM stages WHERE slug = ? AND is_active = 1 LIMIT 1").bind(stageSlug),
+  ]);
+
+  const niche = nicheResult.results?.[0] as { id?: string; name?: string } | undefined;
+  const stage = stageResult.results?.[0] as { slug?: string; name?: string } | undefined;
+  if (!niche?.id || !niche.name || !stage?.slug || !stage.name) {
+    return constructorError(422, "REFERENCE_NOT_FOUND", "Ğ’Ñ‹Ğ±Ñ€Ğ°Ğ½Ğ½Ğ°Ñ Ğ½Ğ¸ÑˆĞ° Ğ¸Ğ»Ğ¸ Ñ„Ğ¾Ñ€Ğ¼Ğ°Ñ‚ Ğ´Ğ¸Ğ°Ğ³Ğ½Ğ¾ÑÑ‚Ğ¸ĞºĞ¸ Ğ½ĞµĞ´Ğ¾ÑÑ‚ÑƒĞ¿Ğ½Ñ‹. ĞĞ±Ğ½Ğ¾Ğ²Ğ¸Ñ‚Ğµ ÑÑ‚Ñ€Ğ°Ğ½Ğ¸Ñ†Ñƒ Ğ¸ Ğ¿Ğ¾Ğ¿Ñ€Ğ¾Ğ±ÑƒĞ¹Ñ‚Ğµ ÑĞ½Ğ¾Ğ²Ğ°.");
+  }
+
+  const diagnosticFields = [
+    { key: "goal", label: "ĞºĞ¾Ğ¼Ğ¼ĞµÑ€Ñ‡ĞµÑĞºĞ°Ñ Ğ·Ğ°Ğ´Ğ°Ñ‡Ğ°", value: goal },
+    { key: "product", label: "Ğ¿Ñ€Ğ¸Ğ¾Ñ€Ğ¸Ñ‚ĞµÑ‚Ğ½Ñ‹Ğ¹ Ğ¿Ñ€Ğ¾Ğ´ÑƒĞºÑ‚", value: product },
+    { key: "audience", label: "Ñ†ĞµĞ»ĞµĞ²Ğ°Ñ Ğ°ÑƒĞ´Ğ¸Ñ‚Ğ¾Ñ€Ğ¸Ñ", value: audience },
+    { key: "materials", label: "Ğ¸ÑÑ…Ğ¾Ğ´Ğ½Ñ‹Ğµ Ğ¼Ğ°Ñ‚ĞµÑ€Ğ¸Ğ°Ğ»Ñ‹", value: materials },
+    { key: "deadline", label: "ÑÑ€Ğ¾Ğº", value: deadline },
+    { key: "budget", label: "Ğ±ÑĞ´Ğ¶ĞµÑ‚Ğ½Ñ‹Ğ¹ Ğ¾Ñ€Ğ¸ĞµĞ½Ñ‚Ğ¸Ñ€", value: budget },
+    { key: "approver", label: "Ğ¾Ñ‚Ğ²ĞµÑ‚ÑÑ‚Ğ²ĞµĞ½Ğ½Ñ‹Ğ¹ Ğ·Ğ° ÑĞ¾Ğ³Ğ»Ğ°ÑĞ¾Ğ²Ğ°Ğ½Ğ¸Ğµ", value: approver },
+    { key: "desiredAction", label: "Ñ†ĞµĞ»ĞµĞ²Ğ¾Ğµ Ğ´ĞµĞ¹ÑÑ‚Ğ²Ğ¸Ğµ Ğ°ÑƒĞ´Ğ¸Ñ‚Ğ¾Ñ€Ğ¸Ğ¸", value: desiredAction },
+  ];
+  const missing = diagnosticFields.filter((field) => !field.value).map((field) => field.label);
+  if (rightsStatus !== "confirmed") missing.push("Ğ¿Ñ€Ğ°Ğ²Ğ° Ğ½Ğ° Ğ¸ÑÑ…Ğ¾Ğ´Ğ½Ñ‹Ğµ Ğ¼Ğ°Ñ‚ĞµÑ€Ğ¸Ğ°Ğ»Ñ‹");
+
+  const completedWeight = diagnosticFields.reduce((total, field) => total + (field.value ? 1 : 0), 0) + (rightsStatus === "confirmed" ? 1 : 0);
+  const readiness = Math.round((completedWeight / 9) * 100);
+  const readinessLevel = readiness >= 80 ? "ready" : readiness >= 50 ? "clarify" : "early";
+  const status = readinessLevel === "ready" ? "ready_for_proposal" : "needs_clarification";
+  const ethicalDecision = rightsStatus === "restricted" ? "review" : rightsStatus === "confirmed" ? "approved" : "not_checked";
+  const strongSide = product && audience
+    ? "ĞĞ¿Ñ€ĞµĞ´ĞµĞ»ĞµĞ½Ñ‹ Ğ¿Ñ€Ğ¸Ğ¾Ñ€Ğ¸Ñ‚ĞµÑ‚Ğ½Ñ‹Ğ¹ Ğ¿Ñ€Ğ¾Ğ´ÑƒĞºÑ‚ Ğ¸ Ğ°ÑƒĞ´Ğ¸Ñ‚Ğ¾Ñ€Ğ¸Ñ."
+    : goal
+      ? "Ğ—Ğ°Ñ„Ğ¸ĞºÑĞ¸Ñ€Ğ¾Ğ²Ğ°Ğ½Ğ° Ğ³Ğ»Ğ°Ğ²Ğ½Ğ°Ñ ĞºĞ¾Ğ¼Ğ¼ĞµÑ€Ñ‡ĞµÑĞºĞ°Ñ Ğ·Ğ°Ğ´Ğ°Ñ‡Ğ°."
+      : "ĞšĞ¾Ğ½Ñ‚ĞµĞºÑÑ‚ Ñ‚Ñ€ĞµĞ±ÑƒĞµÑ‚ ÑƒÑ‚Ğ¾Ñ‡Ğ½ĞµĞ½Ğ¸Ñ.";
+  const mainBarrier = missing.length > 0 ? `ĞĞµ Ñ…Ğ²Ğ°Ñ‚Ğ°ĞµÑ‚ Ğ´Ğ°Ğ½Ğ½Ñ‹Ñ…: ${missing.join(", ")}.` : "ĞšÑ€Ğ¸Ñ‚Ğ¸Ñ‡Ğ½Ñ‹Ñ… Ğ¿Ñ€Ğ¾Ğ±ĞµĞ»Ğ¾Ğ² Ğ½Ğµ Ğ²Ñ‹ÑĞ²Ğ»ĞµĞ½Ğ¾.";
+  const mainDiagnosis = readinessLevel === "ready"
+    ? "ĞšĞ¾Ğ½Ñ‚ĞµĞºÑÑ‚Ğ° Ğ´Ğ¾ÑÑ‚Ğ°Ñ‚Ğ¾Ñ‡Ğ½Ğ¾, Ñ‡Ñ‚Ğ¾Ğ±Ñ‹ Ğ¿ĞµÑ€ĞµÑ…Ğ¾Ğ´Ğ¸Ñ‚ÑŒ Ğº Ğ¾Ğ±ÑŠÑ‘Ğ¼Ñƒ Ñ€Ğ°Ğ±Ğ¾Ñ‚ Ğ¸ ĞºĞ¾Ğ¼Ğ¼ĞµÑ€Ñ‡ĞµÑĞºĞ¾Ğ¼Ñƒ Ğ¿Ñ€ĞµĞ´Ğ»Ğ¾Ğ¶ĞµĞ½Ğ¸Ñ."
+    : readinessLevel === "clarify"
+      ? "ĞÑĞ½Ğ¾Ğ²Ğ° ÑÑ„Ğ¾Ñ€Ğ¼Ğ¸Ñ€Ğ¾Ğ²Ğ°Ğ½Ğ°, Ğ½Ğ¾ Ğ¿ĞµÑ€ĞµĞ´ Ñ€Ğ°ÑÑ‡Ñ‘Ñ‚Ğ¾Ğ¼ Ğ½ÑƒĞ¶Ğ½Ğ¾ Ğ·Ğ°ĞºÑ€Ñ‹Ñ‚ÑŒ Ğ½ĞµÑĞºĞ¾Ğ»ÑŒĞºĞ¾ ÑƒÑ‚Ğ¾Ñ‡Ğ½ĞµĞ½Ğ¸Ğ¹."
+      : "ĞŸĞ¾ĞºĞ° Ñ€Ğ°Ğ½Ğ¾ Ğ¿Ñ€ĞµĞ´Ğ»Ğ°Ğ³Ğ°Ñ‚ÑŒ Ñ€ĞµÑˆĞµĞ½Ğ¸Ğµ: ÑĞ½Ğ°Ñ‡Ğ°Ğ»Ğ° Ğ½ÑƒĞ¶Ğ½Ğ¾ ÑĞ¾Ğ±Ñ€Ğ°Ñ‚ÑŒ Ğ±Ğ°Ğ·Ğ¾Ğ²Ñ‹Ğ¹ ĞºĞ¾Ğ½Ñ‚ĞµĞºÑÑ‚ Ğ·Ğ°Ğ´Ğ°Ñ‡Ğ¸.";
+  const nextAction = readinessLevel === "ready"
+    ? "Ğ¡Ğ¾Ğ³Ğ»Ğ°ÑĞ¾Ğ²Ğ°Ñ‚ÑŒ Ğ¾Ğ±ÑŠÑ‘Ğ¼, ÑÑ‚Ğ°Ğ¿Ñ‹ Ğ¸ Ğ¿ĞµÑ€ĞµĞ¹Ñ‚Ğ¸ Ğº Ñ€Ğ°ÑÑ‡Ñ‘Ñ‚Ñƒ Ğ¿Ñ€ĞµĞ´Ğ»Ğ¾Ğ¶ĞµĞ½Ğ¸Ñ."
+    : `Ğ£Ñ‚Ğ¾Ñ‡Ğ½Ğ¸Ñ‚ÑŒ: ${missing.slice(0, 3).join(", ") || "Ğ¾ÑÑ‚Ğ°Ğ²ÑˆĞ¸ĞµÑÑ Ğ´ĞµÑ‚Ğ°Ğ»Ğ¸ Ğ¿Ñ€Ğ¾ĞµĞºÑ‚Ğ°"}.`;
+
+  const knowledgeResult = await db.prepare(`
+    SELECT
+      ki.id,
+      ki.item_type,
+      ki.category,
+      ki.title,
+      ki.prompt_text,
+      ki.short_text,
+      ki.full_text,
+      ki.next_action_text,
+      ki.red_flag_text,
+      ki.risk_level
+    FROM knowledge_items ki
+    WHERE ki.status = 'approved'
+      AND ki.item_type IN (
+        'question_to_client', 'clarifying_question', 'diagnostic_hint',
+        'red_flag', 'ethical_rule', 'refusal_reason', 'next_action'
+      )
+      AND (
+        NOT EXISTS (
+          SELECT 1 FROM knowledge_item_niches universal_niche
+          WHERE universal_niche.knowledge_item_id = ki.id
+        )
+        OR EXISTS (
+          SELECT 1
+          FROM knowledge_item_niches kin
+          JOIN niches n ON n.id = kin.niche_id
+          WHERE kin.knowledge_item_id = ki.id AND n.slug = ?
+        )
+      )
+      AND (
+        NOT EXISTS (
+          SELECT 1 FROM knowledge_item_stages universal_stage
+          WHERE universal_stage.knowledge_item_id = ki.id
+        )
+        OR EXISTS (
+          SELECT 1
+          FROM knowledge_item_stages kis
+          JOIN stages s ON s.id = kis.stage_id
+          WHERE kis.knowledge_item_id = ki.id AND s.slug = ?
+        )
+      )
+    ORDER BY
+      CASE ki.required_level WHEN 'required' THEN 0 WHEN 'recommended' THEN 1 ELSE 2 END,
+      CASE ki.risk_level WHEN 'refusal' THEN 0 WHEN 'high' THEN 1 WHEN 'elevated' THEN 2 ELSE 3 END,
+      ki.title
+    LIMIT 30
+  `).bind(nicheSlug, stageSlug).all<DiagnosticKnowledgeRow>();
+
+  const rows = knowledgeResult.results ?? [];
+  const clientId = crypto.randomUUID();
+  const sessionId = crypto.randomUUID();
+  const now = new Date().toISOString();
+  const internalNotes = [
+    materials && `Ğ˜ÑÑ…Ğ¾Ğ´Ğ½Ğ¸ĞºĞ¸: ${materials}`,
+    deadline && `Ğ¡Ñ€Ğ¾Ğº: ${deadline}`,
+    budget && `Ğ‘ÑĞ´Ğ¶ĞµÑ‚: ${budget}`,
+    approver && `Ğ¡Ğ¾Ğ³Ğ»Ğ°ÑĞ¾Ğ²Ğ°Ğ½Ğ¸Ğµ: ${approver}`,
+    constraints && `ĞĞ³Ñ€Ğ°Ğ½Ğ¸Ñ‡ĞµĞ½Ğ¸Ñ: ${constraints}`,
+    notes && `Ğ—Ğ°Ğ¼ĞµÑ‚ĞºĞ¸: ${notes}`,
+  ].filter(Boolean).join("\n");
+
+  const statements = [
+    db.prepare(`
+      INSERT INTO clients (
+        id, name, account_url, product_summary, audience_summary, commercial_goal,
+        desired_action, crm_status, ethical_status, next_action, internal_notes,
+        created_at, updated_at
+      ) VALUES (?, ?, ?, ?, ?, ?, ?, 'diagnostic', ?, ?, ?, ?, ?)
+    `).bind(
+      clientId,
+      clientName,
+      accountUrl || null,
+      product || null,
+      audience || null,
+      goal,
+      desiredAction || null,
+      ethicalDecision,
+      nextAction,
+      internalNotes || null,
+      now,
+      now,
+    ),
+    db.prepare(`
+      INSERT INTO client_niches (client_id, niche_id, relation_type)
+      VALUES (?, ?, 'primary')
+    `).bind(clientId, niche.id),
+    db.prepare(`
+      INSERT INTO diagnostic_sessions (
+        id, client_id, format, status, channel, stage_slug, started_at, completed_at,
+        goal, strong_side, main_barrier, main_diagnosis, missing_data, next_action,
+        ethical_decision, created_at, updated_at
+      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+    `).bind(
+      sessionId,
+      clientId,
+      format,
+      status,
+      channel,
+      stageSlug,
+      now,
+      readinessLevel === "ready" ? now : null,
+      goal,
+      strongSide,
+      mainBarrier,
+      mainDiagnosis,
+      missing.length > 0 ? JSON.stringify(missing) : null,
+      nextAction,
+      ethicalDecision,
+      now,
+      now,
+    ),
+  ];
+
+  rows.forEach((row, index) => {
+    const isRisk = ["red_flag", "ethical_rule", "refusal_reason"].includes(row.item_type) || ["high", "refusal"].includes(row.risk_level);
+    statements.push(
+      db.prepare(`
+        INSERT INTO diagnostic_session_items (
+          id, session_id, knowledge_item_id, sort_order, risk_detected,
+          include_in_summary, created_at, updated_at
+        ) VALUES (?, ?, ?, ?, ?, 1, ?, ?)
+      `).bind(crypto.randomUUID(), sessionId, row.id, index + 1, isRisk ? 1 : 0, now, now),
+    );
+  });
+
+  statements.push(
+    db.prepare(`
+      INSERT INTO audit_log (id, actor_email, action, entity_type, entity_id, new_value_json, created_at)
+      VALUES (?, ?, 'create', 'diagnostic_session', ?, ?, ?)
+    `).bind(
+      crypto.randomUUID(),
+      identity.email,
+      sessionId,
+      JSON.stringify({ clientId, clientName, nicheSlug, format, readiness, status, selectedItems: rows.length }),
+      now,
+    ),
+  );
+
+  await db.batch(statements);
+
+  const toResultItem = (row: DiagnosticKnowledgeRow) => ({
+    id: row.id,
+    category: row.category,
+    title: row.title,
+    text: row.prompt_text || row.short_text || row.full_text || row.red_flag_text || row.title,
+    nextAction: row.next_action_text,
+    riskLevel: row.risk_level,
+  });
+
+  return json({
+    diagnostic: {
+      clientId,
+      sessionId,
+      clientName,
+      nicheName: niche.name,
+      format,
+      stageName: stage.name,
+      readiness,
+      readinessLevel,
+      status,
+      strongSide,
+      mainBarrier,
+      mainDiagnosis,
+      nextAction,
+      ethicalDecision,
+      missing,
+      confirmed: diagnosticFields.filter((field) => field.value).map((field) => ({ label: field.label, value: field.value })),
+      createdAt: now,
+    },
+    sections: {
+      questions: rows.filter((row) => ["question_to_client", "clarifying_question", "diagnostic_hint"].includes(row.item_type)).map(toResultItem),
+      risks: rows.filter((row) => ["red_flag", "ethical_rule", "refusal_reason"].includes(row.item_type) || ["high", "refusal"].includes(row.risk_level)).map(toResultItem),
+      nextActions: rows.filter((row) => row.item_type === "next_action").map(toResultItem),
+    },
+  }, { status: 201 });
+}
+
+function toClientListItem(row: ClientListRow) {
+  return {
+    id: row.id,
+    name: row.name,
+    accountUrl: row.account_url,
+    contactName: row.contact_name,
+    contactChannel: row.contact_channel,
+    contactValue: row.contact_value,
+    crmStatus: row.crm_status,
+    priority: row.priority,
+    ethicalStatus: row.ethical_status,
+    nextAction: row.next_action,
+    nextContactAt: row.next_contact_at,
+    nicheName: row.niche_name,
+    sessionCount: Number(row.session_count ?? 0),
+    latestSessionStatus: row.latest_session_status,
+    latestSessionAt: row.latest_session_at,
+    createdAt: row.created_at,
+    updatedAt: row.updated_at,
+  };
+}
+
+function parseMissingData(value: string | null): string[] {
+  if (!value) return [];
+  try {
+    const parsed = JSON.parse(value) as unknown;
+    return Array.isArray(parsed) ? parsed.filter((item): item is string => typeof item === "string") : [value];
+  } catch {
+    return [value];
+  }
+}
+
+async function handleClientList(request: Request, env: Env): Promise<Response> {
+  const db = requireDatabase(env);
+  if (db instanceof Response) return db;
+
+  const url = new URL(request.url);
+  const query = (url.searchParams.get("q") || "").trim().toLocaleLowerCase("ru").slice(0, 160);
+  const status = (url.searchParams.get("status") || "").trim().slice(0, 40);
+  const priority = (url.searchParams.get("priority") || "").trim().slice(0, 4);
+  const filters = ["1 = 1"];
+  const bindings: string[] = [];
+
+  if (status) {
+    filters.push("c.crm_status = ?");
+    bindings.push(status);
+  }
+
+  if (priority && ["A", "B", "C"].includes(priority)) {
+    filters.push("c.priority = ?");
+    bindings.push(priority);
+  }
+
+  const where = filters.join(" AND ");
+  const [clientsResult, countResult, statusResult] = await db.batch([
+    db.prepare(`
+      SELECT
+        c.id,
+        c.name,
+        c.account_url,
+        c.contact_name,
+        c.contact_channel,
+        c.contact_value,
+        c.crm_status,
+        c.priority,
+        c.ethical_status,
+        c.next_action,
+        c.next_contact_at,
+        c.created_at,
+        c.updated_at,
+        COALESCE(c.name, '') || ' ' ||
+          COALESCE(c.contact_name, '') || ' ' ||
+          COALESCE(c.contact_value, '') || ' ' ||
+          COALESCE(c.product_summary, '') || ' ' ||
+          COALESCE(c.commercial_goal, '') AS search_text,
+        (
+          SELECT n.name
+          FROM client_niches cn
+          JOIN niches n ON n.id = cn.niche_id
+          WHERE cn.client_id = c.id
+          ORDER BY CASE cn.relation_type WHEN 'primary' THEN 0 ELSE 1 END, n.name
+          LIMIT 1
+        ) AS niche_name,
+        (SELECT COUNT(*) FROM diagnostic_sessions ds WHERE ds.client_id = c.id) AS session_count,
+        (
+          SELECT ds.status FROM diagnostic_sessions ds
+          WHERE ds.client_id = c.id
+          ORDER BY ds.updated_at DESC LIMIT 1
+        ) AS latest_session_status,
+        (
+          SELECT ds.updated_at FROM diagnostic_sessions ds
+          WHERE ds.client_id = c.id
+          ORDER BY ds.updated_at DESC LIMIT 1
+        ) AS latest_session_at
+      FROM clients c
+      WHERE ${where}
+      ORDER BY
+        CASE c.priority WHEN 'A' THEN 0 WHEN 'B' THEN 1 ELSE 2 END,
+        CASE WHEN c.next_contact_at IS NULL THEN 1 ELSE 0 END,
+        c.next_contact_at,
+        c.updated_at DESC
+      LIMIT 500
+    `).bind(...bindings),
+    db.prepare(`SELECT COUNT(*) AS total FROM clients c WHERE ${where}`).bind(...bindings),
+    db.prepare(`
+      SELECT crm_status AS status, COUNT(*) AS total
+      FROM clients
+      GROUP BY crm_status
+      ORDER BY total DESC, crm_status
+    `),
+  ]);
+
+  const clientRows = (clientsResult.results ?? []) as unknown as ClientListRow[];
+  const matchingRows = query
+    ? clientRows.filter((row) => (row.search_text || "").toLocaleLowerCase("ru").includes(query))
+    : clientRows;
+
+  return json({
+    items: matchingRows.slice(0, 100).map(toClientListItem),
+    total: query ? matchingRows.length : Number((countResult.results?.[0] as { total?: number } | undefined)?.total ?? 0),
+    statusCounts: statusResult.results ?? [],
+  });
+}
+
+async function handleClientDetail(clientId: string, env: Env): Promise<Response> {
+  const db = requireDatabase(env);
+  if (db instanceof Response) return db;
+
+  const [clientResult, sessionsResult] = await db.batch([
+    db.prepare(`
+      SELECT
+        c.*,
+        (
+          SELECT n.name
+          FROM client_niches cn
+          JOIN niches n ON n.id = cn.niche_id
+          WHERE cn.client_id = c.id
+          ORDER BY CASE cn.relation_type WHEN 'primary' THEN 0 ELSE 1 END, n.name
+          LIMIT 1
+        ) AS niche_name,
+        (SELECT COUNT(*) FROM diagnostic_sessions ds WHERE ds.client_id = c.id) AS session_count,
+        (
+          SELECT ds.status FROM diagnostic_sessions ds
+          WHERE ds.client_id = c.id
+          ORDER BY ds.updated_at DESC LIMIT 1
+        ) AS latest_session_status,
+        (
+          SELECT ds.updated_at FROM diagnostic_sessions ds
+          WHERE ds.client_id = c.id
+          ORDER BY ds.updated_at DESC LIMIT 1
+        ) AS latest_session_at
+      FROM clients c
+      WHERE c.id = ?
+      LIMIT 1
+    `).bind(clientId),
+    db.prepare(`
+      SELECT
+        ds.id,
+        ds.format,
+        ds.status,
+        ds.channel,
+        ds.stage_slug,
+        s.name AS stage_name,
+        ds.goal,
+        ds.strong_side,
+        ds.main_barrier,
+        ds.main_diagnosis,
+        ds.missing_data,
+        ds.next_action,
+        ds.ethical_decision,
+        (SELECT COUNT(*) FROM diagnostic_session_items dsi WHERE dsi.session_id = ds.id) AS selected_items,
+        ds.created_at,
+        ds.updated_at
+      FROM diagnostic_sessions ds
+      LEFT JOIN stages s ON s.slug = ds.stage_slug
+      WHERE ds.client_id = ?
+      ORDER BY ds.updated_at DESC
+      LIMIT 50
+    `).bind(clientId),
+  ]);
+
+  const row = clientResult.results?.[0] as unknown as ClientDetailRow | undefined;
+  if (!row?.id) return constructorError(404, "CLIENT_NOT_FOUND", "ĞšĞ°Ñ€Ñ‚Ğ¾Ñ‡ĞºĞ° ĞºĞ»Ğ¸ĞµĞ½Ñ‚Ğ° Ğ½Ğµ Ğ½Ğ°Ğ¹Ğ´ĞµĞ½Ğ°.");
+
+  return json({
+    client: {
+      ...toClientListItem(row),
+      city: row.city,
+      geography: row.geography,
+      businessModel: row.business_model,
+      productSummary: row.product_summary,
+      audienceSummary: row.audience_summary,
+      commercialGoal: row.commercial_goal,
+      desiredAction: row.desired_action,
+      salesChannel: row.sales_channel,
+      budgetMin: row.budget_min,
+      budgetMax: row.budget_max,
+      mainObjection: row.main_objection,
+      internalNotes: row.internal_notes,
+    },
+    sessions: ((sessionsResult.results ?? []) as unknown as ClientSessionRow[]).map((session) => ({
+      id: session.id,
+      format: session.format,
+      status: session.status,
+      channel: session.channel,
+      stageSlug: session.stage_slug,
+      stageName: session.stage_name,
+      goal: session.goal,
+      strongSide: session.strong_side,
+      mainBarrier: session.main_barrier,
+      mainDiagnosis: session.main_diagnosis,
+      missing: parseMissingData(session.missing_data),
+      nextAction: session.next_action,
+      ethicalDecision: session.ethical_decision,
+      selectedItems: Number(session.selected_items ?? 0),
+      createdAt: session.created_at,
+      updatedAt: session.updated_at,
+    })),
+  });
+}
+
+async function handleClientUpdate(request: Request, clientId: string, env: Env, identity: ConstructorIdentity): Promise<Response> {
+  const db = requireDatabase(env);
+  if (db instanceof Response) return db;
+
+  let body: Record<string, unknown>;
+  try {
+    body = (await request.json()) as Record<string, unknown>;
+  } catch {
+    return constructorError(400, "INVALID_JSON", "ĞĞµ ÑƒĞ´Ğ°Ğ»Ğ¾ÑÑŒ Ğ¿Ñ€Ğ¾Ñ‡Ğ¸Ñ‚Ğ°Ñ‚ÑŒ Ğ¸Ğ·Ğ¼ĞµĞ½ĞµĞ½Ğ¸Ñ ĞºĞ°Ñ€Ñ‚Ğ¾Ñ‡ĞºĞ¸ ĞºĞ»Ğ¸ĞµĞ½Ñ‚Ğ°.");
+  }
+
+  const existing = await db.prepare("SELECT id FROM clients WHERE id = ? LIMIT 1").bind(clientId).first<{ id: string }>();
+  if (!existing?.id) return constructorError(404, "CLIENT_NOT_FOUND", "ĞšĞ°Ñ€Ñ‚Ğ¾Ñ‡ĞºĞ° ĞºĞ»Ğ¸ĞµĞ½Ñ‚Ğ° Ğ½Ğµ Ğ½Ğ°Ğ¹Ğ´ĞµĞ½Ğ°.");
+
+  const crmStatus = readText(body, "crmStatus", 40);
+  const priority = readText(body, "priority", 4);
+  const contactName = readText(body, "contactName", 160);
+  const contactChannel = readText(body, "contactChannel", 80);
+  const contactValue = readText(body, "contactValue", 320);
+  const nextAction = readText(body, "nextAction", 1000);
+  const nextContactAt = readText(body, "nextContactAt", 80);
+  const internalNotes = readText(body, "internalNotes", 3000);
+  const allowedStatuses = new Set(["found", "diagnostic", "qualified", "proposal", "negotiation", "won", "paused", "lost", "archived"]);
+
+  if (!allowedStatuses.has(crmStatus) || !["A", "B", "C"].includes(priority)) {
+    return constructorError(422, "VALIDATION_FAILED", "Ğ’Ñ‹Ğ±ĞµÑ€Ğ¸Ñ‚Ğµ ĞºĞ¾Ñ€Ñ€ĞµĞºÑ‚Ğ½Ñ‹Ğ¹ ÑÑ‚Ğ°Ñ‚ÑƒÑ Ğ¸ Ğ¿Ñ€Ğ¸Ğ¾Ñ€Ğ¸Ñ‚ĞµÑ‚ ĞºĞ»Ğ¸ĞµĞ½Ñ‚Ğ°.");
+  }
+
+  if (nextContactAt && Number.isNaN(Date.parse(nextContactAt))) {
+    return constructorError(422, "INVALID_NEXT_CONTACT", "Ğ£ĞºĞ°Ğ¶Ğ¸Ñ‚Ğµ ĞºĞ¾Ñ€Ñ€ĞµĞºÑ‚Ğ½ÑƒÑ Ğ´Ğ°Ñ‚Ñƒ ÑĞ»ĞµĞ´ÑƒÑÑ‰ĞµĞ³Ğ¾ ĞºĞ¾Ğ½Ñ‚Ğ°ĞºÑ‚Ğ°.");
+  }
+
+  const now = new Date().toISOString();
+  await db.batch([
+    db.prepare(`
+      UPDATE clients
+      SET
+        crm_status = ?,
+        priority = ?,
+        contact_name = ?,
+        contact_channel = ?,
+        contact_value = ?,
+        next_action = ?,
+        next_contact_at = ?,
+        internal_notes = ?,
+        updated_at = ?
+      WHERE id = ?
+    `).bind(
+      crmStatus,
+      priority,
+      contactName || null,
+      contactChannel || null,
+      contactValue || null,
+      nextAction || null,
+      nextContactAt || null,
+      internalNotes || null,
+      now,
+      clientId,
+    ),
+    db.prepare(`
+      INSERT INTO audit_log (id, actor_email, action, entity_type, entity_id, new_value_json, created_at)
+      VALUES (?, ?, 'update', 'client', ?, ?, ?)
+    `).bind(
+      crypto.randomUUID(),
+      identity.email,
+      clientId,
+      JSON.stringify({ crmStatus, priority, contactName, contactChannel, nextAction, nextContactAt }),
+      now,
+    ),
+  ]);
+
+  return handleClientDetail(clientId, env);
+}
+
+function calculateLine(item: CalculationItemInput) {
+  const rate = item.manualRate > 0 ? item.manualRate : item.tariffRate;
+  const production = item.quantity * rate * item.complexityCoefficient * item.sourceCoefficient * item.urgencyCoefficient * item.rightsCoefficient;
+  const labor = item.hours * item.internalHourRate;
+  const beforeDiscount = production + item.fixedCost + labor + item.externalCost;
+  const total = beforeDiscount * (1 - item.itemDiscountPercent / 100);
+  return {
+    rate: roundMoney(rate),
+    production: roundMoney(production),
+    labor: roundMoney(labor),
+    beforeDiscount: roundMoney(beforeDiscount),
+    total: roundMoney(Math.max(0, total)),
+  };
+}
+
+function parseCalculationItem(value: unknown, index: number): CalculationItemInput | null {
+  const item = asRecord(value);
+  if (!item) return null;
+  const name = readText(item, "name", 240);
+  if (!name) return null;
+
+  return {
+    tariffId: readText(item, "tariffId", 80),
+    name,
+    unit: readText(item, "unit", 80) || "ÑƒÑĞ»ÑƒĞ³Ğ°",
+    quantity: readNumber(item, "quantity", 1, 0.01, 10000),
+    tariffRate: readNumber(item, "tariffRate", 0, 0, 1_000_000_000),
+    manualRate: readNumber(item, "manualRate", 0, 0, 1_000_000_000),
+    complexityCoefficient: readNumber(item, "complexityCoefficient", 1, 0.1, 10),
+    sourceCoefficient: readNumber(item, "sourceCoefficient", 1, 0.1, 10),
+    urgencyCoefficient: readNumber(item, "urgencyCoefficient", 1, 0.1, 10),
+    rightsCoefficient: readNumber(item, "rightsCoefficient", 1, 0.1, 10),
+    itemDiscountPercent: readNumber(item, "itemDiscountPercent", 0, 0, 100),
+    fixedCost: readNumber(item, "fixedCost", 0, 0, 1_000_000_000),
+    hours: readNumber(item, "hours", 0, 0, 10000),
+    internalHourRate: readNumber(item, "internalHourRate", 0, 0, 10_000_000),
+    externalCost: readNumber(item, "externalCost", 0, 0, 1_000_000_000),
+    comment: readText(item, "comment", 800) || `ĞŸĞ¾Ğ·Ğ¸Ñ†Ğ¸Ñ ${index + 1}`,
+  };
+}
+
+function calculationResponse(row: CalculationRow, items: CalculationItemRow[]) {
+  const normalizedItems = items.map((item) => {
+    const metadata = parseCalculationItemMetadata(item.comment);
+    const normalized: CalculationItemInput = {
+      tariffId: item.tariff_id || "",
+      name: item.name,
+      unit: metadata.unit,
+      quantity: Number(item.quantity),
+      tariffRate: Number(item.tariff_rate),
+      manualRate: Number(item.manual_rate),
+      complexityCoefficient: Number(item.complexity_coefficient),
+      sourceCoefficient: Number(item.source_coefficient),
+      urgencyCoefficient: Number(item.urgency_coefficient),
+      rightsCoefficient: Number(item.rights_coefficient),
+      itemDiscountPercent: Number(item.item_discount_percent),
+      fixedCost: Number(item.fixed_cost),
+      hours: Number(item.hours),
+      internalHourRate: Number(item.internal_hour_rate),
+      externalCost: Number(item.external_cost),
+      comment: metadata.comment,
+    };
+    return { id: item.id, ...normalized, ...calculateLine(normalized) };
+  });
+  const subtotal = roundMoney(normalizedItems.reduce((sum, item) => sum + item.total, 0));
+  const afterDiscount = roundMoney(subtotal * (1 - Number(row.discount_percent) / 100));
+  const calculatedTotal = roundMoney(afterDiscount + Number(row.manual_adjustment) + Number(row.external_project_cost));
+  const total = roundMoney(Math.max(0, Number(row.minimum_price), calculatedTotal));
+  const prepayment = roundMoney(total * Number(row.prepayment_percent) / 100);
+  const metadata = parseCalculationMetadata(row.comment);
+
+  return {
+    calculation: {
+      id: row.id,
+      clientId: row.client_id,
+      clientName: row.client_name,
+      diagnosticSessionId: row.diagnostic_session_id,
+      title: metadata.title,
+      currency: metadata.currency,
+      projectType: row.project_type,
+      status: row.status,
+      discountPercent: Number(row.discount_percent),
+      manualAdjustment: Number(row.manual_adjustment),
+      minimumPrice: Number(row.minimum_price),
+      externalProjectCost: Number(row.external_project_cost),
+      prepaymentPercent: Number(row.prepayment_percent),
+      ethicalStatus: row.ethical_status,
+      validUntil: row.valid_until,
+      comment: metadata.comment,
+      subtotal,
+      afterDiscount,
+      total,
+      prepayment,
+      createdAt: row.created_at,
+      updatedAt: row.updated_at,
+    },
+    items: normalizedItems,
+  };
+}
+
+async function handlePricingBootstrap(env: Env): Promise<Response> {
+  const db = requireDatabase(env);
+  if (db instanceof Response) return db;
+
+  const [clientsResult, tariffsResult, recentResult] = await Promise.all([
+    db.prepare(`
+      SELECT id, name, crm_status, priority
+      FROM clients
+      WHERE crm_status != 'archived'
+      ORDER BY CASE priority WHEN 'A' THEN 0 WHEN 'B' THEN 1 ELSE 2 END, updated_at DESC
+      LIMIT 200
+    `).all<PricingClientRow>(),
+    db.prepare(`
+      SELECT id, name, category, unit, working_rate, minimum_rate, rate_status, includes_text, excludes_text
+      FROM pricing_tariffs
+      WHERE is_active = 1 AND rate_status != 'disabled'
+      ORDER BY category, name
+      LIMIT 200
+    `).all<PricingTariffRow>(),
+    db.prepare(`
+      SELECT
+        pc.id,
+        c.name AS client_name,
+        pc.status,
+        pc.comment,
+        MAX(
+          pc.minimum_price,
+          COALESCE(SUM(
+            (
+              ci.quantity * CASE WHEN ci.manual_rate > 0 THEN ci.manual_rate ELSE ci.tariff_rate END *
+              ci.complexity_coefficient * ci.source_coefficient * ci.urgency_coefficient * ci.rights_coefficient +
+              ci.fixed_cost + ci.hours * ci.internal_hour_rate + ci.external_cost
+            ) * (1 - ci.item_discount_percent / 100)
+          ), 0) * (1 - pc.discount_percent / 100) + pc.manual_adjustment + pc.external_project_cost
+        ) AS total,
+        COUNT(ci.id) AS item_count,
+        pc.updated_at
+      FROM project_calculations pc
+      LEFT JOIN clients c ON c.id = pc.client_id
+      LEFT JOIN calculation_items ci ON ci.calculation_id = pc.id
+      WHERE pc.status != 'archived'
+      GROUP BY pc.id
+      ORDER BY pc.updated_at DESC
+      LIMIT 20
+    `).all<RecentCalculationRow>(),
+  ]);
+
+  return json({
+    clients: (clientsResult.results ?? []).map((client) => ({
+      id: client.id,
+      name: client.name,
+      crmStatus: client.crm_status,
+      priority: client.priority,
+    })),
+    tariffs: (tariffsResult.results ?? []).map((tariff) => ({
+      id: tariff.id,
+      name: tariff.name,
+      category: tariff.category,
+      unit: tariff.unit,
+      workingRate: Number(tariff.working_rate),
+      minimumRate: Number(tariff.minimum_rate),
+      rateStatus: tariff.rate_status,
+      includes: tariff.includes_text,
+      excludes: tariff.excludes_text,
+    })),
+    recent: (recentResult.results ?? []).map((calculation) => ({
+      ...(() => {
+        const metadata = parseCalculationMetadata(calculation.comment);
+        return { title: metadata.title, currency: metadata.currency };
+      })(),
+      id: calculation.id,
+      clientName: calculation.client_name,
+      status: calculation.status,
+      total: roundMoney(Number(calculation.total ?? 0)),
+      itemCount: Number(calculation.item_count ?? 0),
+      updatedAt: calculation.updated_at,
+    })),
+  });
+}
+
+async function handleCalculationDetail(calculationId: string, env: Env): Promise<Response> {
+  const db = requireDatabase(env);
+  if (db instanceof Response) return db;
+
+  const [row, itemsResult] = await Promise.all([
+    db.prepare(`
+      SELECT pc.*, c.name AS client_name
+      FROM project_calculations pc
+      LEFT JOIN clients c ON c.id = pc.client_id
+      WHERE pc.id = ?
+      LIMIT 1
+    `).bind(calculationId).first<CalculationRow>(),
+    db.prepare(`
+      SELECT id, tariff_id, name, quantity, tariff_rate, manual_rate,
+        complexity_coefficient, source_coefficient, urgency_coefficient, rights_coefficient,
+        item_discount_percent, fixed_cost, hours, internal_hour_rate, external_cost,
+        sort_order, comment
+      FROM calculation_items
+      WHERE calculation_id = ?
+      ORDER BY sort_order, created_at
+    `).bind(calculationId).all<CalculationItemRow>(),
+  ]);
+
+  if (!row?.id) return constructorError(404, "CALCULATION_NOT_FOUND", "Ğ¡Ğ¾Ñ…Ñ€Ğ°Ğ½Ñ‘Ğ½Ğ½Ñ‹Ğ¹ Ñ€Ğ°ÑÑ‡Ñ‘Ñ‚ Ğ½Ğµ Ğ½Ğ°Ğ¹Ğ´ĞµĞ½.");
+  return json(calculationResponse(row, itemsResult.results ?? []));
+}
+
+async function handleCalculationCreate(request: Request, env: Env, identity: ConstructorIdentity): Promise<Response> {
+  const db = requireDatabase(env);
+  if (db instanceof Response) return db;
+
+  let body: Record<string, unknown>;
+  try {
+    body = (await request.json()) as Record<string, unknown>;
+  } catch {
+    return constructorError(400, "INVALID_JSON", "ĞĞµ ÑƒĞ´Ğ°Ğ»Ğ¾ÑÑŒ Ğ¿Ñ€Ğ¾Ñ‡Ğ¸Ñ‚Ğ°Ñ‚ÑŒ Ğ´Ğ°Ğ½Ğ½Ñ‹Ğµ Ñ€Ğ°ÑÑ‡Ñ‘Ñ‚Ğ°.");
+  }
+
+  const rawItems = Array.isArray(body.items) ? body.items.slice(0, 50) : [];
+  const items = rawItems.map(parseCalculationItem).filter((item): item is CalculationItemInput => Boolean(item));
+  if (items.length === 0 || items.length !== rawItems.length) {
+    return constructorError(422, "CALCULATION_ITEMS_REQUIRED", "Ğ”Ğ¾Ğ±Ğ°Ğ²ÑŒÑ‚Ğµ Ñ…Ğ¾Ñ‚Ñ Ğ±Ñ‹ Ğ¾Ğ´Ğ½Ñƒ Ğ¿Ğ¾Ğ·Ğ¸Ñ†Ğ¸Ñ Ğ¸ Ğ·Ğ°Ğ¿Ğ¾Ğ»Ğ½Ğ¸Ñ‚Ğµ ĞµÑ‘ Ğ½Ğ°Ğ·Ğ²Ğ°Ğ½Ğ¸Ğµ.");
+  }
+
+  const title = readText(body, "title", 240) || "Ğ Ğ°ÑÑ‡Ñ‘Ñ‚ Ğ¿Ñ€Ğ¾ĞµĞºÑ‚Ğ°";
+  const clientId = readText(body, "clientId", 80);
+  const projectType = readText(body, "projectType", 40) || "individual";
+  const validProjectTypes = new Set(["test", "main", "system", "recurring", "individual"]);
+  if (!validProjectTypes.has(projectType)) {
+    return constructorError(422, "INVALID_PROJECT_TYPE", "Ğ’Ñ‹Ğ±ĞµÑ€Ğ¸Ñ‚Ğµ ĞºĞ¾Ñ€Ñ€ĞµĞºÑ‚Ğ½Ñ‹Ğ¹ Ñ‚Ğ¸Ğ¿ Ğ¿Ñ€Ğ¾ĞµĞºÑ‚Ğ°.");
+  }
+
+  if (clientId) {
+    const client = await db.prepare("SELECT id FROM clients WHERE id = ? LIMIT 1").bind(clientId).first<{ id: string }>();
+    if (!client?.id) return constructorError(422, "CLIENT_NOT_FOUND", "Ğ’Ñ‹Ğ±Ñ€Ğ°Ğ½Ğ½Ñ‹Ğ¹ ĞºĞ»Ğ¸ĞµĞ½Ñ‚ Ğ½Ğµ Ğ½Ğ°Ğ¹Ğ´ĞµĞ½.");
+  }
+
+  const discountPercent = readNumber(body, "discountPercent", 0, 0, 100);
+  const manualAdjustment = readNumber(body, "manualAdjustment", 0, -1_000_000_000, 1_000_000_000);
+  const minimumPrice = readNumber(body, "minimumPrice", 0, 0, 1_000_000_000);
+  const externalProjectCost = readNumber(body, "externalProjectCost", 0, 0, 1_000_000_000);
+  const prepaymentPercent = readNumber(body, "prepaymentPercent", 50, 0, 100);
+  const validUntil = readText(body, "validUntil", 80);
+  const comment = readText(body, "comment", 3000);
+  if (validUntil && Number.isNaN(Date.parse(validUntil))) {
+    return constructorError(422, "INVALID_VALID_UNTIL", "Ğ£ĞºĞ°Ğ¶Ğ¸Ñ‚Ğµ ĞºĞ¾Ñ€Ñ€ĞµĞºÑ‚Ğ½Ñ‹Ğ¹ ÑÑ€Ğ¾Ğº Ğ´ĞµĞ¹ÑÑ‚Ğ²Ğ¸Ñ Ñ€Ğ°ÑÑ‡Ñ‘Ñ‚Ğ°.");
+  }
+
+  const calculationId = crypto.randomUUID();
+  const now = new Date().toISOString();
+  const statements = [
+    db.prepare(`
+      INSERT INTO project_calculations (
+        id, client_id, project_type, status, discount_percent,
+        manual_adjustment, minimum_price, external_project_cost, prepayment_percent,
+        ethical_status, valid_until, comment, created_at, updated_at
+      ) VALUES (?, ?, ?, 'ready', ?, ?, ?, ?, ?, 'approved', ?, ?, ?, ?)
+    `).bind(
+      calculationId,
+      clientId || null,
+      projectType,
+      discountPercent,
+      manualAdjustment,
+      minimumPrice,
+      externalProjectCost,
+      prepaymentPercent,
+      validUntil || null,
+      JSON.stringify({ title, currency: "RUB", comment }),
+      now,
+      now,
+    ),
+  ];
+
+  items.forEach((item, index) => {
+    statements.push(db.prepare(`
+      INSERT INTO calculation_items (
+        id, calculation_id, tariff_id, name, quantity, tariff_rate, manual_rate,
+        complexity_coefficient, source_coefficient, urgency_coefficient, rights_coefficient,
+        item_discount_percent, fixed_cost, hours, internal_hour_rate, external_cost,
+        sort_order, comment, created_at, updated_at
+      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+    `).bind(
+      crypto.randomUUID(), calculationId, item.tariffId || null, item.name,
+      item.quantity, item.tariffRate, item.manualRate, item.complexityCoefficient,
+      item.sourceCoefficient, item.urgencyCoefficient, item.rightsCoefficient,
+      item.itemDiscountPercent, item.fixedCost, item.hours, item.internalHourRate,
+      item.externalCost, index + 1, JSON.stringify({ unit: item.unit, comment: item.comment }), now, now,
+    ));
+  });
+
+  const subtotal = roundMoney(items.reduce((sum, item) => sum + calculateLine(item).total, 0));
+  const total = roundMoney(Math.max(0, minimumPrice, subtotal * (1 - discountPercent / 100) + manualAdjustment + externalProjectCost));
+  statements.push(db.prepare(`
+    INSERT INTO audit_log (id, actor_email, action, entity_type, entity_id, new_value_json, created_at)
+    VALUES (?, ?, 'create', 'project_calculation', ?, ?, ?)
+  `).bind(
+    crypto.randomUUID(), identity.email, calculationId,
+    JSON.stringify({ title, clientId: clientId || null, itemCount: items.length, total, currency: "RUB" }),
+    now,
+  ));
+
+  await db.batch(statements);
+  const response = await handleCalculationDetail(calculationId, env);
+  return new Response(response.body, { status: 201, headers: response.headers });
+}
+
+const proposalSelectSql = `
+  SELECT
+    p.*,
+    c.name AS client_name,
+    ds.goal AS diagnostic_goal,
+    ds.created_at AS diagnostic_created_at,
+    pc.comment AS calculation_comment,
+    CASE WHEN pc.id IS NULL THEN NULL ELSE MAX(
+      pc.minimum_price,
+      COALESCE((
+        SELECT SUM(
+          (
+            ci.quantity * CASE WHEN ci.manual_rate > 0 THEN ci.manual_rate ELSE ci.tariff_rate END *
+            ci.complexity_coefficient * ci.source_coefficient * ci.urgency_coefficient * ci.rights_coefficient +
+            ci.fixed_cost + ci.hours * ci.internal_hour_rate + ci.external_cost
+          ) * (1 - ci.item_discount_percent / 100)
+        )
+        FROM calculation_items ci
+        WHERE ci.calculation_id = pc.id
+      ), 0) * (1 - pc.discount_percent / 100) + pc.manual_adjustment + pc.external_project_cost
+    ) END AS calculation_total
+  FROM proposals p
+  LEFT JOIN clients c ON c.id = p.client_id
+  LEFT JOIN diagnostic_sessions ds ON ds.id = p.diagnostic_session_id
+  LEFT JOIN project_calculations pc ON pc.id = p.calculation_id
+`;
+
+function proposalResponse(row: ProposalRow) {
+  const calculationMetadata = parseCalculationMetadata(row.calculation_comment);
+  return {
+    id: row.id,
+    clientId: row.client_id,
+    clientName: row.client_name,
+    diagnosticSessionId: row.diagnostic_session_id,
+    diagnosticLabel: row.diagnostic_session_id
+      ? row.diagnostic_goal || `Ğ”Ğ¸Ğ°Ğ³Ğ½Ğ¾ÑÑ‚Ğ¸ĞºĞ° Ğ¾Ñ‚ ${row.diagnostic_created_at || ""}`.trim()
+      : null,
+    calculationId: row.calculation_id,
+    calculationTitle: row.calculation_id ? calculationMetadata.title : null,
+    calculationCurrency: row.calculation_id ? calculationMetadata.currency : null,
+    calculationTotal: row.calculation_total === null ? null : roundMoney(Number(row.calculation_total)),
+    version: Number(row.version),
+    status: row.status,
+    title: row.title,
+    diagnosisText: row.diagnosis_text || "",
+    strategyText: row.strategy_text || "",
+    solutionText: row.solution_text || "",
+    scopeText: row.scope_text || "",
+    timelineText: row.timeline_text || "",
+    rightsText: row.rights_text || "",
+    limitationsText: row.limitations_text || "",
+    nextStepText: row.next_step_text || "",
+    clientDocument: row.client_document || "",
+    internalNotes: row.internal_notes || "",
+    sentAt: row.sent_at,
+    followUpAt: row.follow_up_at,
+    validUntil: row.valid_until,
+    createdAt: row.created_at,
+    updatedAt: row.updated_at,
+  };
+}
+
+async function validateProposalReferences(db: NonNullable<Env["DB"]>, input: ProposalInput): Promise<Response | null> {
+  const checks = [
+    ...(input.clientId ? [db.prepare("SELECT id FROM clients WHERE id = ? LIMIT 1").bind(input.clientId)] : []),
+    ...(input.diagnosticSessionId ? [db.prepare("SELECT id FROM diagnostic_sessions WHERE id = ? LIMIT 1").bind(input.diagnosticSessionId)] : []),
+    ...(input.calculationId ? [db.prepare("SELECT id FROM project_calculations WHERE id = ? LIMIT 1").bind(input.calculationId)] : []),
+  ];
+  if (checks.length === 0) return null;
+
+  const results = await db.batch(checks);
+  let index = 0;
+  if (input.clientId && !results[index++]?.results?.[0]) {
+    return constructorError(422, "CLIENT_NOT_FOUND", "Ğ’Ñ‹Ğ±Ñ€Ğ°Ğ½Ğ½Ñ‹Ğ¹ ĞºĞ»Ğ¸ĞµĞ½Ñ‚ Ğ½Ğµ Ğ½Ğ°Ğ¹Ğ´ĞµĞ½.");
+  }
+  if (input.diagnosticSessionId && !results[index++]?.results?.[0]) {
+    return constructorError(422, "DIAGNOSTIC_NOT_FOUND", "Ğ’Ñ‹Ğ±Ñ€Ğ°Ğ½Ğ½Ğ°Ñ Ğ´Ğ¸Ğ°Ğ³Ğ½Ğ¾ÑÑ‚Ğ¸ĞºĞ° Ğ½Ğµ Ğ½Ğ°Ğ¹Ğ´ĞµĞ½Ğ°.");
+  }
+  if (input.calculationId && !results[index++]?.results?.[0]) {
+    return constructorError(422, "CALCULATION_NOT_FOUND", "Ğ’Ñ‹Ğ±Ñ€Ğ°Ğ½Ğ½Ñ‹Ğ¹ Ñ€Ğ°ÑÑ‡Ñ‘Ñ‚ Ğ½Ğµ Ğ½Ğ°Ğ¹Ğ´ĞµĞ½.");
+  }
+  return null;
+}
+
+async function handleProposalBootstrap(env: Env): Promise<Response> {
+  const db = requireDatabase(env);
+  if (db instanceof Response) return db;
+
+  const [clientsResult, calculationsResult, diagnosticsResult, proposalsResult] = await db.batch([
+    db.prepare(`
+      SELECT id, name, crm_status, priority
+      FROM clients
+      WHERE crm_status != 'archived'
+      ORDER BY CASE priority WHEN 'A' THEN 0 WHEN 'B' THEN 1 ELSE 2 END, updated_at DESC
+      LIMIT 200
+    `),
+    db.prepare(`
+      SELECT
+        pc.id,
+        pc.client_id,
+        c.name AS client_name,
+        pc.status,
+        pc.comment,
+        pc.valid_until,
+        MAX(
+          pc.minimum_price,
+          COALESCE(SUM(
+            (
+              ci.quantity * CASE WHEN ci.manual_rate > 0 THEN ci.manual_rate ELSE ci.tariff_rate END *
+              ci.complexity_coefficient * ci.source_coefficient * ci.urgency_coefficient * ci.rights_coefficient +
+              ci.fixed_cost + ci.hours * ci.internal_hour_rate + ci.external_cost
+            ) * (1 - ci.item_discount_percent / 100)
+          ), 0) * (1 - pc.discount_percent / 100) + pc.manual_adjustment + pc.external_project_cost
+        ) AS total,
+        COUNT(ci.id) AS item_count,
+        pc.updated_at
+      FROM project_calculations pc
+      LEFT JOIN clients c ON c.id = pc.client_id
+      LEFT JOIN calculation_items ci ON ci.calculation_id = pc.id
+      WHERE pc.status != 'archived'
+      GROUP BY pc.id
+      ORDER BY pc.updated_at DESC
+      LIMIT 200
+    `),
+    db.prepare(`
+      SELECT ds.id, ds.client_id, c.name AS client_name, ds.goal, ds.main_diagnosis, ds.created_at
+      FROM diagnostic_sessions ds
+      JOIN clients c ON c.id = ds.client_id
+      WHERE ds.status != 'archived'
+      ORDER BY ds.updated_at DESC
+      LIMIT 200
+    `),
+    db.prepare(`${proposalSelectSql}
+      WHERE p.status != 'archived'
+      ORDER BY
+        CASE p.status
+          WHEN 'discussion' THEN 0 WHEN 'sent' THEN 1 WHEN 'ready_to_send' THEN 2
+          WHEN 'internal_review' THEN 3 WHEN 'needs_data' THEN 4 WHEN 'draft' THEN 5
+          WHEN 'approved' THEN 6 WHEN 'rejected' THEN 7 ELSE 8
+        END,
+        p.updated_at DESC
+      LIMIT 300
+    `),
+  ]);
+
+  const calculations = (calculationsResult.results ?? []) as unknown as ProposalCalculationRow[];
+  return json({
+    clients: ((clientsResult.results ?? []) as unknown as PricingClientRow[]).map((client) => ({
+      id: client.id,
+      name: client.name,
+      crmStatus: client.crm_status,
+      priority: client.priority,
+    })),
+    calculations: calculations.map((calculation) => {
+      const metadata = parseCalculationMetadata(calculation.comment);
+      return {
+        id: calculation.id,
+        clientId: calculation.client_id,
+        clientName: calculation.client_name,
+        title: metadata.title,
+        currency: metadata.currency,
+        total: roundMoney(Number(calculation.total ?? 0)),
+        validUntil: calculation.valid_until,
+        updatedAt: calculation.updated_at,
+      };
+    }),
+    diagnostics: ((diagnosticsResult.results ?? []) as unknown as ProposalDiagnosticRow[]).map((diagnostic) => ({
+      id: diagnostic.id,
+      clientId: diagnostic.client_id,
+      clientName: diagnostic.client_name,
+      goal: diagnostic.goal,
+      mainDiagnosis: diagnostic.main_diagnosis,
+      createdAt: diagnostic.created_at,
+    })),
+    proposals: ((proposalsResult.results ?? []) as unknown as ProposalRow[]).map(proposalResponse),
+  });
+}
+
+async function handleProposalDetail(proposalId: string, env: Env): Promise<Response> {
+  const db = requireDatabase(env);
+  if (db instanceof Response) return db;
+  const row = await db.prepare(`${proposalSelectSql} WHERE p.id = ? LIMIT 1`).bind(proposalId).first<ProposalRow>();
+  if (!row?.id) return constructorError(404, "PROPOSAL_NOT_FOUND", "ĞšĞ¾Ğ¼Ğ¼ĞµÑ€Ñ‡ĞµÑĞºĞ¾Ğµ Ğ¿Ñ€ĞµĞ´Ğ»Ğ¾Ğ¶ĞµĞ½Ğ¸Ğµ Ğ½Ğµ Ğ½Ğ°Ğ¹Ğ´ĞµĞ½Ğ¾.");
+  return json({ proposal: proposalResponse(row) });
+}
+
+async function handleProposalCreate(request: Request, env: Env, identity: ConstructorIdentity): Promise<Response> {
+  const db = requireDatabase(env);
+  if (db instanceof Response) return db;
+
+  let body: Record<string, unknown>;
+  try {
+    body = (await request.json()) as Record<string, unknown>;
+  } catch {
+    return constructorError(400, "INVALID_JSON", "ĞĞµ ÑƒĞ´Ğ°Ğ»Ğ¾ÑÑŒ Ğ¿Ñ€Ğ¾Ñ‡Ğ¸Ñ‚Ğ°Ñ‚ÑŒ Ğ´Ğ°Ğ½Ğ½Ñ‹Ğµ ĞºĞ¾Ğ¼Ğ¼ĞµÑ€Ñ‡ĞµÑĞºĞ¾Ğ³Ğ¾ Ğ¿Ñ€ĞµĞ´Ğ»Ğ¾Ğ¶ĞµĞ½Ğ¸Ñ.");
+  }
+  const input = readProposalInput(body);
+  if (input instanceof Response) return input;
+  const referenceError = await validateProposalReferences(db, input);
+  if (referenceError) return referenceError;
+
+  const proposalId = crypto.randomUUID();
+  const now = new Date().toISOString();
+  const sentAt = input.status === "sent" ? now : null;
+  await db.batch([
+    db.prepare(`
+      INSERT INTO proposals (
+        id, client_id, diagnostic_session_id, calculation_id, version, status, title,
+        diagnosis_text, strategy_text, solution_text, scope_text, timeline_text,
+        rights_text, limitations_text, next_step_text, client_document, internal_notes,
+        sent_at, follow_up_at, valid_until, created_at, updated_at
+      ) VALUES (?, ?, ?, ?, 1, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+    `).bind(
+      proposalId,
+      input.clientId || null,
+      input.diagnosticSessionId || null,
+      input.calculationId || null,
+      input.status,
+      input.title,
+      input.diagnosisText || null,
+      input.strategyText || null,
+      input.solutionText || null,
+      input.scopeText || null,
+      input.timelineText || null,
+      input.rightsText || null,
+      input.limitationsText || null,
+      input.nextStepText || null,
+      input.clientDocument || null,
+      input.internalNotes || null,
+      sentAt,
+      input.followUpAt || null,
+      input.validUntil || null,
+      now,
+      now,
+    ),
+    db.prepare(`
+      INSERT INTO audit_log (id, actor_email, action, entity_type, entity_id, new_value_json, created_at)
+      VALUES (?, ?, 'create', 'proposal', ?, ?, ?)
+    `).bind(
+      crypto.randomUUID(),
+      identity.email,
+      proposalId,
+      JSON.stringify({ title: input.title, status: input.status, clientId: input.clientId || null, calculationId: input.calculationId || null }),
+      now,
+    ),
+  ]);
+
+  const response = await handleProposalDetail(proposalId, env);
+  return new Response(response.body, { status: 201, headers: response.headers });
+}
+
+async function handleProposalUpdate(request: Request, proposalId: string, env: Env, identity: ConstructorIdentity): Promise<Response> {
+  const db = requireDatabase(env);
+  if (db instanceof Response) return db;
+
+  const existing = await db.prepare("SELECT id, version, sent_at FROM proposals WHERE id = ? LIMIT 1").bind(proposalId).first<{ id: string; version: number; sent_at: string | null }>();
+  if (!existing?.id) return constructorError(404, "PROPOSAL_NOT_FOUND", "ĞšĞ¾Ğ¼Ğ¼ĞµÑ€Ñ‡ĞµÑĞºĞ¾Ğµ Ğ¿Ñ€ĞµĞ´Ğ»Ğ¾Ğ¶ĞµĞ½Ğ¸Ğµ Ğ½Ğµ Ğ½Ğ°Ğ¹Ğ´ĞµĞ½Ğ¾.");
+
+  let body: Record<string, unknown>;
+  try {
+    body = (await request.json()) as Record<string, unknown>;
+  } catch {
+    return constructorError(400, "INVALID_JSON", "ĞĞµ ÑƒĞ´Ğ°Ğ»Ğ¾ÑÑŒ Ğ¿Ñ€Ğ¾Ñ‡Ğ¸Ñ‚Ğ°Ñ‚ÑŒ Ğ¸Ğ·Ğ¼ĞµĞ½ĞµĞ½Ğ¸Ñ ĞºĞ¾Ğ¼Ğ¼ĞµÑ€Ñ‡ĞµÑĞºĞ¾Ğ³Ğ¾ Ğ¿Ñ€ĞµĞ´Ğ»Ğ¾Ğ¶ĞµĞ½Ğ¸Ñ.");
+  }
+  const input = readProposalInput(body);
+  if (input instanceof Response) return input;
+  const referenceError = await validateProposalReferences(db, input);
+  if (referenceError) return referenceError;
+
+  const now = new Date().toISOString();
+  const sentAt = existing.sent_at || (input.status === "sent" ? now : null);
+  await db.batch([
+    db.prepare(`
+      UPDATE proposals
+      SET
+        client_id = ?, diagnostic_session_id = ?, calculation_id = ?, version = ?, status = ?, title = ?,
+        diagnosis_text = ?, strategy_text = ?, solution_text = ?, scope_text = ?, timeline_text = ?,
+        rights_text = ?, limitations_text = ?, next_step_text = ?, client_document = ?, internal_notes = ?,
+        sent_at = ?, follow_up_at = ?, valid_until = ?, updated_at = ?
+      WHERE id = ?
+    `).bind(
+      input.clientId || null,
+      input.diagnosticSessionId || null,
+      input.calculationId || null,
+      Number(existing.version) + 1,
+      input.status,
+      input.title,
+      input.diagnosisText || null,
+      input.strategyText || null,
+      input.solutionText || null,
+      input.scopeText || null,
+      input.timelineText || null,
+      input.rightsText || null,
+      input.limitationsText || null,
+      input.nextStepText || null,
+      input.clientDocument || null,
+      input.internalNotes || null,
+      sentAt,
+      input.followUpAt || null,
+      input.validUntil || null,
+      now,
+      proposalId,
+    ),
+    db.prepare(`
+      INSERT INTO audit_log (id, actor_email, action, entity_type, entity_id, new_value_json, created_at)
+      VALUES (?, ?, 'update', 'proposal', ?, ?, ?)
+    `).bind(
+      crypto.randomUUID(),
+      identity.email,
+      proposalId,
+      JSON.stringify({ title: input.title, status: input.status, version: Number(existing.version) + 1 }),
+      now,
+    ),
+  ]);
+  return handleProposalDetail(proposalId, env);
+}
+
+const maximumImportBytes = 2_000_000;
+const maximumImportRows = 100;
+const importSourceKinds = new Set(["notion", "json", "csv"]);
+
+const importFieldAliases: Record<keyof ImportKnowledgeItem, string[]> = {
+  itemType: ["itemType", "item_type", "type", "Ñ‚Ğ¸Ğ¿", "Ñ‚Ğ¸Ğ¿ Ğ·Ğ°Ğ¿Ğ¸ÑĞ¸"],
+  speaker: ["speaker", "ÑĞ¿Ğ¸ĞºĞµÑ€", "ÑÑ‚Ğ¾Ñ€Ğ¾Ğ½Ğ°", "Ğ°Ğ²Ñ‚Ğ¾Ñ€"],
+  category: ["category", "ĞºĞ°Ñ‚ĞµĞ³Ğ¾Ñ€Ğ¸Ñ", "Ñ€Ğ°Ğ·Ğ´ĞµĞ»"],
+  title: ["title", "Ğ½Ğ°Ğ·Ğ²Ğ°Ğ½Ğ¸Ğµ", "Ğ·Ğ°Ğ³Ğ¾Ğ»Ğ¾Ğ²Ğ¾Ğº"],
+  promptText: ["promptText", "prompt_text", "prompt", "Ğ²Ğ¾Ğ¿Ñ€Ğ¾Ñ", "Ñ„Ğ¾Ñ€Ğ¼ÑƒĞ»Ğ¸Ñ€Ğ¾Ğ²ĞºĞ°"],
+  shortText: ["shortText", "short_text", "ĞºĞ¾Ñ€Ğ¾Ñ‚ĞºĞ¸Ğ¹ Ğ¾Ñ‚Ğ²ĞµÑ‚", "ĞºÑ€Ğ°Ñ‚ĞºĞ¸Ğ¹ Ğ¾Ñ‚Ğ²ĞµÑ‚"],
+  fullText: ["fullText", "full_text", "Ğ¿Ğ¾Ğ´Ñ€Ğ¾Ğ±Ğ½Ñ‹Ğ¹ Ğ¾Ñ‚Ğ²ĞµÑ‚", "Ğ¿Ğ¾Ğ»Ğ½Ñ‹Ğ¹ Ğ¾Ñ‚Ğ²ĞµÑ‚", "Ñ‚ĞµĞºÑÑ‚"],
+  softText: ["softText", "soft_text", "Ğ¼ÑĞ³ĞºĞ¸Ğ¹ Ğ²Ğ°Ñ€Ğ¸Ğ°Ğ½Ñ‚"],
+  firmText: ["firmText", "firm_text", "Ñ‚Ğ²Ñ‘Ñ€Ğ´Ñ‹Ğ¹ Ğ²Ğ°Ñ€Ğ¸Ğ°Ğ½Ñ‚", "Ñ‚Ğ²ĞµÑ€Ğ´Ñ‹Ğ¹ Ğ²Ğ°Ñ€Ğ¸Ğ°Ğ½Ñ‚"],
+  clarificationText: ["clarificationText", "clarification_text", "ÑƒÑ‚Ğ¾Ñ‡Ğ½ÑÑÑ‰Ğ¸Ğ¹ Ğ²Ğ¾Ğ¿Ñ€Ğ¾Ñ"],
+  nextActionText: ["nextActionText", "next_action_text", "ÑĞ»ĞµĞ´ÑƒÑÑ‰Ğ¸Ğ¹ ÑˆĞ°Ğ³", "ÑĞ»ĞµĞ´ÑƒÑÑ‰ĞµĞµ Ğ´ĞµĞ¹ÑÑ‚Ğ²Ğ¸Ğµ"],
+  avoidText: ["avoidText", "avoid_text", "Ñ‡ĞµĞ³Ğ¾ Ğ½Ğµ Ğ¿Ğ¸ÑĞ°Ñ‚ÑŒ", "Ğ¸Ğ·Ğ±ĞµĞ³Ğ°Ñ‚ÑŒ"],
+  diagnosticValue: ["diagnosticValue", "diagnostic_value", "Ğ·Ğ½Ğ°Ñ‡ĞµĞ½Ğ¸Ğµ Ğ´Ğ»Ñ Ğ´Ğ¸Ğ°Ğ³Ğ½Ğ¾ÑÑ‚Ğ¸ĞºĞ¸"],
+  redFlagText: ["redFlagText", "red_flag_text", "ĞºÑ€Ğ°ÑĞ½Ñ‹Ğ¹ Ñ„Ğ»Ğ°Ğ³", "Ğ¾Ğ±ÑŠÑÑĞ½ĞµĞ½Ğ¸Ğµ Ñ€Ğ¸ÑĞºĞ°"],
+  channel: ["channel", "ĞºĞ°Ğ½Ğ°Ğ»"],
+  tone: ["tone", "Ñ‚Ğ¾Ğ½"],
+  requiredLevel: ["requiredLevel", "required_level", "Ğ¾Ğ±ÑĞ·Ğ°Ñ‚ĞµĞ»ÑŒĞ½Ğ¾ÑÑ‚ÑŒ", "Ğ¿Ñ€Ğ¸Ğ¾Ñ€Ğ¸Ñ‚ĞµÑ‚"],
+  riskLevel: ["riskLevel", "risk_level", "Ñ€Ğ¸ÑĞº", "ÑƒÑ€Ğ¾Ğ²ĞµĞ½ÑŒ Ñ€Ğ¸ÑĞºĞ°"],
+  status: ["status", "ÑÑ‚Ğ°Ñ‚ÑƒÑ"],
+  sourceUrl: ["sourceUrl", "source_url", "ÑÑÑ‹Ğ»ĞºĞ°", "ÑÑÑ‹Ğ»ĞºĞ° Ğ½Ğ° Ğ¸ÑÑ‚Ğ¾Ñ‡Ğ½Ğ¸Ğº"],
+  nicheSlugs: ["nicheSlugs", "niche_slugs", "niches", "niche", "Ğ½Ğ¸ÑˆĞ¸", "Ğ½Ğ¸ÑˆĞ°"],
+  stageSlugs: ["stageSlugs", "stage_slugs", "stages", "stage", "ÑÑ‚Ğ°Ğ¿Ñ‹", "ÑÑ‚Ğ°Ğ¿"],
+};
+
+const importItemTypeAliases = new Map<string, string>([
+  ["Ğ²Ğ¾Ğ¿Ñ€Ğ¾Ñ ĞºĞ»Ğ¸ĞµĞ½Ñ‚Ñƒ", "question_to_client"],
+  ["Ğ²Ğ¾Ğ¿Ñ€Ğ¾Ñ ĞºĞ»Ğ¸ĞµĞ½Ñ‚Ğ°", "question_from_client"],
+  ["Ğ¾Ñ‚Ğ²ĞµÑ‚", "answer"],
+  ["Ğ²Ğ¾Ğ·Ñ€Ğ°Ğ¶ĞµĞ½Ğ¸Ğµ", "objection"],
+  ["Ğ¾Ñ‚Ğ²ĞµÑ‚ Ğ½Ğ° Ğ²Ğ¾Ğ·Ñ€Ğ°Ğ¶ĞµĞ½Ğ¸Ğµ", "objection_response"],
+  ["ÑƒÑ‚Ğ¾Ñ‡Ğ½ÑÑÑ‰Ğ¸Ğ¹ Ğ²Ğ¾Ğ¿Ñ€Ğ¾Ñ", "clarifying_question"],
+  ["Ğ¿ĞµÑ€Ğ²Ğ¾Ğµ ÑĞ¾Ğ¾Ğ±Ñ‰ĞµĞ½Ğ¸Ğµ", "first_message"],
+  ["Ğ¿Ğ¾Ğ²Ñ‚Ğ¾Ñ€Ğ½Ğ¾Ğµ ÑĞ¾Ğ¾Ğ±Ñ‰ĞµĞ½Ğ¸Ğµ", "follow_up"],
+  ["Ğ¿Ğ¾Ğ´ÑĞºĞ°Ğ·ĞºĞ° Ğ´Ğ¸Ğ°Ğ³Ğ½Ğ¾ÑÑ‚Ğ¸ĞºĞ¸", "diagnostic_hint"],
+  ["Ğ¿Ñ€Ğ¾Ğ²ĞµÑ€ĞºĞ° Ğ°ÑƒĞ´Ğ¸Ñ‚Ğ°", "audit_check"],
+  ["ĞºÑ€Ğ°ÑĞ½Ñ‹Ğ¹ Ñ„Ğ»Ğ°Ğ³", "red_flag"],
+  ["ÑÑ‚Ğ¸Ñ‡ĞµÑĞºĞ¾Ğµ Ğ¿Ñ€Ğ°Ğ²Ğ¸Ğ»Ğ¾", "ethical_rule"],
+  ["Ğ±Ğ»Ğ¾Ğº ĞºĞ¿", "proposal_block"],
+  ["Ğ¿Ğ°ĞºĞµÑ‚", "package"],
+  ["ÑĞ»ĞµĞ´ÑƒÑÑ‰Ğ¸Ğ¹ ÑˆĞ°Ğ³", "next_action"],
+  ["Ğ¾ÑĞ½Ğ¾Ğ²Ğ°Ğ½Ğ¸Ğµ Ğ´Ğ»Ñ Ğ¾Ñ‚ĞºĞ°Ğ·Ğ°", "refusal_reason"],
+]);
+
+function normalizeImportKey(value: string): string {
+  return value.toLowerCase().replace(/Ñ‘/g, "Ğµ").replace(/[^a-zĞ°-Ñ0-9]+/giu, "");
+}
+
+function importString(value: unknown, maximum: number): string {
+  if (value === null || value === undefined) return "";
+  return String(value).trim().slice(0, maximum);
+}
+
+function readAliasedImportValue(record: Record<string, unknown>, field: keyof ImportKnowledgeItem): unknown {
+  const normalized = new Map(Object.entries(record).map(([key, value]) => [normalizeImportKey(key), value]));
+  for (const alias of importFieldAliases[field]) {
+    const value = normalized.get(normalizeImportKey(alias));
+    if (value !== undefined) return value;
+  }
+  return undefined;
+}
+
+function splitImportList(value: unknown): string[] {
+  const values = Array.isArray(value) ? value : typeof value === "string" ? value.split(/[,;|\n]+/) : [];
+  return [...new Set(values.map((item) => importString(item, 120)).filter(Boolean))].slice(0, 30);
+}
+
+function parseCsvRows(content: string): Record<string, unknown>[] {
+  const firstLine = content.split(/\r?\n/, 1)[0] ?? "";
+  const delimiter = (firstLine.match(/;/g)?.length ?? 0) > (firstLine.match(/,/g)?.length ?? 0) ? ";" : ",";
+  const rows: string[][] = [];
+  let row: string[] = [];
+  let cell = "";
+  let quoted = false;
+
+  for (let index = 0; index < content.length; index += 1) {
+    const character = content[index];
+    if (character === '"') {
+      if (quoted && content[index + 1] === '"') {
+        cell += '"';
+        index += 1;
+      } else {
+        quoted = !quoted;
+      }
+    } else if (character === delimiter && !quoted) {
+      row.push(cell.trim());
+      cell = "";
+    } else if ((character === "\n" || character === "\r") && !quoted) {
+      if (character === "\r" && content[index + 1] === "\n") index += 1;
+      row.push(cell.trim());
+      if (row.some(Boolean)) rows.push(row);
+      row = [];
+      cell = "";
+    } else {
+      cell += character;
+    }
+  }
+  row.push(cell.trim());
+  if (row.some(Boolean)) rows.push(row);
+  if (rows.length < 2) return [];
+
+  const headers = rows[0].map((header, index) => header.replace(/^\uFEFF/, "") || `column_${index + 1}`);
+  return rows.slice(1).map((values) => Object.fromEntries(headers.map((header, index) => [header, values[index] ?? ""])));
+}
+
+function parseImportContent(content: string, format: string): Record<string, unknown>[] | Response {
+  if (!content.trim()) return constructorError(422, "IMPORT_EMPTY", "Ğ’Ñ‹Ğ±ĞµÑ€Ğ¸Ñ‚Ğµ Ğ½ĞµĞ¿ÑƒÑÑ‚Ğ¾Ğ¹ Ñ„Ğ°Ğ¹Ğ» JSON Ğ¸Ğ»Ğ¸ CSV.");
+  if (new TextEncoder().encode(content).byteLength > maximumImportBytes) {
+    return constructorError(413, "IMPORT_TOO_LARGE", "Ğ¤Ğ°Ğ¹Ğ» Ğ¸Ğ¼Ğ¿Ğ¾Ñ€Ñ‚Ğ° Ğ´Ğ¾Ğ»Ğ¶ĞµĞ½ Ğ±Ñ‹Ñ‚ÑŒ Ğ½Ğµ Ğ±Ğ¾Ğ»ÑŒÑˆĞµ 2 ĞœĞ‘.");
+  }
+
+  let rows: Record<string, unknown>[] = [];
+  const detectedFormat = format === "csv" || (format !== "json" && !/^[\s\uFEFF]*[\[{]/.test(content)) ? "csv" : "json";
+  if (detectedFormat === "csv") {
+    rows = parseCsvRows(content);
+  } else {
+    try {
+      const parsed = JSON.parse(content) as unknown;
+      const candidates = Array.isArray(parsed) ? parsed : asRecord(parsed)?.items;
+      if (!Array.isArray(candidates)) {
+        return constructorError(422, "IMPORT_JSON_SHAPE", "JSON Ğ´Ğ¾Ğ»Ğ¶ĞµĞ½ ÑĞ¾Ğ´ĞµÑ€Ğ¶Ğ°Ñ‚ÑŒ Ğ¼Ğ°ÑÑĞ¸Ğ² Ğ·Ğ°Ğ¿Ğ¸ÑĞµĞ¹ Ğ¸Ğ»Ğ¸ Ğ¿Ğ¾Ğ»Ğµ items Ñ Ğ¼Ğ°ÑÑĞ¸Ğ²Ğ¾Ğ¼.");
+      }
+      rows = candidates.map(asRecord).filter((value): value is Record<string, unknown> => Boolean(value));
+    } catch {
+      return constructorError(422, "IMPORT_JSON_INVALID", "ĞĞµ ÑƒĞ´Ğ°Ğ»Ğ¾ÑÑŒ Ğ¿Ñ€Ğ¾Ñ‡Ğ¸Ñ‚Ğ°Ñ‚ÑŒ JSON. ĞŸÑ€Ğ¾Ğ²ĞµÑ€ÑŒÑ‚Ğµ Ñ„Ğ¾Ñ€Ğ¼Ğ°Ñ‚ Ñ„Ğ°Ğ¹Ğ»Ğ°.");
+    }
+  }
+
+  if (rows.length === 0) return constructorError(422, "IMPORT_NO_ROWS", "Ğ’ Ñ„Ğ°Ğ¹Ğ»Ğµ Ğ½Ğµ Ğ½Ğ°Ğ¹Ğ´ĞµĞ½Ğ¾ ÑÑ‚Ñ€Ğ¾Ğº Ğ´Ğ»Ñ Ğ¸Ğ¼Ğ¿Ğ¾Ñ€Ñ‚Ğ°.");
+  if (rows.length > maximumImportRows) {
+    return constructorError(413, "IMPORT_TOO_MANY_ROWS", `Ğ—Ğ° Ğ¾Ğ´Ğ¸Ğ½ Ñ€Ğ°Ğ· Ğ¼Ğ¾Ğ¶Ğ½Ğ¾ Ğ¿Ñ€Ğ¾Ğ²ĞµÑ€Ğ¸Ñ‚ÑŒ Ğ½Ğµ Ğ±Ğ¾Ğ»ÑŒÑˆĞµ ${maximumImportRows} ÑÑ‚Ñ€Ğ¾Ğº.`);
+  }
+  return rows;
+}
+
+function referenceMap(rows: unknown[]): Map<string, string> {
+  const result = new Map<string, string>();
+  for (const raw of rows) {
+    const row = asRecord(raw);
+    const slug = importString(row?.slug, 120);
+    const name = importString(row?.name, 160);
+    if (slug) result.set(normalizeImportKey(slug), slug);
+    if (slug && name) result.set(normalizeImportKey(name), slug);
+  }
+  return result;
+}
+
+function resolveImportReferences(value: unknown, references: Map<string, string>, label: string, errors: string[]): string[] {
+  if (typeof value === "string") {
+    const exact = references.get(normalizeImportKey(value.trim()));
+    if (exact) return [exact];
+  }
+  const resolved: string[] = [];
+  for (const candidate of splitImportList(value)) {
+    const slug = references.get(normalizeImportKey(candidate));
+    if (!slug) errors.push(`${label} Â«${candidate}Â» Ğ½Ğµ Ğ½Ğ°Ğ¹Ğ´ĞµĞ½Ğ°`);
+    else resolved.push(slug);
+  }
+  return [...new Set(resolved)];
+}
+
+function normalizeImportedItem(
+  record: Record<string, unknown>,
+  niches: Map<string, string>,
+  stages: Map<string, string>,
+): { item: ImportKnowledgeItem; errors: string[]; warnings: string[] } {
+  const errors: string[] = [];
+  const warnings: string[] = [];
+  const rawItemType = importString(readAliasedImportValue(record, "itemType"), 80).toLowerCase();
+  const itemType = knowledgeItemTypes.has(rawItemType) ? rawItemType : importItemTypeAliases.get(rawItemType.replace(/Ñ‘/g, "Ğµ")) ?? rawItemType;
+  const rawStatus = importString(readAliasedImportValue(record, "status"), 40).toLowerCase();
+  const mappedStatus = rawStatus === "review" || rawStatus === "Ğ½Ğ° Ğ¿Ñ€Ğ¾Ğ²ĞµÑ€ĞºĞµ" || rawStatus === "approved" || rawStatus === "ÑƒÑ‚Ğ²ĞµÑ€Ğ¶Ğ´ĞµĞ½Ğ¾" ? "review" : "draft";
+  if (rawStatus === "approved" || rawStatus === "ÑƒÑ‚Ğ²ĞµÑ€Ğ¶Ğ´ĞµĞ½Ğ¾") warnings.push("Ğ¡Ñ‚Ğ°Ñ‚ÑƒÑ Ğ¸Ğ·Ğ¼ĞµĞ½Ñ‘Ğ½ Ğ½Ğ° Â«ĞĞ° Ğ¿Ñ€Ğ¾Ğ²ĞµÑ€ĞºĞµÂ»: Ğ¸Ğ¼Ğ¿Ğ¾Ñ€Ñ‚ Ğ½Ğµ ÑƒÑ‚Ğ²ĞµÑ€Ğ¶Ğ´Ğ°ĞµÑ‚ Ğ·Ğ°Ğ¿Ğ¸ÑĞ¸ Ğ°Ğ²Ñ‚Ğ¾Ğ¼Ğ°Ñ‚Ğ¸Ñ‡ĞµÑĞºĞ¸");
+
+  const speakerValue = importString(readAliasedImportValue(record, "speaker"), 40).toLowerCase();
+  const speakerAliases: Record<string, string> = { Ğ°Ğ²Ñ‚Ğ¾Ñ€: "creator", ĞºÑ€ĞµĞ°Ñ‚Ğ¾Ñ€: "creator", ĞºĞ»Ğ¸ĞµĞ½Ñ‚: "client", ÑĞ¸ÑÑ‚ĞµĞ¼Ğ°: "system" };
+  const creatorItemTypes = new Set(["question_to_client", "clarifying_question", "first_message", "follow_up", "objection_response"]);
+  const defaultSpeaker = itemType === "question_from_client" || itemType === "objection" ? "client" : creatorItemTypes.has(itemType) ? "creator" : "system";
+  const speaker = speakerAliases[speakerValue] ?? (speakerValue || defaultSpeaker);
+  const requiredValue = importString(readAliasedImportValue(record, "requiredLevel"), 40).toLowerCase();
+  const requiredAliases: Record<string, string> = { Ğ¾Ğ±ÑĞ·Ğ°Ñ‚ĞµĞ»ÑŒĞ½Ğ¾: "required", Ñ€ĞµĞºĞ¾Ğ¼ĞµĞ½Ğ´ÑƒĞµÑ‚ÑÑ: "recommended", Ğ¾Ğ¿Ñ†Ğ¸Ğ¾Ğ½Ğ°Ğ»ÑŒĞ½Ğ¾: "optional", ÑƒÑĞ»Ğ¾Ğ²Ğ½Ğ¾: "conditional" };
+  const requiredLevel = requiredAliases[requiredValue] ?? (requiredValue || "recommended");
+  const riskValue = importString(readAliasedImportValue(record, "riskLevel"), 40).toLowerCase();
+  const riskAliases: Record<string, string> = { Ğ¾Ğ±Ñ‹Ñ‡Ğ½Ñ‹Ğ¹: "normal", Ğ¿Ğ¾Ğ²Ñ‹ÑˆĞµĞ½Ğ½Ñ‹Ğ¹: "elevated", Ğ²Ñ‹ÑĞ¾ĞºĞ¸Ğ¹: "high", Ğ¾Ñ‚ĞºĞ°Ğ·: "refusal" };
+  const riskLevel = riskAliases[riskValue] ?? (riskValue || "normal");
+  const title = importString(readAliasedImportValue(record, "title"), 240);
+  const category = importString(readAliasedImportValue(record, "category"), 160);
+  const sourceUrl = importString(readAliasedImportValue(record, "sourceUrl"), 1000);
+  const nicheSlugs = resolveImportReferences(readAliasedImportValue(record, "nicheSlugs"), niches, "ĞĞ¸ÑˆĞ°", errors);
+  const stageSlugs = resolveImportReferences(readAliasedImportValue(record, "stageSlugs"), stages, "Ğ­Ñ‚Ğ°Ğ¿", errors);
+
+  if (!knowledgeItemTypes.has(itemType)) errors.push("ĞĞµ ÑƒĞºĞ°Ğ·Ğ°Ğ½ Ğ¸Ğ»Ğ¸ Ğ½Ğµ Ñ€Ğ°ÑĞ¿Ğ¾Ğ·Ğ½Ğ°Ğ½ Ñ‚Ğ¸Ğ¿ Ğ·Ğ°Ğ¿Ğ¸ÑĞ¸");
+  if (!category) errors.push("ĞĞµ ÑƒĞºĞ°Ğ·Ğ°Ğ½Ğ° ĞºĞ°Ñ‚ĞµĞ³Ğ¾Ñ€Ğ¸Ñ");
+  if (!title) errors.push("ĞĞµ ÑƒĞºĞ°Ğ·Ğ°Ğ½Ğ¾ Ğ½Ğ°Ğ·Ğ²Ğ°Ğ½Ğ¸Ğµ");
+  if (!knowledgeSpeakers.has(speaker)) errors.push("ĞĞµ Ñ€Ğ°ÑĞ¿Ğ¾Ğ·Ğ½Ğ°Ğ½ ÑĞ¿Ğ¸ĞºĞµÑ€");
+  if (!knowledgeRequiredLevels.has(requiredLevel)) errors.push("ĞĞµ Ñ€Ğ°ÑĞ¿Ğ¾Ğ·Ğ½Ğ°Ğ½Ğ° Ğ¾Ğ±ÑĞ·Ğ°Ñ‚ĞµĞ»ÑŒĞ½Ğ¾ÑÑ‚ÑŒ");
+  if (!knowledgeRiskLevels.has(riskLevel)) errors.push("ĞĞµ Ñ€Ğ°ÑĞ¿Ğ¾Ğ·Ğ½Ğ°Ğ½ ÑƒÑ€Ğ¾Ğ²ĞµĞ½ÑŒ Ñ€Ğ¸ÑĞºĞ°");
+  if (sourceUrl && !isHttpUrl(sourceUrl)) errors.push("Ğ¡ÑÑ‹Ğ»ĞºĞ° Ğ½Ğ° Ğ¸ÑÑ‚Ğ¾Ñ‡Ğ½Ğ¸Ğº Ğ´Ğ¾Ğ»Ğ¶Ğ½Ğ° Ğ½Ğ°Ñ‡Ğ¸Ğ½Ğ°Ñ‚ÑŒÑÑ Ñ http:// Ğ¸Ğ»Ğ¸ https://");
+  if (nicheSlugs.length === 0) warnings.push("ĞĞµ ÑƒĞºĞ°Ğ·Ğ°Ğ½Ğ° Ğ½Ğ¸ÑˆĞ°: Ğ·Ğ°Ğ¿Ğ¸ÑÑŒ Ğ±ÑƒĞ´ĞµÑ‚ ÑƒĞ½Ğ¸Ğ²ĞµÑ€ÑĞ°Ğ»ÑŒĞ½Ğ¾Ğ¹");
+
+  const item: ImportKnowledgeItem = {
+    itemType,
+    speaker,
+    category,
+    title,
+    promptText: importString(readAliasedImportValue(record, "promptText"), 6000),
+    shortText: importString(readAliasedImportValue(record, "shortText"), 6000),
+    fullText: importString(readAliasedImportValue(record, "fullText"), 12000),
+    softText: importString(readAliasedImportValue(record, "softText"), 6000),
+    firmText: importString(readAliasedImportValue(record, "firmText"), 6000),
+    clarificationText: importString(readAliasedImportValue(record, "clarificationText"), 6000),
+    nextActionText: importString(readAliasedImportValue(record, "nextActionText"), 6000),
+    avoidText: importString(readAliasedImportValue(record, "avoidText"), 6000),
+    diagnosticValue: importString(readAliasedImportValue(record, "diagnosticValue"), 6000),
+    redFlagText: importString(readAliasedImportValue(record, "redFlagText"), 6000),
+    channel: importString(readAliasedImportValue(record, "channel"), 80) || "any",
+    tone: importString(readAliasedImportValue(record, "tone"), 80) || "neutral",
+    requiredLevel,
+    riskLevel,
+    status: mappedStatus,
+    sourceUrl,
+    nicheSlugs,
+    stageSlugs,
+  };
+
+  if (!item.promptText && !item.shortText && !item.fullText) warnings.push("Ğ£ Ğ·Ğ°Ğ¿Ğ¸ÑĞ¸ Ğ½ĞµÑ‚ Ğ²Ğ¾Ğ¿Ñ€Ğ¾ÑĞ° Ğ¸Ğ»Ğ¸ Ğ¾ÑĞ½Ğ¾Ğ²Ğ½Ğ¾Ğ³Ğ¾ Ñ‚ĞµĞºÑÑ‚Ğ°");
+  if ((riskLevel === "high" || riskLevel === "refusal") && !item.redFlagText) warnings.push("Ğ”Ğ»Ñ Ğ²Ñ‹ÑĞ¾ĞºĞ¾Ğ³Ğ¾ Ñ€Ğ¸ÑĞºĞ° Ğ¶ĞµĞ»Ğ°Ñ‚ĞµĞ»ÑŒĞ½Ğ¾ Ğ´Ğ¾Ğ±Ğ°Ğ²Ğ¸Ñ‚ÑŒ Ğ¾Ğ±ÑŠÑÑĞ½ĞµĞ½Ğ¸Ğµ");
+  return { item, errors, warnings };
+}
+
+async function loadImportReferences(db: D1Database): Promise<{ niches: Map<string, string>; stages: Map<string, string> }> {
+  const [nichesResult, stagesResult] = await db.batch([
+    db.prepare("SELECT slug, name FROM niches WHERE is_active = 1 ORDER BY name"),
+    db.prepare("SELECT slug, name FROM stages WHERE is_active = 1 ORDER BY sort_order"),
+  ]);
+  return {
+    niches: referenceMap(nichesResult.results ?? []),
+    stages: referenceMap(stagesResult.results ?? []),
+  };
+}
+
+async function loadExistingKnowledgeKeys(db: D1Database): Promise<Set<string>> {
+  const result = await db.prepare(`
+    SELECT normalized_key, item_type, category, title, prompt_text
+    FROM knowledge_items
+    WHERE status != 'archived'
+  `).all<{ normalized_key: string | null; item_type: string; category: string; title: string; prompt_text: string | null }>();
+  const keys = new Set<string>();
+  for (const row of result.results ?? []) {
+    if (row.normalized_key) keys.add(row.normalized_key);
+    keys.add(knowledgeNormalizedKey(row.item_type, row.category, row.title, row.prompt_text ?? ""));
+  }
+  return keys;
+}
+
+async function previewImportRows(rows: Record<string, unknown>[], db: D1Database): Promise<ImportPreviewRow[]> {
+  const [{ niches, stages }, existingKeys] = await Promise.all([loadImportReferences(db), loadExistingKnowledgeKeys(db)]);
+  const incomingKeys = new Set<string>();
+  return rows.map((record, index) => {
+    const normalized = normalizeImportedItem(record, niches, stages);
+    const key = knowledgeNormalizedKey(normalized.item.itemType, normalized.item.category, normalized.item.title, normalized.item.promptText);
+    const duplicate = Boolean(key && (existingKeys.has(key) || incomingKeys.has(key)));
+    if (key) incomingKeys.add(key);
+    return {
+      row: index + 2,
+      state: normalized.errors.length > 0 ? "error" : duplicate ? "duplicate" : "ready",
+      errors: normalized.errors,
+      warnings: duplicate ? [...normalized.warnings, "Ğ¢Ğ°ĞºĞ°Ñ Ğ·Ğ°Ğ¿Ğ¸ÑÑŒ ÑƒĞ¶Ğµ ĞµÑÑ‚ÑŒ Ğ² Ğ±Ğ°Ğ·Ğµ Ğ¸Ğ»Ğ¸ Ğ¿Ğ¾Ğ²Ñ‚Ğ¾Ñ€ÑĞµÑ‚ÑÑ Ğ² Ñ„Ğ°Ğ¹Ğ»Ğµ"] : normalized.warnings,
+      item: normalized.item,
+    };
+  });
+}
+
+async function readImportBody(request: Request): Promise<Record<string, unknown> | Response> {
+  const contentLength = Number(request.headers.get("content-length") ?? 0);
+  if (contentLength > maximumImportBytes + 300_000) return constructorError(413, "IMPORT_TOO_LARGE", "Ğ¤Ğ°Ğ¹Ğ» Ğ¸Ğ¼Ğ¿Ğ¾Ñ€Ñ‚Ğ° Ğ´Ğ¾Ğ»Ğ¶ĞµĞ½ Ğ±Ñ‹Ñ‚ÑŒ Ğ½Ğµ Ğ±Ğ¾Ğ»ÑŒÑˆĞµ 2 ĞœĞ‘.");
+  try {
+    const body = asRecord(await request.json());
+    return body ?? constructorError(400, "INVALID_JSON", "ĞĞµ ÑƒĞ´Ğ°Ğ»Ğ¾ÑÑŒ Ğ¿Ñ€Ğ¾Ñ‡Ğ¸Ñ‚Ğ°Ñ‚ÑŒ Ğ¿Ğ°Ñ€Ğ°Ğ¼ĞµÑ‚Ñ€Ñ‹ Ğ¸Ğ¼Ğ¿Ğ¾Ñ€Ñ‚Ğ°.");
+  } catch {
+    return constructorError(400, "INVALID_JSON", "ĞĞµ ÑƒĞ´Ğ°Ğ»Ğ¾ÑÑŒ Ğ¿Ñ€Ğ¾Ñ‡Ğ¸Ñ‚Ğ°Ñ‚ÑŒ Ğ¿Ğ°Ñ€Ğ°Ğ¼ĞµÑ‚Ñ€Ñ‹ Ğ¸Ğ¼Ğ¿Ğ¾Ñ€Ñ‚Ğ°.");
+  }
+}
+
+async function handleImportPreview(request: Request, env: Env): Promise<Response> {
+  const db = requireDatabase(env);
+  if (db instanceof Response) return db;
+  const body = await readImportBody(request);
+  if (body instanceof Response) return body;
+  const content = readText(body, "content", maximumImportBytes);
+  const format = readText(body, "format", 20).toLowerCase();
+  const parsed = parseImportContent(content, format);
+  if (parsed instanceof Response) return parsed;
+  const rows = await previewImportRows(parsed, db);
+  return json({
+    rows,
+    counts: {
+      total: rows.length,
+      ready: rows.filter((row) => row.state === "ready").length,
+      duplicate: rows.filter((row) => row.state === "duplicate").length,
+      error: rows.filter((row) => row.state === "error").length,
+    },
+  });
+}
+
+async function handleImportConfirm(request: Request, env: Env, identity: ConstructorIdentity): Promise<Response> {
+  const db = requireDatabase(env);
+  if (db instanceof Response) return db;
+  const body = await readImportBody(request);
+  if (body instanceof Response) return body;
+  const sourceKind = readText(body, "sourceKind", 20).toLowerCase();
+  const sourceReference = readText(body, "sourceReference", 500);
+  if (!importSourceKinds.has(sourceKind)) return constructorError(422, "IMPORT_SOURCE_INVALID", "Ğ’Ñ‹Ğ±ĞµÑ€Ğ¸Ñ‚Ğµ ĞºĞ¾Ñ€Ñ€ĞµĞºÑ‚Ğ½Ñ‹Ğ¹ Ğ¸ÑÑ‚Ğ¾Ñ‡Ğ½Ğ¸Ğº Ğ¸Ğ¼Ğ¿Ğ¾Ñ€Ñ‚Ğ°.");
+  if (!Array.isArray(body.items) || body.items.length === 0 || body.items.length > maximumImportRows) {
+    return constructorError(422, "IMPORT_ITEMS_INVALID", `ĞŸĞ¾Ğ´Ñ‚Ğ²ĞµÑ€Ğ´Ğ¸Ñ‚Ğµ Ğ¾Ñ‚ 1 Ğ´Ğ¾ ${maximumImportRows} Ğ¿Ñ€Ğ¾Ğ²ĞµÑ€ĞµĞ½Ğ½Ñ‹Ñ… Ğ·Ğ°Ğ¿Ğ¸ÑĞµĞ¹.`);
+  }
+  const rawRows = body.items.map(asRecord).filter((value): value is Record<string, unknown> => Boolean(value));
+  if (rawRows.length !== body.items.length) return constructorError(422, "IMPORT_ITEMS_INVALID", "Ğ’ Ğ¿Ğ¾Ğ´Ñ‚Ğ²ĞµÑ€Ğ¶Ğ´ĞµĞ½Ğ¸Ğ¸ ĞµÑÑ‚ÑŒ Ğ½ĞµĞºĞ¾Ñ€Ñ€ĞµĞºÑ‚Ğ½Ñ‹Ğµ Ğ·Ğ°Ğ¿Ğ¸ÑĞ¸.");
+
+  const previewRows = await previewImportRows(rawRows, db);
+  const readyRows = previewRows.filter((row): row is ImportPreviewRow & { item: ImportKnowledgeItem } => row.state === "ready" && Boolean(row.item));
+  const rejectedRows = previewRows.length - readyRows.length;
+  if (readyRows.length === 0) return constructorError(409, "IMPORT_NOTHING_READY", "ĞŸĞ¾ÑĞ»Ğµ Ğ¿Ğ¾Ğ²Ñ‚Ğ¾Ñ€Ğ½Ğ¾Ğ¹ Ğ¿Ñ€Ğ¾Ğ²ĞµÑ€ĞºĞ¸ Ğ½Ğµ Ğ¾ÑÑ‚Ğ°Ğ»Ğ¾ÑÑŒ Ğ½Ğ¾Ğ²Ñ‹Ñ… Ğ·Ğ°Ğ¿Ğ¸ÑĞµĞ¹ Ğ´Ğ»Ñ Ğ¸Ğ¼Ğ¿Ğ¾Ñ€Ñ‚Ğ°.");
+
+  const batchId = crypto.randomUUID();
+  const now = new Date().toISOString();
+  const statements = [];
+  for (const { item } of readyRows) {
+    const itemId = crypto.randomUUID();
+    const source = sourceKind === "notion" ? "notion" : "import";
+    statements.push(db.prepare(`
+      INSERT INTO knowledge_items (
+        id, item_type, speaker, category, title, prompt_text, short_text, full_text,
+        soft_text, firm_text, clarification_text, next_action_text, avoid_text,
+        diagnostic_value, red_flag_text, channel, tone, required_level, risk_level,
+        source_kind, source_url, source_reference, status, version, normalized_key,
+        reviewed_at, created_at, updated_at
+      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 1, ?, NULL, ?, ?)
+    `).bind(
+      itemId, item.itemType, item.speaker, item.category, item.title, item.promptText || null,
+      item.shortText || null, item.fullText || null, item.softText || null, item.firmText || null,
+      item.clarificationText || null, item.nextActionText || null, item.avoidText || null,
+      item.diagnosticValue || null, item.redFlagText || null, item.channel, item.tone,
+      item.requiredLevel, item.riskLevel, source, item.sourceUrl || null, sourceReference || null,
+      item.status, knowledgeNormalizedKey(item.itemType, item.category, item.title, item.promptText), now, now,
+    ));
+    statements.push(db.prepare(`
+      INSERT OR IGNORE INTO knowledge_item_niches (knowledge_item_id, niche_id, relevance)
+      SELECT ?, n.id, 'primary' FROM niches n JOIN json_each(?) values_list ON n.slug = values_list.value
+    `).bind(itemId, JSON.stringify(item.nicheSlugs)));
+    statements.push(db.prepare(`
+      INSERT OR IGNORE INTO knowledge_item_stages (knowledge_item_id, stage_id)
+      SELECT ?, s.id FROM stages s JOIN json_each(?) values_list ON s.slug = values_list.value
+    `).bind(itemId, JSON.stringify(item.stageSlugs)));
+  }
+  statements.push(db.prepare(`
+    INSERT INTO import_batches (
+      id, source_kind, source_reference, status, total_rows, imported_rows,
+      skipped_rows, error_rows, error_report, created_at, completed_at
+    ) VALUES (?, ?, ?, 'completed', ?, ?, ?, ?, ?, ?, ?)
+  `).bind(
+    batchId, sourceKind, sourceReference || null, previewRows.length, readyRows.length,
+    rejectedRows, previewRows.filter((row) => row.state === "error").length,
+    rejectedRows ? JSON.stringify(previewRows.filter((row) => row.state !== "ready").map((row) => ({ row: row.row, state: row.state, errors: row.errors }))) : null,
+    now, now,
+  ));
+  statements.push(db.prepare(`
+    INSERT INTO audit_log (id, actor_email, action, entity_type, entity_id, new_value_json, created_at)
+    VALUES (?, ?, 'import', 'import_batch', ?, ?, ?)
+  `).bind(crypto.randomUUID(), identity.email, batchId, JSON.stringify({ sourceKind, sourceReference, imported: readyRows.length, skipped: rejectedRows }), now));
+
+  await db.batch(statements);
+  return json({ batchId, imported: readyRows.length, skipped: rejectedRows }, { status: 201 });
+}
+
+async function handleQualityDashboard(env: Env): Promise<Response> {
+  const db = requireDatabase(env);
+  if (db instanceof Response) return db;
+  const results = await db.batch([
+    db.prepare(`
+      SELECT
+        COUNT(*) AS total,
+        SUM(CASE WHEN status = 'approved' THEN 1 ELSE 0 END) AS approved,
+        SUM(CASE WHEN status = 'draft' AND datetime(updated_at) < datetime('now', '-30 days') THEN 1 ELSE 0 END) AS stale_drafts,
+        SUM(CASE WHEN item_type = 'question_from_client' AND COALESCE(NULLIF(TRIM(short_text), ''), NULLIF(TRIM(full_text), '')) IS NULL THEN 1 ELSE 0 END) AS questions_without_answer,
+        SUM(CASE WHEN item_type IN ('answer', 'objection_response') AND COALESCE(TRIM(next_action_text), '') = '' THEN 1 ELSE 0 END) AS answers_without_next_action,
+        SUM(CASE WHEN risk_level IN ('high', 'refusal') AND COALESCE(TRIM(red_flag_text), '') = '' THEN 1 ELSE 0 END) AS high_risk_without_explanation,
+        SUM(CASE WHEN NOT EXISTS (SELECT 1 FROM knowledge_item_niches kin WHERE kin.knowledge_item_id = ki.id) THEN 1 ELSE 0 END) AS missing_niche,
+        SUM(CASE WHEN status = 'approved' AND (reviewed_at IS NULL OR datetime(reviewed_at) < datetime('now', '-180 days')) THEN 1 ELSE 0 END) AS stale_sources
+      FROM knowledge_items ki
+      WHERE status != 'archived'
+    `),
+    db.prepare(`
+      SELECT COALESCE(SUM(item_count - 1), 0) AS duplicate_items
+      FROM (
+        SELECT COUNT(*) AS item_count
+        FROM knowledge_items
+        WHERE status != 'archived'
+        GROUP BY LOWER(item_type || '|' || category || '|' || COALESCE(NULLIF(TRIM(prompt_text), ''), title))
+        HAVING COUNT(*) > 1
+      ) duplicate_groups
+    `),
+    db.prepare(`
+      SELECT COUNT(*) AS tariffs_due
+      FROM pricing_tariffs
+      WHERE is_active = 1 AND (review_at IS NULL OR datetime(review_at) < datetime('now'))
+    `),
+    db.prepare(`
+      WITH issue_rows AS (
+        SELECT 'missing_niche' AS issue, id, title, updated_at FROM knowledge_items ki
+        WHERE status != 'archived' AND NOT EXISTS (SELECT 1 FROM knowledge_item_niches kin WHERE kin.knowledge_item_id = ki.id)
+        UNION ALL
+        SELECT 'questions_without_answer', id, title, updated_at FROM knowledge_items
+        WHERE status != 'archived' AND item_type = 'question_from_client' AND COALESCE(NULLIF(TRIM(short_text), ''), NULLIF(TRIM(full_text), '')) IS NULL
+        UNION ALL
+        SELECT 'answers_without_next_action', id, title, updated_at FROM knowledge_items
+        WHERE status != 'archived' AND item_type IN ('answer', 'objection_response') AND COALESCE(TRIM(next_action_text), '') = ''
+        UNION ALL
+        SELECT 'high_risk_without_explanation', id, title, updated_at FROM knowledge_items
+        WHERE status != 'archived' AND risk_level IN ('high', 'refusal') AND COALESCE(TRIM(red_flag_text), '') = ''
+        UNION ALL
+        SELECT 'stale_drafts', id, title, updated_at FROM knowledge_items
+        WHERE status = 'draft' AND datetime(updated_at) < datetime('now', '-30 days')
+      ), ranked AS (
+        SELECT issue, id, title, ROW_NUMBER() OVER (PARTITION BY issue ORDER BY datetime(updated_at), title) AS row_number
+        FROM issue_rows
+      )
+      SELECT issue, id, title FROM ranked WHERE row_number <= 4 ORDER BY issue, row_number
+    `),
+    db.prepare(`
+      SELECT
+        n.slug, n.name,
+        COUNT(DISTINCT CASE WHEN ki.status = 'approved' THEN ki.id END) AS approved,
+        COUNT(DISTINCT CASE WHEN ki.status = 'approved' AND ki.item_type IN ('question_to_client', 'clarifying_question') THEN ki.id END) AS questions,
+        COUNT(DISTINCT CASE WHEN ki.status = 'approved' AND ki.item_type IN ('answer', 'question_from_client', 'objection_response') THEN ki.id END) AS answers,
+        COUNT(DISTINCT CASE WHEN ki.status = 'approved' AND ki.item_type IN ('red_flag', 'ethical_rule', 'refusal_reason') THEN ki.id END) AS risks
+      FROM niches n
+      LEFT JOIN knowledge_item_niches kin ON kin.niche_id = n.id
+      LEFT JOIN knowledge_items ki ON ki.id = kin.knowledge_item_id
+      WHERE n.is_active = 1
+      GROUP BY n.id, n.slug, n.name
+      ORDER BY n.priority, n.name
+    `),
+    db.prepare(`
+      SELECT id, source_kind, source_reference, status, total_rows, imported_rows, skipped_rows, error_rows, created_at, completed_at
+      FROM import_batches
+      ORDER BY datetime(created_at) DESC
+      LIMIT 8
+    `),
+  ]);
+
+  const summary = asRecord(results[0].results?.[0]) ?? {};
+  const duplicates = asRecord(results[1].results?.[0]) ?? {};
+  const tariffs = asRecord(results[2].results?.[0]) ?? {};
+  const samples = (results[3].results ?? []).map(asRecord).filter((value): value is Record<string, unknown> => Boolean(value));
+  const sampleMap = new Map<string, { id: string; title: string }[]>();
+  for (const sample of samples) {
+    const issue = importString(sample.issue, 80);
+    const current = sampleMap.get(issue) ?? [];
+    current.push({ id: importString(sample.id, 80), title: importString(sample.title, 240) });
+    sampleMap.set(issue, current);
+  }
+  const issueDefinitions = [
+    ["missing_niche", "Ğ‘ĞµĞ· Ğ¿Ñ€Ğ¸Ğ²ÑĞ·ĞºĞ¸ Ğº Ğ½Ğ¸ÑˆĞµ", "Ğ—Ğ°Ğ¿Ğ¸ÑĞ¸ Ğ¼Ğ¾Ğ³ÑƒÑ‚ Ğ±Ñ‹Ñ‚ÑŒ ÑƒĞ½Ğ¸Ğ²ĞµÑ€ÑĞ°Ğ»ÑŒĞ½Ñ‹Ğ¼Ğ¸, Ğ½Ğ¾ Ğ¸Ñ… ÑÑ‚Ğ¾Ğ¸Ñ‚ Ğ¿Ñ€Ğ¾Ğ²ĞµÑ€Ğ¸Ñ‚ÑŒ."],
+    ["questions_without_answer", "Ğ’Ğ¾Ğ¿Ñ€Ğ¾ÑÑ‹ ĞºĞ»Ğ¸ĞµĞ½Ñ‚Ğ° Ğ±ĞµĞ· Ğ¾Ñ‚Ğ²ĞµÑ‚Ğ°", "Ğ”Ğ»Ñ Ğ²Ğ¾Ğ¿Ñ€Ğ¾ÑĞ° Ğ½ĞµÑ‚ ĞºĞ¾Ñ€Ğ¾Ñ‚ĞºĞ¾Ğ³Ğ¾ Ğ¸Ğ»Ğ¸ Ğ¿Ğ¾Ğ´Ñ€Ğ¾Ğ±Ğ½Ğ¾Ğ³Ğ¾ Ğ¾Ñ‚Ğ²ĞµÑ‚Ğ°."],
+    ["answers_without_next_action", "ĞÑ‚Ğ²ĞµÑ‚Ñ‹ Ğ±ĞµĞ· ÑĞ»ĞµĞ´ÑƒÑÑ‰ĞµĞ³Ğ¾ ÑˆĞ°Ğ³Ğ°", "ĞŸĞ¾ÑĞ»Ğµ Ğ¾Ñ‚Ğ²ĞµÑ‚Ğ° ĞºĞ»Ğ¸ĞµĞ½Ñ‚Ñƒ Ğ½Ğµ Ğ¿Ñ€ĞµĞ´Ğ»Ğ¾Ğ¶ĞµĞ½Ğ¾ ĞºĞ¾Ğ½ĞºÑ€ĞµÑ‚Ğ½Ğ¾Ğµ Ğ´ĞµĞ¹ÑÑ‚Ğ²Ğ¸Ğµ."],
+    ["duplicate_items", "Ğ’Ğ¾Ğ·Ğ¼Ğ¾Ğ¶Ğ½Ñ‹Ğµ Ğ´ÑƒĞ±Ğ»Ğ¸", "ĞĞ´Ğ¸Ğ½Ğ°ĞºĞ¾Ğ²Ñ‹Ğµ Ñ„Ğ¾Ñ€Ğ¼ÑƒĞ»Ğ¸Ñ€Ğ¾Ğ²ĞºĞ¸ Ñ‚Ñ€ĞµĞ±ÑƒÑÑ‚ Ñ€ÑƒÑ‡Ğ½Ğ¾Ğ¹ Ğ¿Ñ€Ğ¾Ğ²ĞµÑ€ĞºĞ¸."],
+    ["stale_drafts", "Ğ¡Ñ‚Ğ°Ñ€Ñ‹Ğµ Ñ‡ĞµÑ€Ğ½Ğ¾Ğ²Ğ¸ĞºĞ¸", "Ğ§ĞµÑ€Ğ½Ğ¾Ğ²Ğ¸ĞºĞ¸ Ğ½Ğµ Ğ¾Ğ±Ğ½Ğ¾Ğ²Ğ»ÑĞ»Ğ¸ÑÑŒ Ğ±Ğ¾Ğ»ÑŒÑˆĞµ 30 Ğ´Ğ½ĞµĞ¹."],
+    ["tariffs_due", "Ğ¢Ğ°Ñ€Ğ¸Ñ„Ñ‹ Ñ‚Ñ€ĞµĞ±ÑƒÑÑ‚ Ğ¿Ñ€Ğ¾Ğ²ĞµÑ€ĞºĞ¸", "ĞĞµÑ‚ Ğ´Ğ°Ñ‚Ñ‹ ÑĞ»ĞµĞ´ÑƒÑÑ‰ĞµĞ¹ Ğ¿Ñ€Ğ¾Ğ²ĞµÑ€ĞºĞ¸ Ğ¸Ğ»Ğ¸ Ğ¾Ğ½Ğ° ÑƒĞ¶Ğµ Ğ½Ğ°ÑÑ‚ÑƒĞ¿Ğ¸Ğ»Ğ°."],
+    ["high_risk_without_explanation", "Ğ’Ñ‹ÑĞ¾ĞºĞ¸Ğ¹ Ñ€Ğ¸ÑĞº Ğ±ĞµĞ· Ğ¾Ğ±ÑŠÑÑĞ½ĞµĞ½Ğ¸Ñ", "Ğ£ Ğ²Ñ‹ÑĞ¾ĞºĞ¾Ğ³Ğ¾ Ñ€Ğ¸ÑĞºĞ° Ğ½Ğµ Ğ·Ğ°Ğ¿Ğ¾Ğ»Ğ½ĞµĞ½Ğ¾ Ğ¾Ğ±ÑŠÑÑĞ½ĞµĞ½Ğ¸Ğµ ĞºÑ€Ğ°ÑĞ½Ğ¾Ğ³Ğ¾ Ñ„Ğ»Ğ°Ğ³Ğ°."],
+    ["stale_sources", "Ğ£ÑÑ‚Ğ°Ñ€ĞµĞ²ÑˆĞ°Ñ Ğ¿Ñ€Ğ¾Ğ²ĞµÑ€ĞºĞ° Ğ¸ÑÑ‚Ğ¾Ñ‡Ğ½Ğ¸ĞºĞ°", "Ğ£Ñ‚Ğ²ĞµÑ€Ğ¶Ğ´Ñ‘Ğ½Ğ½Ñ‹Ğµ Ğ·Ğ°Ğ¿Ğ¸ÑĞ¸ Ğ½Ğµ Ğ¿Ñ€Ğ¾Ğ²ĞµÑ€ÑĞ»Ğ¸ÑÑŒ Ğ±Ğ¾Ğ»ÑŒÑˆĞµ 180 Ğ´Ğ½ĞµĞ¹."],
+  ] as const;
+  const counts: Record<string, number> = {
+    ...Object.fromEntries(Object.entries(summary).map(([key, value]) => [key, Number(value ?? 0)])),
+    duplicate_items: Number(duplicates.duplicate_items ?? 0),
+    tariffs_due: Number(tariffs.tariffs_due ?? 0),
+  };
+  return json({
+    summary: counts,
+    issues: issueDefinitions.map(([key, title, description]) => ({ key, title, description, count: counts[key] ?? 0, samples: sampleMap.get(key) ?? [] })),
+    matrix: results[4].results ?? [],
+    recentImports: results[5].results ?? [],
+  });
+}
+
+const backupTables = [
+  "stages", "niches", "subniches", "tags", "knowledge_items", "knowledge_item_niches",
+  "knowledge_item_subniches", "knowledge_item_stages", "knowledge_item_tags", "clients",
+  "client_niches", "diagnostic_sessions", "diagnostic_session_items", "favorites", "pricing_tariffs",
+  "project_calculations", "calculation_items", "proposals", "import_batches", "audit_log",
+] as const;
+
+async function handleConstructorExport(env: Env): Promise<Response> {
+  const db = requireDatabase(env);
+  if (db instanceof Response) return db;
+  const exportedAt = new Date().toISOString();
+  const results = await db.batch(backupTables.map((table) => db.prepare(`SELECT * FROM ${table}`)));
+  const data = Object.fromEntries(backupTables.map((table, index) => [table, results[index].results ?? []]));
+  const date = new Intl.DateTimeFormat("en-CA", { timeZone: "Europe/Moscow" }).format(new Date());
+  return new Response(JSON.stringify({ format: "jamila-constructor-backup", version: 1, exportedAt, data }, null, 2), {
+    headers: {
+      "Content-Type": "application/json; charset=utf-8",
+      "Content-Disposition": `attachment; filename="jamila-constructor-backup-${date}.json"`,
+      "Cache-Control": "private, no-store, max-age=0",
+    },
+  });
+}
+
+async function handleConstructorApi(request: Request, env: Env, identity: ConstructorIdentity): Promise<Response> {
+  const url = new URL(request.url);
+
+  if (url.pathname === "/api/constructor/health" && request.method === "GET") {
+    return json({
+      ok: true,
+      identity,
+      databaseConfigured: Boolean(env.DB),
+      accessConfigured: env.CONSTRUCTOR_AUTH_ENABLED === "true",
+    });
+  }
+
+  if (url.pathname === "/api/constructor/bootstrap" && request.method === "GET") {
+    return handleBootstrap(env, identity);
+  }
+
+  if (url.pathname === "/api/constructor/dashboard" && request.method === "GET") {
+    return handleDashboard(env);
+  }
+
+  if (url.pathname === "/api/constructor/quality" && request.method === "GET") {
+    return handleQualityDashboard(env);
+  }
+
+  if (url.pathname === "/api/constructor/import/preview" && request.method === "POST") {
+    return handleImportPreview(request, env);
+  }
+
+  if (url.pathname === "/api/constructor/import/confirm" && request.method === "POST") {
+    return handleImportConfirm(request, env, identity);
+  }
+
+  if (url.pathname === "/api/constructor/export" && request.method === "GET") {
+    return handleConstructorExport(env);
+  }
+
+  if (url.pathname === "/api/constructor/knowledge" && request.method === "GET") {
+    return handleKnowledgeList(request, env);
+  }
+
+  if (url.pathname === "/api/constructor/knowledge" && request.method === "POST") {
+    return handleKnowledgeCreate(request, env, identity);
+  }
+
+  const knowledgeMatch = url.pathname.match(/^\/api\/constructor\/knowledge\/([^/]+)$/);
+  if (knowledgeMatch) {
+    const itemId = knowledgeMatch[1].slice(0, 80);
+    if (request.method === "GET") return handleKnowledgeDetail(itemId, env);
+    if (request.method === "PATCH") return handleKnowledgeUpdate(request, itemId, env, identity);
+  }
+
+  if (url.pathname === "/api/constructor/answers" && request.method === "GET") {
+    return handleAnswerSearch(request, env);
+  }
+
+  if (url.pathname === "/api/constructor/preparations" && request.method === "POST") {
+    return handlePreparationCreate(request, env, identity);
+  }
+
+  if (url.pathname === "/api/constructor/diagnostics" && request.method === "POST") {
+    return handleDiagnosticCreate(request, env, identity);
+  }
+
+  if (url.pathname === "/api/constructor/clients" && request.method === "GET") {
+    return handleClientList(request, env);
+  }
+
+  if (url.pathname === "/api/constructor/pricing/bootstrap" && request.method === "GET") {
+    return handlePricingBootstrap(env);
+  }
+
+  if (url.pathname === "/api/constructor/calculations" && request.method === "POST") {
+    return handleCalculationCreate(request, env, identity);
+  }
+
+  if (url.pathname === "/api/constructor/proposals/bootstrap" && request.method === "GET") {
+    return handleProposalBootstrap(env);
+  }
+
+  if (url.pathname === "/api/constructor/proposals" && request.method === "POST") {
+    return handleProposalCreate(request, env, identity);
+  }
+
+  const proposalMatch = url.pathname.match(/^\/api\/constructor\/proposals\/([^/]+)$/);
+  if (proposalMatch) {
+    const proposalId = proposalMatch[1].slice(0, 80);
+    if (request.method === "GET") return handleProposalDetail(proposalId, env);
+    if (request.method === "PATCH") return handleProposalUpdate(request, proposalId, env, identity);
+  }
+
+  const calculationMatch = url.pathname.match(/^\/api\/constructor\/calculations\/([^/]+)$/);
+  if (calculationMatch && request.method === "GET") {
+    return handleCalculationDetail(calculationMatch[1].slice(0, 80), env);
+  }
+
+  const clientMatch = url.pathname.match(/^\/api\/constructor\/clients\/([^/]+)$/);
+  if (clientMatch) {
+    const clientId = clientMatch[1].slice(0, 80);
+    if (request.method === "GET") return handleClientDetail(clientId, env);
+    if (request.method === "PATCH") return handleClientUpdate(request, clientId, env, identity);
+  }
+
+  return constructorError(404, "NOT_FOUND", "Ğ Ğ°Ğ·Ğ´ĞµĞ» ĞºĞ¾Ğ½ÑÑ‚Ñ€ÑƒĞºÑ‚Ğ¾Ñ€Ğ° Ğ½Ğµ Ğ½Ğ°Ğ¹Ğ´ĞµĞ½.");
+}
+
+function secureConstructorResponse(response: Response): Response {
+  const headers = new Headers(response.headers);
+  headers.set("Cache-Control", "private, no-store, max-age=0");
+  headers.set("Pragma", "no-cache");
+  headers.set("X-Robots-Tag", "noindex, nofollow, noarchive");
+  headers.set("X-Content-Type-Options", "nosniff");
+  headers.set("Referrer-Policy", "same-origin");
+  headers.set("Permissions-Policy", "camera=(), microphone=(), geolocation=()");
+  return new Response(response.body, {
+    status: response.status,
+    statusText: response.statusText,
+    headers,
+  });
+}
+
+const worker = {
+  async fetch(request: Request, env: Env, ctx: ExecutionContext): Promise<Response> {
+    const url = new URL(request.url);
+
+    if (url.pathname === "/_vinext/image") {
+      const allowedWidths = [...DEFAULT_DEVICE_SIZES, ...DEFAULT_IMAGE_SIZES];
+      return handleImageOptimization(request, {
+        fetchAsset: (path) => env.ASSETS.fetch(new Request(new URL(path, request.url))),
+        transformImage: async (body, { width, format, quality }) => {
+          const result = await env.IMAGES.input(body).transform(width > 0 ? { width } : {}).output({ format, quality });
+          return result.response();
+        },
+      }, allowedWidths);
+    }
+
+    if (isConstructorRequest(url.pathname)) {
+      const identity = await authenticateConstructor(request, env);
+      if (identity instanceof Response) return identity;
+
+      if (url.pathname.startsWith("/api/constructor/")) {
+        return handleConstructorApi(request, env, identity);
+      }
+
+      const response = await handler.fetch(request, env, ctx);
+      return secureConstructorResponse(response);
+    }
+
+    return handler.fetch(request, env, ctx);
+  },
+};
+
+export default worker;
