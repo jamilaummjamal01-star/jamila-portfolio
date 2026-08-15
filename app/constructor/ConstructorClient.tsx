@@ -363,6 +363,12 @@ export default function ConstructorClient() {
     setShowAdd(false);
   }
 
+  function openKnowledgeForNiche(nicheSlug: string) {
+    resetFilters();
+    setNiche(nicheSlug);
+    navigateToSection("knowledge");
+  }
+
   return (
     <main className={styles.appShell}>
       <aside className={styles.sidebar}>
@@ -397,7 +403,7 @@ export default function ConstructorClient() {
 
       <section className={styles.workspace}>
         {activeSection === "home" ? (
-          <DashboardWorkspace onNavigate={navigateToSection} />
+          <DashboardWorkspace onNavigate={navigateToSection} onOpenKnowledge={openKnowledgeForNiche} />
         ) : activeSection === "followups" ? (
           <FollowUpWorkspace onToast={setToast} />
         ) : activeSection === "knowledge" ? (

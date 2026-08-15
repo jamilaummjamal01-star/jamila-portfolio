@@ -123,7 +123,13 @@ async function parseError(response: Response): Promise<string> {
   }
 }
 
-export default function DashboardWorkspace({ onNavigate }: { onNavigate: (section: ConstructorSection) => void }) {
+export default function DashboardWorkspace({
+  onNavigate,
+  onOpenKnowledge,
+}: {
+  onNavigate: (section: ConstructorSection) => void;
+  onOpenKnowledge: (nicheSlug: string) => void;
+}) {
   const [data, setData] = useState<DashboardData | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
@@ -255,7 +261,7 @@ export default function DashboardWorkspace({ onNavigate }: { onNavigate: (sectio
           <button type="button" onClick={() => onNavigate("knowledge")}>Пополнить базу</button>
         </div>
         {data?.coverageGaps.map((niche) => (
-          <button key={niche.slug} type="button" onClick={() => onNavigate("knowledge")}>
+          <button key={niche.slug} type="button" onClick={() => onOpenKnowledge(niche.slug)}>
             <span>Приоритет {niche.priority}</span><strong>{niche.name}</strong><small>{niche.approved_items} утверждено</small>
           </button>
         ))}
