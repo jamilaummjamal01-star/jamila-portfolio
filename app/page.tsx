@@ -66,15 +66,6 @@ export default function Home() {
           >
             Диагностика
           </a>
-          <a
-            className="header-cta"
-            href="https://constructor.shakurova-content.ru/constructor"
-            aria-label="Войти в закрытый конструктор"
-          >
-            <span className="header-login-long">Войти в конструктор</span>
-            <span className="header-login-short">Войти</span>
-            <span aria-hidden="true">→</span>
-          </a>
         </div>
       </header>
 

@@ -3810,6 +3810,12 @@ function secureConstructorResponse(response: Response): Response {
   headers.set("Pragma", "no-cache");
   headers.set("X-Robots-Tag", "noindex, nofollow, noarchive");
   headers.set("X-Content-Type-Options", "nosniff");
+  headers.set(
+    "Content-Security-Policy",
+    "frame-ancestors 'none'; base-uri 'self'; form-action 'self'",
+  );
+  headers.set("Cross-Origin-Resource-Policy", "same-origin");
+  headers.set("X-Frame-Options", "DENY");
   headers.set("Referrer-Policy", "same-origin");
   headers.set("Permissions-Policy", "camera=(), microphone=(), geolocation=()");
   return new Response(response.body, {
