@@ -24,9 +24,34 @@ type AnswerItem = {
   score: number;
 };
 
+type MessageAnalysis = {
+  contactName: string | null;
+  brandName: string | null;
+  nicheSlug: string | null;
+  nicheName: string | null;
+  product: string | null;
+  launchTiming: string | null;
+  stage: string;
+  intents: string[];
+  intentLabels: string[];
+  summary: string;
+  signals: Array<{ label: string; value: string }>;
+};
+
+type MessageDraft = {
+  readyText: string;
+  clarifyingQuestions: string[];
+  recommendations: string[];
+  pricing: { configured: boolean; title: string; text: string };
+  nextAction: string;
+  sourceQuestionIds: string[];
+};
+
 type AnswerResponse = {
   query: string;
   recognizedCategory: string | null;
+  analysis: MessageAnalysis | null;
+  draft: MessageDraft | null;
   items: AnswerItem[];
 };
 
@@ -83,28 +108,20 @@ export default function QuestionAnswerWorkspace({ bootstrap, onToast }: Question
     [result, selectedId],
   );
 
-  async function copyText(text: string) {
+  async function copyText(text: string, successMessage = "Текст скопирован") {
     try {
       await navigator.clipboard.writeText(text);
-      onToast("Ответ скопирован");
+      onToast(successMessage);
     } catch {
-      onToast("Не удалось скопировать ответ");
+      onToast("Не удалось скопировать текст");
     }
-  }
-
-  function fullAnswerText(item: AnswerItem): string {
-    return [
-      item.shortText,
-      item.clarificationText ? `Уточнение: ${item.clarificationText}` : null,
-      item.nextActionText ? `Следующий шаг: ${item.nextActionText}` : null,
-    ].filter(Boolean).join("\n\n");
   }
 
   async function searchAnswers(event?: FormEvent<HTMLFormElement>, categoryOverride?: string) {
     event?.preventDefault();
     const nextCategory = categoryOverride ?? category;
     if (!question.trim() && !nextCategory) {
-      setError("Вставьте вопрос клиента или выберите тему.");
+      setError("Вставьте сообщение клиента целиком или выберите тему.");
       return;
     }
 
@@ -112,15 +129,12 @@ export default function QuestionAnswerWorkspace({ bootstrap, onToast }: Question
     setError("");
 
     try {
-      const params = new URLSearchParams();
-      if (question.trim()) params.set("q", question.trim());
-      if (nextCategory) params.set("category", nextCategory);
-      if (niche) params.set("niche", niche);
-      if (channel !== "any") params.set("channel", channel);
-
-      const response = await fetch(`/api/constructor/answers?${params.toString()}`, {
+      const response = await fetch("/api/constructor/answers", {
+        method: "POST",
         credentials: "same-origin",
         cache: "no-store",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ query: question.trim(), category: nextCategory, niche, channel }),
       });
       if (!response.ok) throw new Error(await responseError(response));
 
@@ -128,7 +142,7 @@ export default function QuestionAnswerWorkspace({ bootstrap, onToast }: Question
       setResult(payload);
       setSelectedId(payload.items[0]?.id || "");
     } catch (reason: unknown) {
-      setError(reason instanceof Error ? reason.message : "Не удалось подобрать ответ.");
+      setError(reason instanceof Error ? reason.message : "Не удалось разобрать сообщение клиента.");
     } finally {
       setLoading(false);
     }
@@ -144,10 +158,14 @@ export default function QuestionAnswerWorkspace({ bootstrap, onToast }: Question
       <header className={styles.topbar}>
         <div>
           <p className={styles.eyebrow}>Клиент задал вопрос</p>
-          <h1>Найти точный ответ без лишних обещаний</h1>
+          <h1>Разобрать сообщение и подготовить ответ</h1>
         </div>
-        {selected?.shortText && (
-          <button className={styles.primaryButton} type="button" onClick={() => copyText(fullAnswerText(selected))}>
+        {result?.draft?.readyText && (
+          <button
+            className={styles.primaryButton}
+            type="button"
+            onClick={() => copyText(result.draft?.readyText || "", "Готовый ответ скопирован")}
+          >
             Скопировать готовый ответ
           </button>
         )}
@@ -158,47 +176,34 @@ export default function QuestionAnswerWorkspace({ bootstrap, onToast }: Question
           <div className={styles.panelHeading}>
             <span>01</span>
             <div>
-              <h2>Вопрос клиента</h2>
-              <p>Вставьте сообщение как есть или выберите быструю тему.</p>
+              <h2>Сообщение клиента целиком</h2>
+              <p>Вставьте обращение без сокращений. Конструктор выделит контекст, вопросы и следующий шаг.</p>
             </div>
           </div>
 
           <form className={styles.answerSearchForm} onSubmit={(event) => searchAnswers(event)}>
             <label>
-              <span>Сообщение клиента</span>
+              <span>Входящее сообщение</span>
               <textarea
-                rows={5}
+                rows={9}
                 value={question}
                 onChange={(event) => setQuestion(event.target.value)}
-                placeholder="Например: Почему так дорого, если это делает нейросеть?"
+                placeholder="Например: Ассаляму алейкум. У нас бренд косметики, через месяц запускаем сыворотку. Пока не понимаем, нужны фото или ролики. Как Вы работаете и сколько это стоит?"
               />
             </label>
 
-            <div className={styles.quickFilters} aria-label="Быстрые темы ответа">
-              {quickCategories.map(([value, label]) => (
-                <button
-                  className={category === value ? styles.quickFilterActive : ""}
-                  key={value}
-                  type="button"
-                  onClick={() => chooseCategory(value)}
-                >
-                  {label}
-                </button>
-              ))}
-            </div>
-
             <div className={styles.formGrid}>
               <label>
-                <span>Ниша</span>
+                <span>Ниша, если известна</span>
                 <select value={niche} onChange={(event) => setNiche(event.target.value)}>
-                  <option value="">Все ниши</option>
+                  <option value="">Определить автоматически</option>
                   {bootstrap?.niches.map((item) => <option key={item.slug} value={item.slug}>{item.name}</option>)}
                 </select>
               </label>
               <label>
                 <span>Канал</span>
                 <select value={channel} onChange={(event) => setChannel(event.target.value)}>
-                  <option value="any">Любой</option>
+                  <option value="any">Не указан</option>
                   <option value="instagram">Instagram</option>
                   <option value="telegram">Telegram</option>
                   <option value="whatsapp">WhatsApp</option>
@@ -211,44 +216,65 @@ export default function QuestionAnswerWorkspace({ bootstrap, onToast }: Question
             {error && <div className={styles.errorPanel}>{error}</div>}
 
             <button className={styles.primaryButton} type="submit" disabled={loading || !bootstrap}>
-              {loading ? "Ищу подходящие ответы…" : "Подобрать ответ"}
+              {loading ? "Разбираю сообщение…" : "Разобрать и подготовить ответ"}
             </button>
+
+            <div className={styles.answerLibraryShortcut}>
+              <span>Или открыть готовые материалы по одной теме</span>
+              <div className={styles.quickFilters} aria-label="Быстрые темы ответа">
+                {quickCategories.map(([value, label]) => (
+                  <button
+                    className={category === value ? styles.quickFilterActive : ""}
+                    key={value}
+                    type="button"
+                    onClick={() => chooseCategory(value)}
+                  >
+                    {label}
+                  </button>
+                ))}
+              </div>
+            </div>
           </form>
 
-          {result && (
-            <div className={styles.answerMatches} aria-live="polite">
-              <div className={styles.answerMatchesHeading}>
-                <div>
-                  <span>Найдено</span>
-                  <strong>{result.items.length}</strong>
-                </div>
-                {result.recognizedCategory && (
-                  <small>Тема: {categoryLabels[result.recognizedCategory] || result.recognizedCategory}</small>
-                )}
+          {result?.analysis && (
+            <section className={styles.answerAnalysis} aria-live="polite">
+              <div className={styles.answerAnalysisHeading}>
+                <span>Что распознано</span>
+                <strong>{result.analysis.intentLabels.length}</strong>
               </div>
+              <p>{result.analysis.summary}</p>
+              <div className={styles.answerSignalGrid}>
+                {result.analysis.signals.map((signal) => (
+                  <div key={`${signal.label}-${signal.value}`}>
+                    <span>{signal.label}</span>
+                    <strong>{signal.value}</strong>
+                  </div>
+                ))}
+              </div>
+              <div className={styles.answerIntentList}>
+                {result.analysis.intentLabels.map((intent) => <span key={intent}>{intent}</span>)}
+              </div>
+            </section>
+          )}
 
-              {result.items.length === 0 ? (
-                <div className={styles.answerEmpty}>
-                  <strong>Точного ответа пока нет</strong>
-                  <p>Выберите тему или добавьте этот вопрос в базу знаний как новый черновик.</p>
-                </div>
-              ) : (
-                <div className={styles.answerMatchList}>
-                  {result.items.map((item) => (
-                    <button
-                      className={selected?.id === item.id ? styles.answerMatchActive : ""}
-                      key={item.id}
-                      type="button"
-                      onClick={() => setSelectedId(item.id)}
-                    >
-                      <span>{categoryLabels[item.category] || item.category}</span>
-                      <strong>{item.title}</strong>
-                      {item.question && <small>{item.question}</small>}
-                    </button>
-                  ))}
-                </div>
-              )}
-            </div>
+          {result && result.items.length > 0 && (
+            <details className={styles.answerSourceLibrary} open={!result.draft}>
+              <summary>Материалы базы, использованные как опора · {result.items.length}</summary>
+              <div className={styles.answerMatchList}>
+                {result.items.map((item) => (
+                  <button
+                    className={selected?.id === item.id ? styles.answerMatchActive : ""}
+                    key={item.id}
+                    type="button"
+                    onClick={() => setSelectedId(item.id)}
+                  >
+                    <span>{categoryLabels[item.category] || item.category}</span>
+                    <strong>{item.title}</strong>
+                    {item.question && <small>{item.question}</small>}
+                  </button>
+                ))}
+              </div>
+            </details>
           )}
         </section>
 
@@ -256,19 +282,61 @@ export default function QuestionAnswerWorkspace({ bootstrap, onToast }: Question
           <div className={styles.panelHeading}>
             <span>02</span>
             <div>
-              <h2>Готовый ответ</h2>
-              <p>Выберите подходящий тон и проверьте риск перед отправкой.</p>
+              <h2>Разбор и готовый ответ</h2>
+              <p>Проверьте факты и стоимость перед отправкой клиенту.</p>
             </div>
           </div>
 
-          {!selected && (
+          {!result?.draft && !selected && (
             <div className={styles.preparationPlaceholder}>
-              <strong>Ответ появится здесь</strong>
-              <p>Система использует только утверждённые формулировки из закрытой базы.</p>
+              <strong>Здесь появится единый ответ</strong>
+              <p>Конструктор не просто найдёт похожую карточку, а соберёт весь диалог в понятный следующий шаг.</p>
             </div>
           )}
 
-          {selected && (
+          {result?.draft && (
+            <div className={styles.answerComposer}>
+              <section className={styles.answerReady}>
+                <div>
+                  <div>
+                    <span>Можно отправлять после проверки</span>
+                    <h2>Готовый ответ клиенту</h2>
+                  </div>
+                  <button type="button" onClick={() => copyText(result.draft?.readyText || "", "Готовый ответ скопирован")}>Копировать</button>
+                </div>
+                <p>{result.draft.readyText}</p>
+              </section>
+
+              <div className={styles.answerSectionsGrid}>
+                <section className={styles.answerInfoCard}>
+                  <span>Что уточнить</span>
+                  <ol>
+                    {result.draft.clarifyingQuestions.map((item) => <li key={item}>{item}</li>)}
+                  </ol>
+                </section>
+
+                <section className={styles.answerInfoCard}>
+                  <span>Что можно предложить</span>
+                  <ul>
+                    {result.draft.recommendations.map((item) => <li key={item}>{item}</li>)}
+                  </ul>
+                </section>
+
+                <section className={`${styles.answerInfoCard} ${result.draft.pricing.configured ? styles.answerPriceReady : styles.answerPriceWarning}`}>
+                  <span>Стоимость</span>
+                  <h3>{result.draft.pricing.title}</h3>
+                  <p>{result.draft.pricing.text}</p>
+                </section>
+
+                <section className={`${styles.answerInfoCard} ${styles.answerNextAction}`}>
+                  <span>Следующий шаг</span>
+                  <p>{result.draft.nextAction}</p>
+                </section>
+              </div>
+            </div>
+          )}
+
+          {!result?.draft && selected && (
             <div className={styles.answerDetail}>
               <div className={styles.answerDetailHeader}>
                 <div>
@@ -287,7 +355,6 @@ export default function QuestionAnswerWorkspace({ bootstrap, onToast }: Question
               {selected.avoidText && <AnswerVariant title="Чего не писать" text={selected.avoidText} onCopy={copyText} warning />}
               {selected.redFlagText && <AnswerVariant title="Риск" text={selected.redFlagText} onCopy={copyText} warning />}
               {selected.nextActionText && <AnswerVariant title="Следующий шаг" text={selected.nextActionText} onCopy={copyText} accent />}
-
               {selected.niches.length > 0 && (
                 <div className={styles.answerNiches}>{selected.niches.slice(0, 4).map((item) => <span key={item}>{item}</span>)}</div>
               )}
@@ -309,7 +376,7 @@ function AnswerVariant({
 }: {
   title: string;
   text: string;
-  onCopy: (text: string) => void;
+  onCopy: (text: string, successMessage?: string) => void;
   primary?: boolean;
   accent?: boolean;
   warning?: boolean;

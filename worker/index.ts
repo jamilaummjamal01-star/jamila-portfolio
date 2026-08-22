@@ -165,6 +165,51 @@ interface AnswerKnowledgeRow {
   niche_names: string | null;
 }
 
+interface AnswerQuestionRow {
+  id: string;
+  category: string;
+  title: string;
+  prompt_text: string | null;
+  required_level: string;
+}
+
+interface AnswerNicheRow {
+  slug: string;
+  name: string;
+}
+
+interface AnswerTariffSummaryRow {
+  tariff_count: number;
+}
+
+interface InboundMessageAnalysis {
+  contactName: string | null;
+  brandName: string | null;
+  nicheSlug: string | null;
+  nicheName: string | null;
+  product: string | null;
+  launchTiming: string | null;
+  usesSalaam: boolean;
+  stage: string;
+  intents: string[];
+  intentLabels: string[];
+  summary: string;
+  signals: Array<{ label: string; value: string }>;
+}
+
+interface InboundMessageDraft {
+  readyText: string;
+  clarifyingQuestions: string[];
+  recommendations: string[];
+  pricing: {
+    configured: boolean;
+    title: string;
+    text: string;
+  };
+  nextAction: string;
+  sourceQuestionIds: string[];
+}
+
 interface DiagnosticKnowledgeRow {
   id: string;
   item_type: string;
@@ -411,6 +456,218 @@ const answerCategoryKeywords: Record<string, string[]> = {
   accuracy: ["точность", "этикетка", "логотип", "надпись", "упаковка", "искажение"],
 };
 const answerStopWords = new Set(["или", "это", "как", "что", "если", "для", "мне", "вам", "ваш", "наша", "можно", "будет", "так", "всё"]);
+
+const inboundNicheAliases: Record<string, string[]> = {
+  "perfume-cosmetics-care": ["косметик", "сыворот", "крем", "уход", "кожа", "skincare", "skin"],
+  "clothing-textiles": ["одежд", "текстил", "плать", "хиджаб", "костюм"],
+  "jewelry-accessories": ["украшен", "ювелир", "кольц", "серьг", "аксессуар"],
+  "marketplaces-ecommerce": ["маркетплейс", "wildberries", "ozon", "интернет магазин", "карточк товара"],
+  "education": ["обучен", "школ", "курс", "ученик", "образователь"],
+  "food-products": ["продукт питан", "еда", "напиток", "соус", "чай", "кофе"],
+  "restaurants-food-service": ["кафе", "ресторан", "доставк еды", "меню", "блюд"],
+  "experts-specialists": ["эксперт", "специалист", "консультант", "психолог", "коуч"],
+};
+
+const inboundIntentLabels: Record<string, string> = {
+  launch: "Запуск продукта",
+  format: "Нужно подобрать формат",
+  process: "Вопрос о процессе работы",
+  price: "Вопрос о стоимости",
+  sources: "Нужно проверить исходники",
+};
+
+function cleanCapturedText(value: string | null | undefined, maximum = 80): string | null {
+  const cleaned = (value || "")
+    .replace(/^[\s,:;—–-]+|[\s,:;.!?—–-]+$/gu, "")
+    .replace(/\s+/g, " ")
+    .trim();
+  return cleaned ? cleaned.slice(0, maximum) : null;
+}
+
+function extractContactName(query: string): string | null {
+  const dashMatch = query.match(/(?:^|[\s,])я\s*[—–-]\s*([А-ЯЁA-Z][А-ЯЁа-яёA-Za-z-]{1,40})/iu);
+  const namedMatch = query.match(/(?:меня зовут|моё имя|мое имя)\s+([А-ЯЁA-Z][А-ЯЁа-яёA-Za-z-]{1,40})/iu);
+  return cleanCapturedText(dashMatch?.[1] || namedMatch?.[1]);
+}
+
+function extractBrandName(query: string): string | null {
+  const ownerMatch = query.match(/(?:владелиц(?:а|ей)|владелец|основательниц(?:а|ей)|основатель)(?:\s+бренда)?\s+([^\n.!?]{2,80})/iu);
+  return cleanCapturedText(ownerMatch?.[1]?.replace(/^бренда\s+/iu, ""), 80);
+}
+
+function extractProduct(query: string): string | null {
+  const normalized = normalizeSearchText(query);
+  const products: Array<[string, string]> = [
+    ["сыворот", "новая сыворотка"],
+    ["крем", "крем"],
+    ["маск", "маска"],
+    ["парфюм", "парфюмерный продукт"],
+    ["шампун", "шампунь"],
+    ["коллекц", "новая коллекция"],
+    ["курс", "новый курс"],
+  ];
+  return products.find(([keyword]) => normalized.includes(keyword))?.[1] || null;
+}
+
+function extractLaunchTiming(query: string): string | null {
+  const match = query.match(/(?:через|за)\s+(?:(?:\d+|один|одну|два|две|три|четыре|пять)\s+)?(?:день|дня|дней|неделю|недели|недель|месяц|месяца|месяцев)/iu);
+  return cleanCapturedText(match?.[0], 80);
+}
+
+function detectInboundNiche(query: string): string | null {
+  const normalized = normalizeSearchText(query);
+  let bestSlug: string | null = null;
+  let bestScore = 0;
+  for (const [slug, aliases] of Object.entries(inboundNicheAliases)) {
+    const score = aliases.reduce((total, alias) => total + (normalized.includes(normalizeSearchText(alias)) ? 1 : 0), 0);
+    if (score > bestScore) {
+      bestSlug = slug;
+      bestScore = score;
+    }
+  }
+  return bestSlug;
+}
+
+function detectInboundIntents(query: string): string[] {
+  const normalized = normalizeSearchText(query);
+  const intents: string[] = [];
+  if (/запуск|запускаем|старт|анонс/iu.test(normalized)) intents.push("launch");
+  if (/фото|ролик|видео|формат|что нам нужно|что то другое/iu.test(normalized)) intents.push("format");
+  if (/как вы работаете|как работаете|как проходит|этапы работы|процесс/iu.test(normalized)) intents.push("process");
+  if (/сколько|стоимост|цена|бюджет|стоит/iu.test(normalized)) intents.push("price");
+  if (/исходник|фотограф|упаковк|материал/iu.test(normalized)) intents.push("sources");
+  return intents;
+}
+
+function analyzeInboundMessage(
+  query: string,
+  selectedNiche: string,
+  niches: AnswerNicheRow[],
+): InboundMessageAnalysis {
+  const contactName = extractContactName(query);
+  const brandName = extractBrandName(query);
+  const nicheSlug = selectedNiche || detectInboundNiche(query);
+  const nicheName = niches.find((item) => item.slug === nicheSlug)?.name || null;
+  const product = extractProduct(query);
+  const launchTiming = extractLaunchTiming(query);
+  const usesSalaam = /асс?аляму\s+алейкум|салям\s+алейкум/iu.test(normalizeSearchText(query));
+  const intents = detectInboundIntents(query);
+  const stage = intents.includes("launch") ? "Подготовка к запуску" : "Первичная консультация";
+  const subject = [contactName, brandName].filter(Boolean).join(" · ") || "Новый входящий клиент";
+  const details = [product, launchTiming].filter(Boolean).join(" · ");
+  const intentLabels = intents.map((intent) => inboundIntentLabels[intent]).filter(Boolean);
+  const summary = `${stage}: ${subject}${details ? ` · ${details}` : ""}. ${intentLabels.join("; ") || "Нужно уточнить задачу клиента"}.`;
+  const signals = [
+    { label: "Контакт", value: contactName },
+    { label: "Бренд", value: brandName },
+    { label: "Ниша", value: nicheName },
+    { label: "Продукт", value: product },
+    { label: "Срок", value: launchTiming },
+    { label: "Этап", value: stage },
+  ].filter((item): item is { label: string; value: string } => Boolean(item.value));
+
+  return { contactName, brandName, nicheSlug, nicheName, product, launchTiming, usesSalaam, stage, intents, intentLabels, summary, signals };
+}
+
+function selectClarifyingQuestions(
+  rows: AnswerQuestionRow[],
+  analysis: InboundMessageAnalysis,
+): { questions: string[]; sourceIds: string[] } {
+  const usedIds = new Set<string>();
+  const questions: string[] = [];
+  const sourceIds: string[] = [];
+  const rules: Array<{ patterns: string[]; fallback: string }> = [
+    { patterns: ["действие", "цель", "результат", "задач"], fallback: "Какой главный результат должен дать контент к запуску?" },
+    { patterns: ["площадк", "канал", "размещ", "instagram", "маркетплейс"], fallback: "Где планируете использовать контент: в социальных сетях, на сайте, маркетплейсе или в рекламе?" },
+    { patterns: ["исходник", "фотограф", "материал", "упаковк"], fallback: "Какие исходники уже есть: фотографии продукта и упаковки, логотип, тексты и характеристики?" },
+    { patterns: ["срок", "дат", "готов", "запуск"], fallback: analysis.launchTiming ? "Какая точная дата запуска и к какому дню материалы должны быть готовы?" : "К какой дате материалы должны быть полностью готовы?" },
+    { patterns: ["бюджет", "диапазон", "стоим"], fallback: "Какой бюджет или диапазон Вы рассматриваете для запуска?" },
+  ];
+
+  if (analysis.nicheSlug === "perfume-cosmetics-care") {
+    rules.push({
+      patterns: ["свойств", "состав", "маркиров", "подтвержд"],
+      fallback: "Какие свойства продукта подтверждены составом, маркировкой или документами и могут использоваться в рекламе?",
+    });
+  }
+
+  for (const rule of rules) {
+    const row = rows.find((candidate) => {
+      if (usedIds.has(candidate.id) || !candidate.prompt_text) return false;
+      const text = normalizeSearchText(`${candidate.title} ${candidate.prompt_text}`);
+      return rule.patterns.some((pattern) => text.includes(normalizeSearchText(pattern)));
+    });
+    questions.push(row?.prompt_text || rule.fallback);
+    if (row) {
+      usedIds.add(row.id);
+      sourceIds.push(row.id);
+    }
+  }
+
+  return { questions: questions.slice(0, 6), sourceIds };
+}
+
+function inboundRecommendations(analysis: InboundMessageAnalysis): string[] {
+  if (analysis.nicheSlug === "perfume-cosmetics-care" && analysis.intents.includes("launch")) {
+    return [
+      "Минимальный запуск — ключевые продуктовые AI-фото для анонса и карточки продукта.",
+      "Основной запуск — серия фото и короткие ролики, объединённые одной визуальной концепцией.",
+      "Расширенный запуск — контент-система для анонса, презентации продукта и публикаций после старта.",
+    ];
+  }
+  return [
+    "Минимальный вариант — один приоритетный формат под главную задачу.",
+    "Основной вариант — сочетание статичных и динамических материалов.",
+    "Расширенный вариант — единая система контента для нескольких площадок и этапов коммуникации.",
+  ];
+}
+
+function buildInboundDraft(
+  analysis: InboundMessageAnalysis,
+  questions: string[],
+  sourceQuestionIds: string[],
+  tariffCount: number,
+): InboundMessageDraft {
+  const greeting = analysis.usesSalaam
+    ? analysis.contactName ? `Ва алейкум ассалям, ${analysis.contactName}!` : "Ва алейкум ассалям!"
+    : analysis.contactName ? `Здравствуйте, ${analysis.contactName}!` : "Здравствуйте!";
+  const nicheOpening = analysis.nicheSlug === "perfume-cosmetics-care"
+    ? `Да, я могу помочь подготовить контент к запуску${analysis.product ? `: ${analysis.product}` : ""}. Необязательно заранее решать, нужны именно фотографии или ролики: сначала я уточняю задачу запуска, площадки и имеющиеся материалы, а затем предлагаю подходящий формат.`
+    : "Да, я могу помочь подобрать подходящий формат контента. Сначала я уточняю задачу, площадки и исходные материалы, а затем предлагаю решение без лишних форматов.";
+  const processText = "Обычно работа проходит так: я знакомлюсь с продуктом и задачей, проверяю исходники, предлагаю концепцию и состав материалов, после согласования создаю контент и передаю готовые файлы для выбранных площадок.";
+  const pricingText = tariffCount > 0
+    ? "После ответов я предложу два варианта — минимальный и основной — с ориентиром по стоимости и срокам."
+    : "После ответов я предложу минимальный и основной варианты. Стоимость зафиксирую отдельно после проверки объёма и исходников.";
+  const questionText = questions.map((question) => `— ${question}`).join("\n");
+  const readyText = [
+    greeting,
+    "Спасибо большое, очень приятно, что Вам понравились мои работы.",
+    nicheOpening,
+    processText,
+    "Чтобы я могла предложить подходящий вариант, подскажите, пожалуйста:",
+    questionText,
+    pricingText,
+  ].filter(Boolean).join("\n\n");
+
+  return {
+    readyText,
+    clarifyingQuestions: questions,
+    recommendations: inboundRecommendations(analysis),
+    pricing: tariffCount > 0
+      ? {
+        configured: true,
+        title: "Тарифы подключены",
+        text: `В калькуляторе доступно тарифов: ${tariffCount}. Итоговую сумму нужно выбрать после уточнения объёма, исходников и прав использования.`,
+      }
+      : {
+        configured: false,
+        title: "Стоимость пока не настроена",
+        text: "В базе нет утверждённых тарифов. Конструктор не подставляет выдуманную сумму и оставляет стоимость для ручного расчёта.",
+      },
+    nextAction: "Отправить ответ, дождаться уточнений и затем перейти к подготовке клиента и расчёту двух вариантов предложения.",
+    sourceQuestionIds,
+  };
+}
 
 function json(data: unknown, init: ResponseInit = {}): Response {
   const headers = new Headers(init.headers);
@@ -735,21 +992,63 @@ function answerMatchScore(row: AnswerKnowledgeRow, query: string, tokens: string
   return score;
 }
 
+async function readAnswerRequest(request: Request): Promise<{
+  query: string;
+  selectedCategory: string;
+  selectedNiche: string;
+  channel: string;
+} | Response> {
+  if (request.method === "POST") {
+    const contentLength = Number(request.headers.get("content-length") || 0);
+    if (Number.isFinite(contentLength) && contentLength > 32_768) {
+      return constructorError(413, "ANSWER_MESSAGE_TOO_LARGE", "Сообщение слишком длинное. Сократите его до 6000 символов.");
+    }
+
+    let body: Record<string, unknown>;
+    try {
+      const rawBody = await request.text();
+      if (rawBody.length > 32_768) {
+        return constructorError(413, "ANSWER_MESSAGE_TOO_LARGE", "Сообщение слишком длинное. Сократите его до 6000 символов.");
+      }
+      const parsed = JSON.parse(rawBody) as unknown;
+      const record = asRecord(parsed);
+      if (!record) return constructorError(400, "INVALID_JSON", "Не удалось прочитать сообщение клиента.");
+      body = record;
+    } catch {
+      return constructorError(400, "INVALID_JSON", "Не удалось прочитать сообщение клиента.");
+    }
+
+    return {
+      query: readText(body, "query", 6000),
+      selectedCategory: readText(body, "category", 80),
+      selectedNiche: readText(body, "niche", 120),
+      channel: readText(body, "channel", 80),
+    };
+  }
+
+  const url = new URL(request.url);
+  return {
+    query: (url.searchParams.get("q") || "").trim().slice(0, 6000),
+    selectedCategory: (url.searchParams.get("category") || "").trim().slice(0, 80),
+    selectedNiche: (url.searchParams.get("niche") || "").trim().slice(0, 120),
+    channel: (url.searchParams.get("channel") || "").trim().slice(0, 80),
+  };
+}
+
 async function handleAnswerSearch(request: Request, env: Env): Promise<Response> {
   const db = requireDatabase(env);
   if (db instanceof Response) return db;
 
-  const url = new URL(request.url);
-  const query = (url.searchParams.get("q") || "").trim().slice(0, 1200);
-  const selectedCategory = (url.searchParams.get("category") || "").trim().slice(0, 80);
-  const niche = (url.searchParams.get("niche") || "").trim().slice(0, 120);
-  const channel = (url.searchParams.get("channel") || "").trim().slice(0, 80);
+  const input = await readAnswerRequest(request);
+  if (input instanceof Response) return input;
+  const { query, selectedCategory, selectedNiche, channel } = input;
 
   if (!query && !selectedCategory) {
-    return constructorError(422, "ANSWER_QUERY_REQUIRED", "Вставьте вопрос клиента или выберите тему.");
+    return constructorError(422, "ANSWER_QUERY_REQUIRED", "Вставьте сообщение клиента целиком или выберите тему.");
   }
 
   const detectedCategory = selectedCategory || detectAnswerCategory(query);
+  const inferredNiche = selectedNiche || detectInboundNiche(query) || "";
   const filters = [
     "ki.status = 'approved'",
     "ki.item_type IN ('question_from_client', 'objection', 'objection_response', 'answer')",
@@ -761,7 +1060,7 @@ async function handleAnswerSearch(request: Request, env: Env): Promise<Response>
     bindings.push(selectedCategory);
   }
 
-  if (niche) {
+  if (inferredNiche) {
     filters.push(`(
       NOT EXISTS (SELECT 1 FROM knowledge_item_niches all_kin WHERE all_kin.knowledge_item_id = ki.id)
       OR EXISTS (
@@ -771,47 +1070,89 @@ async function handleAnswerSearch(request: Request, env: Env): Promise<Response>
         WHERE kin.knowledge_item_id = ki.id AND n.slug = ?
       )
     )`);
-    bindings.push(niche);
+    bindings.push(inferredNiche);
   }
 
-  if (channel) {
+  if (channel && channel !== "any") {
     filters.push("ki.channel IN ('any', ?)");
     bindings.push(channel);
   }
 
-  const result = await db.prepare(`
-    SELECT
-      ki.id,
-      ki.item_type,
-      ki.category,
-      ki.title,
-      ki.prompt_text,
-      ki.short_text,
-      ki.full_text,
-      ki.soft_text,
-      ki.firm_text,
-      ki.clarification_text,
-      ki.next_action_text,
-      ki.avoid_text,
-      ki.red_flag_text,
-      ki.risk_level,
-      ki.channel,
-      (
-        SELECT GROUP_CONCAT(n.name, '${listDelimiter}')
+  const questionFilters = [
+    "ki.status = 'approved'",
+    "ki.item_type IN ('question_to_client', 'clarifying_question', 'diagnostic_hint')",
+  ];
+  const questionBindings: string[] = [];
+  if (inferredNiche) {
+    questionFilters.push(`(
+      NOT EXISTS (SELECT 1 FROM knowledge_item_niches all_kin WHERE all_kin.knowledge_item_id = ki.id)
+      OR EXISTS (
+        SELECT 1
         FROM knowledge_item_niches kin
         JOIN niches n ON n.id = kin.niche_id
-        WHERE kin.knowledge_item_id = ki.id
-      ) AS niche_names
-    FROM knowledge_items ki
-    WHERE ${filters.join(" AND ")}
-    ORDER BY
-      CASE ki.required_level WHEN 'required' THEN 0 WHEN 'recommended' THEN 1 ELSE 2 END,
-      ki.title
-    LIMIT 120
-  `).bind(...bindings).all<AnswerKnowledgeRow>();
+        WHERE kin.knowledge_item_id = ki.id AND n.slug = ?
+      )
+    )`);
+    questionBindings.push(inferredNiche);
+  }
 
+  const batchResults = await db.batch([
+    db.prepare(`
+      SELECT
+        ki.id,
+        ki.item_type,
+        ki.category,
+        ki.title,
+        ki.prompt_text,
+        ki.short_text,
+        ki.full_text,
+        ki.soft_text,
+        ki.firm_text,
+        ki.clarification_text,
+        ki.next_action_text,
+        ki.avoid_text,
+        ki.red_flag_text,
+        ki.risk_level,
+        ki.channel,
+        (
+          SELECT GROUP_CONCAT(n.name, '${listDelimiter}')
+          FROM knowledge_item_niches kin
+          JOIN niches n ON n.id = kin.niche_id
+          WHERE kin.knowledge_item_id = ki.id
+        ) AS niche_names
+      FROM knowledge_items ki
+      WHERE ${filters.join(" AND ")}
+      ORDER BY
+        CASE ki.required_level WHEN 'required' THEN 0 WHEN 'recommended' THEN 1 ELSE 2 END,
+        ki.title
+      LIMIT 160
+    `).bind(...bindings),
+    db.prepare(`
+      SELECT ki.id, ki.category, ki.title, ki.prompt_text, ki.required_level
+      FROM knowledge_items ki
+      WHERE ${questionFilters.join(" AND ")}
+        AND ki.prompt_text IS NOT NULL
+        AND TRIM(ki.prompt_text) != ''
+      ORDER BY
+        CASE ki.required_level WHEN 'required' THEN 0 WHEN 'recommended' THEN 1 ELSE 2 END,
+        ki.title
+      LIMIT 160
+    `).bind(...questionBindings),
+    db.prepare("SELECT slug, name FROM niches WHERE is_active = 1 ORDER BY priority, name"),
+    db.prepare(`
+      SELECT COUNT(*) AS tariff_count
+      FROM pricing_tariffs
+      WHERE is_active = 1 AND rate_status NOT IN ('disabled', 'review_before_proposal')
+    `),
+  ]);
+
+  const answerRows = (batchResults[0].results ?? []) as unknown as AnswerKnowledgeRow[];
+  const questionRows = (batchResults[1].results ?? []) as unknown as AnswerQuestionRow[];
+  const nicheRows = (batchResults[2].results ?? []) as unknown as AnswerNicheRow[];
+  const tariffSummary = batchResults[3].results?.[0] as unknown as AnswerTariffSummaryRow | undefined;
+  const tariffCount = Number(tariffSummary?.tariff_count ?? 0);
   const tokens = searchTokens(query);
-  const rows = (result.results ?? [])
+  const rows = answerRows
     .map((row) => ({ row, score: answerMatchScore(row, query, tokens, detectedCategory) }))
     .filter(({ score }) => Boolean(selectedCategory) || score > 15)
     .sort((left, right) => right.score - left.score || left.row.title.localeCompare(right.row.title, "ru"))
@@ -835,7 +1176,20 @@ async function handleAnswerSearch(request: Request, env: Env): Promise<Response>
       score,
     }));
 
-  return json({ query, recognizedCategory: detectedCategory, items: rows });
+  const analysis = query ? analyzeInboundMessage(query, selectedNiche || inferredNiche, nicheRows) : null;
+  const selectedQuestions = analysis ? selectClarifyingQuestions(questionRows, analysis) : null;
+  const draft = analysis && selectedQuestions
+    ? buildInboundDraft(analysis, selectedQuestions.questions, selectedQuestions.sourceIds, tariffCount)
+    : null;
+
+  return json({
+    query,
+    recognizedCategory: detectedCategory,
+    recognizedCategories: analysis?.intents ?? (detectedCategory ? [detectedCategory] : []),
+    analysis,
+    draft,
+    items: rows,
+  });
 }
 
 async function handleBootstrap(env: Env, identity: ConstructorIdentity): Promise<Response> {
@@ -3750,7 +4104,7 @@ async function handleConstructorApi(request: Request, env: Env, identity: Constr
     return handleFavoriteChange(request, favoriteMatch[1].slice(0, 80), env, identity);
   }
 
-  if (url.pathname === "/api/constructor/answers" && request.method === "GET") {
+  if (url.pathname === "/api/constructor/answers" && (request.method === "GET" || request.method === "POST")) {
     return handleAnswerSearch(request, env);
   }
 
