@@ -153,7 +153,16 @@ export default function DashboardWorkspace({
     return () => window.cancelAnimationFrame(frame);
   }, [load]);
 
-  const today = useMemo(() => new Intl.DateTimeFormat("ru-RU", { weekday: "long", day: "numeric", month: "long" }).format(new Date()), []);
+  const today = useMemo(
+    () =>
+      new Intl.DateTimeFormat("ru-RU", {
+        weekday: "long",
+        day: "numeric",
+        month: "long",
+        timeZone: "Europe/Moscow",
+      }).format(new Date()),
+    [],
+  );
 
   const summaryCards = [
     { label: "Следующие контакты", value: data?.summary.follow_ups ?? 0, section: "followups" as const, hint: "на ближайшие 14 дней" },
@@ -168,7 +177,9 @@ export default function DashboardWorkspace({
         <div>
           <p className={styles.eyebrow}>Главная</p>
           <h1>Рабочая ситуация</h1>
-          <span className={styles.dashboardDate}>{today}</span>
+          <span className={styles.dashboardDate} suppressHydrationWarning>
+            {today}
+          </span>
         </div>
         <button className={styles.secondaryButton} type="button" onClick={() => void load()} disabled={loading}>
           {loading ? "Обновляю…" : "Обновить"}
