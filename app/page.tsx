@@ -59,9 +59,14 @@ export default function Home() {
           <a href="#approach">Подход</a>
           <a href="#contact">Контакты</a>
         </nav>
-        <a className="header-cta" href="https://diagnostika.shakurova-content.ru">
-          Диагностика
-        </a>
+        <div className="header-actions">
+          <a
+            className="header-diagnostic"
+            href="https://diagnostika.shakurova-content.ru"
+          >
+            Диагностика
+          </a>
+        </div>
       </header>
 
       <section className="hero" id="top">

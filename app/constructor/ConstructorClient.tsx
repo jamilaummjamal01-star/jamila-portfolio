@@ -1,0 +1,765 @@
+"use client";
+
+import { FormEvent, useCallback, useEffect, useMemo, useState } from "react";
+import ClientWorkspace from "./ClientWorkspace";
+import DashboardWorkspace, { ConstructorSection } from "./DashboardWorkspace";
+import DiagnosticWorkspace from "./DiagnosticWorkspace";
+import FavoritesHistoryWorkspace from "./FavoritesHistoryWorkspace";
+import FollowUpWorkspace from "./FollowUpWorkspace";
+import ImportQualityWorkspace from "./ImportQualityWorkspace";
+import KnowledgeEditor, { KnowledgeUpdatePayload } from "./KnowledgeEditor";
+import PreparationWorkspace from "./PreparationWorkspace";
+import PricingWorkspace from "./PricingWorkspace";
+import ProposalWorkspace from "./ProposalWorkspace";
+import QuestionAnswerWorkspace from "./QuestionAnswerWorkspace";
+import ReviewQueueWorkspace from "./ReviewQueueWorkspace";
+import styles from "./constructor.module.css";
+
+type Niche = { slug: string; name: string; priority: string };
+type Stage = { slug: string; name: string; sort_order: number };
+
+type BootstrapData = {
+  identity: { email: string };
+  niches: Niche[];
+  stages: Stage[];
+  counts: {
+    total: number;
+    approved: number;
+    review: number;
+    high_risk: number;
+  };
+};
+
+export type KnowledgeItem = {
+  id: string;
+  item_type: string;
+  speaker: string;
+  category: string;
+  title: string;
+  prompt_text: string | null;
+  short_text: string | null;
+  full_text: string | null;
+  soft_text: string | null;
+  firm_text: string | null;
+  clarification_text: string | null;
+  next_action_text: string | null;
+  avoid_text: string | null;
+  diagnostic_value: string | null;
+  red_flag_text: string | null;
+  channel: string;
+  tone: string;
+  required_level: string;
+  risk_level: string;
+  status: string;
+  source_kind: string;
+  source_url: string | null;
+  version: number;
+  reviewed_at: string | null;
+  updated_at: string;
+  isFavorite: boolean;
+  niches: string[];
+  nicheSlugs: string[];
+  stages: string[];
+  stageSlugs: string[];
+};
+
+type KnowledgeResponse = {
+  items: KnowledgeItem[];
+  pagination: {
+    page: number;
+    limit: number;
+    total: number;
+    pages: number;
+  };
+};
+
+type ErrorPayload = {
+  error?: {
+    code?: string;
+    message?: string;
+  };
+};
+
+const itemTypeLabels: Record<string, string> = {
+  question_to_client: "Вопрос клиенту",
+  question_from_client: "Вопрос клиента",
+  answer: "Ответ",
+  objection: "Возражение",
+  objection_response: "Ответ на возражение",
+  clarifying_question: "Уточняющий вопрос",
+  first_message: "Первое сообщение",
+  follow_up: "Повторное сообщение",
+  diagnostic_hint: "Подсказка диагностики",
+  audit_check: "Проверка аудита",
+  red_flag: "Красный флаг",
+  ethical_rule: "Этическое правило",
+  proposal_block: "Блок КП",
+  package: "Пакет",
+  next_action: "Следующий шаг",
+  refusal_reason: "Основание для отказа",
+};
+
+const riskLabels: Record<string, string> = {
+  normal: "Обычный",
+  elevated: "Повышенный",
+  high: "Высокий",
+  refusal: "Отказ",
+};
+
+const statusLabels: Record<string, string> = {
+  approved: "Утверждено",
+  review: "На проверке",
+  draft: "Черновик",
+  archived: "Архив",
+};
+
+const navigation = [
+  ["Главная", "home", true],
+  ["План контактов", "followups", true],
+  ["База знаний", "knowledge", true],
+  ["Проверка материалов", "review", true],
+  ["Избранное и история", "library", true],
+  ["Подготовиться к клиенту", "prepare", true],
+  ["Клиент задал вопрос", "answer", true],
+  ["Диагностика", "diagnostic", true],
+  ["Клиенты", "clients", true],
+  ["Калькулятор", "pricing", true],
+  ["Коммерческие предложения", "proposals", true],
+  ["Импорт и качество", "quality", true],
+] as const;
+
+function getErrorMessage(payload: ErrorPayload | null, fallback: string): string {
+  return payload?.error?.message || fallback;
+}
+
+async function parseError(response: Response): Promise<string> {
+  try {
+    const payload = (await response.json()) as ErrorPayload;
+    return getErrorMessage(payload, `Ошибка ${response.status}`);
+  } catch {
+    return `Ошибка ${response.status}`;
+  }
+}
+
+function primaryCopyText(item: KnowledgeItem): string {
+  return item.short_text || item.prompt_text || item.full_text || item.title;
+}
+
+function displayDate(value: string | null): string {
+  if (!value) return "Не проверено";
+  const date = new Date(value);
+  return Number.isNaN(date.valueOf()) ? value : new Intl.DateTimeFormat("ru-RU").format(date);
+}
+
+export default function ConstructorClient() {
+  const [activeSection, setActiveSection] = useState<ConstructorSection>("home");
+  const [bootstrap, setBootstrap] = useState<BootstrapData | null>(null);
+  const [items, setItems] = useState<KnowledgeItem[]>([]);
+  const [pagination, setPagination] = useState<KnowledgeResponse["pagination"]>({ page: 1, limit: 30, total: 0, pages: 1 });
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
+  const [query, setQuery] = useState("");
+  const [debouncedQuery, setDebouncedQuery] = useState("");
+  const [niche, setNiche] = useState("");
+  const [stage, setStage] = useState("");
+  const [itemType, setItemType] = useState("");
+  const [risk, setRisk] = useState("");
+  const [favoriteOnly, setFavoriteOnly] = useState(false);
+  const [status, setStatus] = useState("approved");
+  const [page, setPage] = useState(1);
+  const [selected, setSelected] = useState<KnowledgeItem | null>(null);
+  const [editingSelected, setEditingSelected] = useState(false);
+  const [toast, setToast] = useState("");
+  const [showAdd, setShowAdd] = useState(false);
+  const [saving, setSaving] = useState(false);
+  const [reviewRefreshKey, setReviewRefreshKey] = useState(0);
+
+  const [newTitle, setNewTitle] = useState("");
+  const [newType, setNewType] = useState("question_to_client");
+  const [newCategory, setNewCategory] = useState("business");
+  const [newPrompt, setNewPrompt] = useState("");
+  const [newShort, setNewShort] = useState("");
+  const [newNiche, setNewNiche] = useState("");
+  const [newStage, setNewStage] = useState("");
+  const [newRisk, setNewRisk] = useState("normal");
+
+  useEffect(() => {
+    const timeout = window.setTimeout(() => {
+      setDebouncedQuery(query.trim());
+      setPage(1);
+    }, 250);
+    return () => window.clearTimeout(timeout);
+  }, [query]);
+
+  const loadBootstrap = useCallback(async () => {
+    const response = await fetch("/api/constructor/bootstrap", {
+      credentials: "same-origin",
+      cache: "no-store",
+    });
+    if (!response.ok) throw new Error(await parseError(response));
+    setBootstrap((await response.json()) as BootstrapData);
+  }, []);
+
+  const loadItems = useCallback(async () => {
+    const params = new URLSearchParams({
+      page: String(page),
+      limit: "30",
+      status,
+    });
+    if (debouncedQuery) params.set("q", debouncedQuery);
+    if (niche) params.set("niche", niche);
+    if (stage) params.set("stage", stage);
+    if (itemType) params.set("type", itemType);
+    if (risk) params.set("risk", risk);
+    if (favoriteOnly) params.set("favorite", "true");
+
+    const response = await fetch(`/api/constructor/knowledge?${params.toString()}`, {
+      credentials: "same-origin",
+      cache: "no-store",
+    });
+    if (!response.ok) throw new Error(await parseError(response));
+    const payload = (await response.json()) as KnowledgeResponse;
+    setItems(payload.items);
+    setPagination(payload.pagination);
+  }, [debouncedQuery, favoriteOnly, itemType, niche, page, risk, stage, status]);
+
+  useEffect(() => {
+    let cancelled = false;
+
+    Promise.resolve()
+      .then(() => {
+        if (cancelled) return undefined;
+        setLoading(true);
+        setError("");
+        return Promise.all([bootstrap ? Promise.resolve() : loadBootstrap(), loadItems()]);
+      })
+      .catch((reason: unknown) => {
+        if (!cancelled) setError(reason instanceof Error ? reason.message : "Не удалось загрузить конструктор.");
+      })
+      .finally(() => {
+        if (!cancelled) setLoading(false);
+      });
+
+    return () => {
+      cancelled = true;
+    };
+  }, [bootstrap, loadBootstrap, loadItems]);
+
+  useEffect(() => {
+    if (!toast) return;
+    const timeout = window.setTimeout(() => setToast(""), 2200);
+    return () => window.clearTimeout(timeout);
+  }, [toast]);
+
+  const categories = useMemo(() => {
+    const values = new Set(items.map((item) => item.category).filter(Boolean));
+    return [...values].sort((a, b) => a.localeCompare(b, "ru"));
+  }, [items]);
+
+  async function copyText(text: string) {
+    try {
+      await navigator.clipboard.writeText(text);
+      setToast("Текст скопирован");
+    } catch {
+      setToast("Не удалось скопировать текст");
+    }
+  }
+
+  async function createKnowledgeItem(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+    setSaving(true);
+    setError("");
+
+    try {
+      const response = await fetch("/api/constructor/knowledge", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        credentials: "same-origin",
+        body: JSON.stringify({
+          title: newTitle,
+          itemType: newType,
+          category: newCategory,
+          promptText: newPrompt,
+          shortText: newShort,
+          nicheSlugs: newNiche ? [newNiche] : [],
+          stageSlugs: newStage ? [newStage] : [],
+          riskLevel: newRisk,
+          speaker: newType === "question_from_client" || newType === "objection" ? "client" : "creator",
+        }),
+      });
+
+      if (!response.ok) throw new Error(await parseError(response));
+
+      setNewTitle("");
+      setNewPrompt("");
+      setNewShort("");
+      setNewNiche("");
+      setNewStage("");
+      setNewRisk("normal");
+      setShowAdd(false);
+      setStatus("all");
+      setPage(1);
+      setToast("Черновик добавлен");
+      await loadBootstrap();
+      await loadItems();
+    } catch (reason: unknown) {
+      setError(reason instanceof Error ? reason.message : "Не удалось сохранить запись.");
+    } finally {
+      setSaving(false);
+    }
+  }
+
+  async function saveKnowledgeItem(item: KnowledgeItem, payload: KnowledgeUpdatePayload): Promise<KnowledgeItem> {
+    setError("");
+    const response = await fetch(`/api/constructor/knowledge/${encodeURIComponent(item.id)}`, {
+      method: "PATCH",
+      headers: { "Content-Type": "application/json" },
+      credentials: "same-origin",
+      body: JSON.stringify(payload),
+    });
+    if (!response.ok) throw new Error(await parseError(response));
+
+    const result = (await response.json()) as { item: KnowledgeItem };
+    setSelected((current) => current?.id === result.item.id ? result.item : current);
+    setItems((current) => current.map((item) => item.id === result.item.id ? result.item : item));
+    setToast(result.item.status === "approved" ? "Запись утверждена" : result.item.status === "archived" ? "Запись перенесена в архив" : "Изменения сохранены");
+    setReviewRefreshKey((value) => value + 1);
+    await Promise.all([loadBootstrap(), loadItems()]);
+    return result.item;
+  }
+
+  async function updateKnowledgeItem(payload: KnowledgeUpdatePayload) {
+    if (!selected) return;
+    await saveKnowledgeItem(selected, payload);
+    setEditingSelected(false);
+  }
+
+  async function toggleFavorite(item: KnowledgeItem): Promise<boolean> {
+    setError("");
+    const response = await fetch(`/api/constructor/favorites/${encodeURIComponent(item.id)}`, {
+      method: item.isFavorite ? "DELETE" : "PUT",
+      credentials: "same-origin",
+    });
+    if (!response.ok) throw new Error(await parseError(response));
+    const payload = (await response.json()) as { isFavorite: boolean };
+    const nextItem = { ...item, isFavorite: payload.isFavorite };
+    setItems((current) => favoriteOnly && !payload.isFavorite
+      ? current.filter((candidate) => candidate.id !== item.id)
+      : current.map((candidate) => candidate.id === item.id ? nextItem : candidate));
+    setSelected((current) => current?.id === item.id ? { ...current, isFavorite: payload.isFavorite } : current);
+    setToast(payload.isFavorite ? "Добавлено в избранное" : "Удалено из избранного");
+    if (favoriteOnly && !payload.isFavorite) setPagination((current) => ({ ...current, total: Math.max(0, current.total - 1) }));
+    return payload.isFavorite;
+  }
+
+  const hasFilters = Boolean(query || niche || stage || itemType || risk || favoriteOnly || status !== "approved");
+
+  function resetFilters() {
+    setQuery("");
+    setNiche("");
+    setStage("");
+    setItemType("");
+    setRisk("");
+    setFavoriteOnly(false);
+    setStatus("approved");
+    setPage(1);
+  }
+
+  function navigateToSection(section: ConstructorSection) {
+    setActiveSection(section);
+    setSelected(null);
+    setEditingSelected(false);
+    setShowAdd(false);
+  }
+
+  function openKnowledgeForNiche(nicheSlug: string) {
+    resetFilters();
+    setNiche(nicheSlug);
+    navigateToSection("knowledge");
+  }
+
+  return (
+    <main className={styles.appShell}>
+      <aside className={styles.sidebar}>
+        <div className={styles.brandBlock}>
+          <div className={styles.brandMark}>JS</div>
+          <div>
+            <strong>Клиентский конструктор</strong>
+            <span>закрытая рабочая система</span>
+          </div>
+        </div>
+
+        <nav className={styles.navigation} aria-label="Разделы конструктора">
+          {navigation.map(([label, key, enabled]) => (
+            <button
+              className={activeSection === key ? styles.navActive : enabled ? styles.navAvailable : styles.navDisabled}
+              key={key}
+              type="button"
+              disabled={!enabled}
+              onClick={() => navigateToSection(key)}
+            >
+              <span>{label}</span>
+              {!enabled && <small>скоро</small>}
+            </button>
+          ))}
+        </nav>
+
+        <div className={styles.sidebarFooter}>
+          <span>Вход подтверждён</span>
+          <strong>{bootstrap?.identity.email || "Cloudflare Access"}</strong>
+        </div>
+      </aside>
+
+      <section className={styles.workspace}>
+        {activeSection === "home" ? (
+          <DashboardWorkspace onNavigate={navigateToSection} onOpenKnowledge={openKnowledgeForNiche} />
+        ) : activeSection === "followups" ? (
+          <FollowUpWorkspace onToast={setToast} />
+        ) : activeSection === "knowledge" ? (
+          <>
+        <header className={styles.topbar}>
+          <div>
+            <p className={styles.eyebrow}>База знаний</p>
+            <h1>Вопросы, ответы и сценарии</h1>
+          </div>
+          <button className={styles.primaryButton} type="button" onClick={() => setShowAdd(true)}>
+            + Добавить запись
+          </button>
+        </header>
+
+        <section className={styles.statGrid} aria-label="Состояние базы">
+          <article>
+            <span>Всего записей</span>
+            <strong>{bootstrap?.counts.total ?? "—"}</strong>
+          </article>
+          <article>
+            <span>Утверждено</span>
+            <strong>{bootstrap?.counts.approved ?? "—"}</strong>
+          </article>
+          <article>
+            <span>На проверке</span>
+            <strong>{bootstrap?.counts.review ?? "—"}</strong>
+          </article>
+          <article>
+            <span>Высокий риск</span>
+            <strong>{bootstrap?.counts.high_risk ?? "—"}</strong>
+          </article>
+        </section>
+
+        <section className={styles.filters} aria-label="Фильтры базы знаний">
+          <label className={styles.searchField}>
+            <span>Поиск</span>
+            <input value={query} onChange={(event) => setQuery(event.target.value)} placeholder="Например: дорого, правки, упаковка…" />
+          </label>
+
+          <label>
+            <span>Ниша</span>
+            <select value={niche} onChange={(event) => { setNiche(event.target.value); setPage(1); }}>
+              <option value="">Все ниши</option>
+              {bootstrap?.niches.map((option) => (
+                <option key={option.slug} value={option.slug}>{option.name}</option>
+              ))}
+            </select>
+          </label>
+
+          <label>
+            <span>Этап</span>
+            <select value={stage} onChange={(event) => { setStage(event.target.value); setPage(1); }}>
+              <option value="">Все этапы</option>
+              {bootstrap?.stages.map((option) => (
+                <option key={option.slug} value={option.slug}>{option.name}</option>
+              ))}
+            </select>
+          </label>
+
+          <label>
+            <span>Тип записи</span>
+            <select value={itemType} onChange={(event) => { setItemType(event.target.value); setPage(1); }}>
+              <option value="">Все типы</option>
+              {Object.entries(itemTypeLabels).map(([value, label]) => (
+                <option key={value} value={value}>{label}</option>
+              ))}
+            </select>
+          </label>
+
+          <label>
+            <span>Риск</span>
+            <select value={risk} onChange={(event) => { setRisk(event.target.value); setPage(1); }}>
+              <option value="">Любой риск</option>
+              {Object.entries(riskLabels).map(([value, label]) => (
+                <option key={value} value={value}>{label}</option>
+              ))}
+            </select>
+          </label>
+
+          <label>
+            <span>Статус</span>
+            <select value={status} onChange={(event) => { setStatus(event.target.value); setPage(1); }}>
+              <option value="approved">Утверждено</option>
+              <option value="review">На проверке</option>
+              <option value="draft">Черновики</option>
+              <option value="archived">Архив</option>
+              <option value="all">Все активные</option>
+            </select>
+          </label>
+
+          <button
+            className={`${styles.favoriteFilterButton} ${favoriteOnly ? styles.favoriteFilterButtonActive : ""}`}
+            type="button"
+            aria-pressed={favoriteOnly}
+            onClick={() => { setFavoriteOnly((value) => !value); setPage(1); }}
+          >
+            <span>★</span> Только избранные
+          </button>
+
+          {hasFilters && (
+            <button className={styles.resetButton} type="button" onClick={resetFilters}>
+              Сбросить фильтры
+            </button>
+          )}
+        </section>
+
+        {categories.length > 0 && (
+          <div className={styles.categoryHint}>Найденные категории: {categories.slice(0, 8).join(" · ")}</div>
+        )}
+
+        {error && <div className={styles.errorPanel}>{error}</div>}
+
+        <div className={styles.resultsHeader}>
+          <div>
+            <strong>{pagination.total}</strong>
+            <span> записей найдено</span>
+          </div>
+          <span>Страница {pagination.page} из {pagination.pages}</span>
+        </div>
+
+        <section className={styles.cardGrid} aria-live="polite" aria-busy={loading}>
+          {loading && items.length === 0 && Array.from({ length: 6 }, (_, index) => <div className={styles.skeleton} key={index} />)}
+
+          {!loading && !error && items.length === 0 && (
+            <div className={styles.emptyState}>
+              <strong>Подходящих записей пока нет</strong>
+              <p>Измените фильтры или добавьте новый вопрос в черновики.</p>
+            </div>
+          )}
+
+          {items.map((item) => (
+            <article className={styles.knowledgeCard} key={item.id}>
+              <div className={styles.cardMeta}>
+                <span className={styles.typeBadge}>{itemTypeLabels[item.item_type] || item.item_type}</span>
+                <div className={styles.cardMetaActions}>
+                  <button
+                    className={`${styles.favoriteButton} ${item.isFavorite ? styles.favoriteButtonActive : ""}`}
+                    type="button"
+                    aria-label={item.isFavorite ? "Удалить из избранного" : "Добавить в избранное"}
+                    title={item.isFavorite ? "Удалить из избранного" : "Добавить в избранное"}
+                    onClick={() => void toggleFavorite(item).catch((reason: unknown) => setError(reason instanceof Error ? reason.message : "Не удалось изменить избранное."))}
+                  >★</button>
+                  <span className={`${styles.riskBadge} ${styles[`risk_${item.risk_level}`] || ""}`}>
+                    {riskLabels[item.risk_level] || item.risk_level}
+                  </span>
+                </div>
+              </div>
+
+              <div className={styles.cardTitleBlock}>
+                <span>{item.category}</span>
+                <h2>{item.title}</h2>
+              </div>
+
+              {item.prompt_text && <p className={styles.promptText}>{item.prompt_text}</p>}
+              {item.short_text && <p className={styles.answerPreview}>{item.short_text}</p>}
+
+              <div className={styles.tagRow}>
+                {item.niches.slice(0, 2).map((value) => <span key={value}>{value}</span>)}
+                {item.stages.slice(0, 1).map((value) => <span key={value}>{value}</span>)}
+                {item.niches.length === 0 && <span>Универсальная</span>}
+              </div>
+
+              <div className={styles.cardActions}>
+                <button type="button" onClick={() => copyText(primaryCopyText(item))}>Копировать</button>
+                <button type="button" onClick={() => { setSelected(item); setEditingSelected(false); }}>Открыть</button>
+              </div>
+            </article>
+          ))}
+        </section>
+
+        {pagination.pages > 1 && (
+          <div className={styles.pagination}>
+            <button type="button" disabled={page <= 1 || loading} onClick={() => setPage((value) => Math.max(1, value - 1))}>Назад</button>
+            <span>{page} / {pagination.pages}</span>
+            <button type="button" disabled={page >= pagination.pages || loading} onClick={() => setPage((value) => Math.min(pagination.pages, value + 1))}>Дальше</button>
+          </div>
+        )}
+          </>
+        ) : activeSection === "review" ? (
+          <ReviewQueueWorkspace
+            niches={bootstrap?.niches ?? []}
+            refreshKey={reviewRefreshKey}
+            onOpenEditor={(item) => { setSelected(item); setEditingSelected(true); }}
+            onSave={saveKnowledgeItem}
+          />
+        ) : activeSection === "prepare" ? (
+          <PreparationWorkspace bootstrap={bootstrap} onToast={setToast} />
+        ) : activeSection === "library" ? (
+          <FavoritesHistoryWorkspace
+            onOpen={(item) => { setSelected(item); setEditingSelected(false); }}
+            onToggleFavorite={toggleFavorite}
+            onToast={setToast}
+          />
+        ) : activeSection === "answer" ? (
+          <QuestionAnswerWorkspace bootstrap={bootstrap} onToast={setToast} />
+        ) : activeSection === "diagnostic" ? (
+          <DiagnosticWorkspace bootstrap={bootstrap} onToast={setToast} />
+        ) : activeSection === "clients" ? (
+          <ClientWorkspace onToast={setToast} />
+        ) : activeSection === "pricing" ? (
+          <PricingWorkspace onToast={setToast} />
+        ) : activeSection === "proposals" ? (
+          <ProposalWorkspace onToast={setToast} />
+        ) : activeSection === "quality" ? (
+          <ImportQualityWorkspace onToast={setToast} />
+        ) : null}
+      </section>
+
+      {selected && (
+        <div className={styles.drawerBackdrop} role="presentation" onMouseDown={() => { setSelected(null); setEditingSelected(false); }}>
+          <aside className={styles.drawer} role="dialog" aria-modal="true" aria-label={selected.title} onMouseDown={(event) => event.stopPropagation()}>
+            <button className={styles.closeButton} type="button" onClick={() => { setSelected(null); setEditingSelected(false); }} aria-label="Закрыть">×</button>
+            {editingSelected ? (
+              <KnowledgeEditor
+                key={`${selected.id}:${selected.version}`}
+                item={selected}
+                niches={bootstrap?.niches ?? []}
+                stages={bootstrap?.stages ?? []}
+                onCancel={() => setEditingSelected(false)}
+                onSave={updateKnowledgeItem}
+              />
+            ) : (
+              <>
+                <div className={styles.drawerHeading}>
+                  <div>
+                    <p className={styles.eyebrow}>{itemTypeLabels[selected.item_type] || selected.item_type}</p>
+                    <h2>{selected.title}</h2>
+                  </div>
+                  <div className={styles.drawerHeadingActions}>
+                    <button
+                      className={`${styles.favoriteButton} ${selected.isFavorite ? styles.favoriteButtonActive : ""}`}
+                      type="button"
+                      onClick={() => void toggleFavorite(selected).catch((reason: unknown) => setError(reason instanceof Error ? reason.message : "Не удалось изменить избранное."))}
+                    >★ <span>{selected.isFavorite ? "В избранном" : "В избранное"}</span></button>
+                    <button className={styles.primaryButton} type="button" onClick={() => setEditingSelected(true)}>Редактировать</button>
+                  </div>
+                </div>
+
+                <dl className={styles.detailMeta}>
+                  <div><dt>Категория</dt><dd>{selected.category}</dd></div>
+                  <div><dt>Статус</dt><dd>{statusLabels[selected.status] || selected.status}</dd></div>
+                  <div><dt>Риск</dt><dd>{riskLabels[selected.risk_level] || selected.risk_level}</dd></div>
+                  <div><dt>Версия</dt><dd>{selected.version}</dd></div>
+                  <div><dt>Проверено</dt><dd>{displayDate(selected.reviewed_at)}</dd></div>
+                  <div><dt>Источник</dt><dd>{selected.source_kind}</dd></div>
+                </dl>
+
+                {selected.prompt_text && <DetailBlock title="Формулировка" text={selected.prompt_text} onCopy={copyText} />}
+                {selected.short_text && <DetailBlock title="Короткий ответ" text={selected.short_text} onCopy={copyText} />}
+                {selected.full_text && <DetailBlock title="Подробный ответ" text={selected.full_text} onCopy={copyText} />}
+                {selected.soft_text && <DetailBlock title="Мягкая версия" text={selected.soft_text} onCopy={copyText} />}
+                {selected.firm_text && <DetailBlock title="Твёрдая версия" text={selected.firm_text} onCopy={copyText} />}
+                {selected.clarification_text && <DetailBlock title="Уточняющий вопрос" text={selected.clarification_text} onCopy={copyText} />}
+                {selected.next_action_text && <DetailBlock title="Следующий шаг" text={selected.next_action_text} onCopy={copyText} />}
+                {selected.avoid_text && <DetailBlock title="Чего не говорить" text={selected.avoid_text} warning onCopy={copyText} />}
+                {selected.diagnostic_value && <DetailBlock title="Диагностическая ценность" text={selected.diagnostic_value} onCopy={copyText} />}
+                {selected.red_flag_text && <DetailBlock title="Красный флаг" text={selected.red_flag_text} warning onCopy={copyText} />}
+
+                <div className={styles.drawerTags}>
+                  {[...selected.niches, ...selected.stages].map((value) => <span key={value}>{value}</span>)}
+                </div>
+              </>
+            )}
+          </aside>
+        </div>
+      )}
+
+      {showAdd && (
+        <div className={styles.modalBackdrop} role="presentation" onMouseDown={() => !saving && setShowAdd(false)}>
+          <form className={styles.modal} onSubmit={createKnowledgeItem} onMouseDown={(event) => event.stopPropagation()}>
+            <button className={styles.closeButton} type="button" onClick={() => setShowAdd(false)} aria-label="Закрыть">×</button>
+            <p className={styles.eyebrow}>Новая запись</p>
+            <h2>Добавить в черновики</h2>
+
+            <label>
+              <span>Внутреннее название *</span>
+              <input required value={newTitle} onChange={(event) => setNewTitle(event.target.value)} placeholder="Например: Клиент просит гарантию продаж" />
+            </label>
+
+            <div className={styles.formGrid}>
+              <label>
+                <span>Тип *</span>
+                <select value={newType} onChange={(event) => setNewType(event.target.value)}>
+                  {Object.entries(itemTypeLabels).map(([value, label]) => <option key={value} value={value}>{label}</option>)}
+                </select>
+              </label>
+              <label>
+                <span>Категория *</span>
+                <input required value={newCategory} onChange={(event) => setNewCategory(event.target.value)} placeholder="стоимость" />
+              </label>
+            </div>
+
+            <label>
+              <span>Вопрос или формулировка</span>
+              <textarea value={newPrompt} onChange={(event) => setNewPrompt(event.target.value)} rows={3} />
+            </label>
+
+            <label>
+              <span>Короткий ответ</span>
+              <textarea value={newShort} onChange={(event) => setNewShort(event.target.value)} rows={4} />
+            </label>
+
+            <div className={styles.formGrid}>
+              <label>
+                <span>Ниша</span>
+                <select value={newNiche} onChange={(event) => setNewNiche(event.target.value)}>
+                  <option value="">Универсальная</option>
+                  {bootstrap?.niches.map((option) => <option key={option.slug} value={option.slug}>{option.name}</option>)}
+                </select>
+              </label>
+              <label>
+                <span>Этап</span>
+                <select value={newStage} onChange={(event) => setNewStage(event.target.value)}>
+                  <option value="">Без этапа</option>
+                  {bootstrap?.stages.map((option) => <option key={option.slug} value={option.slug}>{option.name}</option>)}
+                </select>
+              </label>
+            </div>
+
+            <label>
+              <span>Уровень риска</span>
+              <select value={newRisk} onChange={(event) => setNewRisk(event.target.value)}>
+                {Object.entries(riskLabels).map(([value, label]) => <option key={value} value={value}>{label}</option>)}
+              </select>
+            </label>
+
+            <div className={styles.modalActions}>
+              <button className={styles.secondaryButton} type="button" onClick={() => setShowAdd(false)} disabled={saving}>Отмена</button>
+              <button className={styles.primaryButton} type="submit" disabled={saving}>{saving ? "Сохраняю…" : "Сохранить черновик"}</button>
+            </div>
+          </form>
+        </div>
+      )}
+
+      {toast && <div className={styles.toast}>{toast}</div>}
+    </main>
+  );
+}
+
+function DetailBlock({ title, text, warning = false, onCopy }: { title: string; text: string; warning?: boolean; onCopy: (text: string) => void }) {
+  return (
+    <section className={`${styles.detailBlock} ${warning ? styles.detailWarning : ""}`}>
+      <div>
+        <h3>{title}</h3>
+        <button type="button" onClick={() => onCopy(text)}>Копировать</button>
+      </div>
+      <p>{text}</p>
+    </section>
+  );
+}
