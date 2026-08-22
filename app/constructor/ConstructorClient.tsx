@@ -12,6 +12,7 @@ import PreparationWorkspace from "./PreparationWorkspace";
 import PricingWorkspace from "./PricingWorkspace";
 import ProposalWorkspace from "./ProposalWorkspace";
 import QuestionAnswerWorkspace from "./QuestionAnswerWorkspace";
+import ReviewQueueWorkspace from "./ReviewQueueWorkspace";
 import styles from "./constructor.module.css";
 
 type Niche = { slug: string; name: string; priority: string };
@@ -116,6 +117,7 @@ const navigation = [
   ["Главная", "home", true],
   ["План контактов", "followups", true],
   ["База знаний", "knowledge", true],
+  ["Проверка материалов", "review", true],
   ["Избранное и история", "library", true],
   ["Подготовиться к клиенту", "prepare", true],
   ["Клиент задал вопрос", "answer", true],
@@ -170,6 +172,7 @@ export default function ConstructorClient() {
   const [toast, setToast] = useState("");
   const [showAdd, setShowAdd] = useState(false);
   const [saving, setSaving] = useState(false);
+  const [reviewRefreshKey, setReviewRefreshKey] = useState(0);
 
   const [newTitle, setNewTitle] = useState("");
   const [newType, setNewType] = useState("question_to_client");
@@ -306,10 +309,9 @@ export default function ConstructorClient() {
     }
   }
 
-  async function updateKnowledgeItem(payload: KnowledgeUpdatePayload) {
-    if (!selected) return;
+  async function saveKnowledgeItem(item: KnowledgeItem, payload: KnowledgeUpdatePayload): Promise<KnowledgeItem> {
     setError("");
-    const response = await fetch(`/api/constructor/knowledge/${encodeURIComponent(selected.id)}`, {
+    const response = await fetch(`/api/constructor/knowledge/${encodeURIComponent(item.id)}`, {
       method: "PATCH",
       headers: { "Content-Type": "application/json" },
       credentials: "same-origin",
@@ -318,11 +320,18 @@ export default function ConstructorClient() {
     if (!response.ok) throw new Error(await parseError(response));
 
     const result = (await response.json()) as { item: KnowledgeItem };
-    setSelected(result.item);
+    setSelected((current) => current?.id === result.item.id ? result.item : current);
     setItems((current) => current.map((item) => item.id === result.item.id ? result.item : item));
-    setEditingSelected(false);
     setToast(result.item.status === "approved" ? "Запись утверждена" : result.item.status === "archived" ? "Запись перенесена в архив" : "Изменения сохранены");
+    setReviewRefreshKey((value) => value + 1);
     await Promise.all([loadBootstrap(), loadItems()]);
+    return result.item;
+  }
+
+  async function updateKnowledgeItem(payload: KnowledgeUpdatePayload) {
+    if (!selected) return;
+    await saveKnowledgeItem(selected, payload);
+    setEditingSelected(false);
   }
 
   async function toggleFavorite(item: KnowledgeItem): Promise<boolean> {
@@ -582,6 +591,13 @@ export default function ConstructorClient() {
           </div>
         )}
           </>
+        ) : activeSection === "review" ? (
+          <ReviewQueueWorkspace
+            niches={bootstrap?.niches ?? []}
+            refreshKey={reviewRefreshKey}
+            onOpenEditor={(item) => { setSelected(item); setEditingSelected(true); }}
+            onSave={saveKnowledgeItem}
+          />
         ) : activeSection === "prepare" ? (
           <PreparationWorkspace bootstrap={bootstrap} onToast={setToast} />
         ) : activeSection === "library" ? (

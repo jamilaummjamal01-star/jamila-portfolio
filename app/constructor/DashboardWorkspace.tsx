@@ -4,7 +4,7 @@ import { useCallback, useEffect, useMemo, useState } from "react";
 import type { ReactNode } from "react";
 import styles from "./constructor.module.css";
 
-export type ConstructorSection = "home" | "followups" | "knowledge" | "library" | "prepare" | "answer" | "diagnostic" | "clients" | "pricing" | "proposals" | "quality";
+export type ConstructorSection = "home" | "followups" | "knowledge" | "review" | "library" | "prepare" | "answer" | "diagnostic" | "clients" | "pricing" | "proposals" | "quality";
 
 type DashboardData = {
   generatedAt: string;
@@ -159,7 +159,7 @@ export default function DashboardWorkspace({
     { label: "Следующие контакты", value: data?.summary.follow_ups ?? 0, section: "followups" as const, hint: "на ближайшие 14 дней" },
     { label: "Диагностики", value: data?.summary.active_diagnostics ?? 0, section: "diagnostic" as const, hint: "не завершены" },
     { label: "Активные КП", value: data?.summary.active_proposals ?? 0, section: "proposals" as const, hint: "в работе и обсуждении" },
-    { label: "Проверка знаний", value: data?.summary.knowledge_review ?? 0, section: "knowledge" as const, hint: "черновики и проверка" },
+    { label: "Проверка знаний", value: data?.summary.knowledge_review ?? 0, section: "review" as const, hint: "ожидают решения" },
   ];
 
   return (
@@ -240,11 +240,11 @@ export default function DashboardWorkspace({
           )}
         </DashboardPanel>
 
-        <DashboardPanel title="Ожидают проверки" count={data?.knowledgeReview.length ?? 0} action="База знаний" onAction={() => onNavigate("knowledge")}>
+        <DashboardPanel title="Ожидают проверки" count={data?.knowledgeReview.length ?? 0} action="Открыть очередь" onAction={() => onNavigate("review")}>
           {!loading && data?.knowledgeReview.length === 0 ? <DashboardEmpty text="Все записи базы знаний проверены." /> : (
             <div className={styles.dashboardList}>
               {data?.knowledgeReview.map((item) => (
-                <button key={item.id} type="button" onClick={() => onNavigate("knowledge")}>
+                <button key={item.id} type="button" onClick={() => onNavigate("review")}>
                   <span className={`${styles.dashboardRisk} ${styles[`dashboardRisk_${item.risk_level}`] || ""}`}>•</span>
                   <div><strong>{item.title}</strong><small>{knowledgeTypeLabels[item.item_type] || item.item_type} · {item.category}</small></div>
                   <em>{item.status === "review" ? "На проверке" : "Черновик"}</em>
