@@ -2,7 +2,7 @@
 
 Текст адаптирован из «Брендбук_Джамиля_Шакурова(3).pdf» (найденный экземпляр от 03.08.2026), страницы 2 «Кто я»/«Миссия» и 8 «Ценности». Текущее позиционирование AI-креативного продюсера и локальные Nauryz / No Name 37 сохранены согласно более позднему заданию на сайт.
 
-Для этой секции отдельно создана новая композиция с тюльпанами: в брендбуке тюльпан назван фирменным символом, связанным с татарским орнаментом. Изображение создано встроенным imagegen, сохранено с прозрачным фоном и экспортировано в `public/images/about-tulips.webp` (1024 × 1536, RGBA, 189932 байт). Цветы находятся в потоке отдельного блока и не перекрывают цитату. Фон — точный Powder #EECDD6, текст — Mocha #4A3427.
+Первоначально для этой секции была создана композиция с тюльпанами: в брендбуке тюльпан назван фирменным символом, связанным с татарским орнаментом. Изображение создано встроенным imagegen, сохранено с прозрачным фоном и экспортировано в `public/images/about-tulips.webp` (1024 × 1536, RGBA, 189932 байт). Цветы находятся в потоке отдельного блока и не перекрывают цитату. Фон — точный Powder #EECDD6, текст — Mocha #4A3427.
 
 Проверка: npm run lint; npm test, включающий npm run build (3/3). Browser QA: iframe шириной 320 / 390 / 768 px и desktop 1348 px. Изображение загружено, между ним и цитатой положительный отступ, horizontal overflow отсутствует. Скриншоты: `docs/screenshots/about-mobile.jpg`, `docs/screenshots/about-desktop.jpg`.
 
@@ -13,3 +13,11 @@ Use case: photorealistic-natural. Asset type: transparent botanical cutout for t
 ## Ограничения
 
 Без людей, лиц, музыки, мистической символики, текста, логотипов и водяных знаков. Без векторных заменителей, пластиковых цветов, вазы и фона. Прозрачность сохранена при WebP-экспорте.
+
+## Правка 10.10.2026 по фото пользователя
+
+Заголовок изменён на «ТЕХНОЛОГИИ / ДЛЯ ЛЮДЕЙ». Вместо трёх тюльпанов используется один розовый тюльпан с мягким motion blur и длинным изогнутым стеблем из предоставленного фото `1791641980234.jpeg`. Фото обработано встроенным imagegen: удалены элементы интерфейса и фон, сохранены мягкие края и прозрачность. Новый файл `public/images/about-tulip-motion.webp`, 1024 × 1536, RGBA, 142798 байт. Остальной текст и адаптивная раскладка сохранены.
+
+Промпт обработки:
+
+Use case: background-extraction. Asset type: About section botanical photographic cutout. Input image is the edit target: a phone screenshot of one pink tulip photograph with motion blur. Extract ONLY the existing single pink tulip and its full slender curved olive green stem from this screenshot onto a truly transparent background. Preserve the reference blossom's exact silhouette, pink and burgundy petal tones, dreamy photographic directional motion blur and the curved stem shape. Keep the flower recognizable and close to the original; do not replace it with a sharp flower, another species, several tulips, or a bouquet. Remove surrounding phone/app interface, black borders, buttons, captions and off-white photographic backdrop. Preserve soft blurred translucent petal edges in alpha, no opaque white halo. Portrait 2:3 composition, one flower leaning left in upper half, stem bending toward bottom right, with enough transparent padding to contain all petals. No added leaves, flowers, vase, text or graphic decoration.\n
