@@ -2,8 +2,7 @@ import Image from "next/image";
 export default function About() {
   return <section className="about" id="about" aria-labelledby="about-title">
     <div className="about-visual"><p className="eyebrow">05 / ОБО МНЕ</p>
-      <div className="about-botanical"><Image src="/images/about-tulip-motion.webp" alt="" width={1024} height={1536} unoptimized sizes="(max-width: 600px) 280px, 360px" /></div>
-      <p className="about-quote">Тихая эстетика.<br />Точная система.<br />Этика в каждой детали.</p></div>
+      <div className="about-botanical"><Image src="/images/about-tulip-motion.webp" alt="" width={1024} height={1536} unoptimized sizes="(max-width: 900px) 100vw, 43vw" /></div></div>
     <div className="about-copy" data-reveal><p className="eyebrow">JAMILA SHAKUROVA</p><h2 id="about-title">ТЕХНОЛОГИИ<br />ДЛЯ ЛЮДЕЙ</h2>
       <p>Меня зовут Джамиля Шакурова. Я AI-креативный продюсер: создаю анимационные ролики, предметные визуалы и помогаю экспертам и предпринимателям выстроить цельный образ бренда.</p>
       <p>Я татарка и мусульманка. В моей работе соединяются уважение к традициям, скромность, красота и современные технологии. Мне важно создавать честно, с вниманием к людям и без компромиссов со своими ценностями.</p>
