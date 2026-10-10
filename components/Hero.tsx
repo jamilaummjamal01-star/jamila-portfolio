@@ -29,7 +29,7 @@ export default function Hero() {
         <a className="button button-outline" href="#contact">Обсудить проект</a></div>
     </div>
     <p className="hero-sidebar micro" aria-hidden="true">ИДЕИ · ЛЮДИ · ТЕХНОЛОГИИ</p>
-    <p className="hero-right-note micro" aria-hidden="true">ВИЗУАЛЫ<br />СМЫСЛЫ<br />РЕЗУЛЬТАТЫ
+    <p className="hero-right-note micro" aria-hidden="true"><span>ВИЗУАЛЫ</span><span>СМЫСЛЫ</span><span>РЕЗУЛЬТАТЫ</span>
       {/* eslint-disable-next-line @next/next/no-img-element */}
       <img src="/images/figma/guide-3.svg" width="90" height="1" alt="" />
     </p>

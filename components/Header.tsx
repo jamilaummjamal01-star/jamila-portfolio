@@ -22,7 +22,7 @@ export default function Header() {
     <a className="brand" href="#top" aria-label="Джамиля Шакурова — наверх страницы">
       {/* Exact editorial guide assets exported from Figma. */}
       {/* eslint-disable-next-line @next/next/no-img-element */}
-      <img src="/images/figma/guide-0.svg" width="1" height="38" alt="" />
+      <img className="brand-spine" src="/images/figma/guide-0.svg" width="1" height="38" alt="" />
       <span className="brand-monogram">JS</span>
       {/* eslint-disable-next-line @next/next/no-img-element */}
       <img className="brand-rule" src="/images/figma/guide-1.svg" width="48" height="1" alt="" />

@@ -90,6 +90,7 @@ h2 { font-family: var(--font-display); font-size: clamp(32px, 3.55vw, 60px); let
 .hero-actions { display: flex; align-items: center; flex-wrap: wrap; gap: clamp(14px, 2.65vw, 42px); margin-top: clamp(24px, 2.8vw, 46px); }
 .hero-sidebar { position: absolute; left: 1.55%; top: 28%; writing-mode: vertical-rl; transform: rotate(180deg); font-size: 9px; letter-spacing: .24em; }
 .hero-right-note { position: absolute; right: 1.77%; top: 42.3%; text-align: right; font-size: 9px; color: var(--powder); letter-spacing: .24em; line-height: 2; }
+.hero-right-note > span { display: block; }
 .hero-right-note img { display: block; margin-top: 14px; }
 .hero-services { position: absolute; z-index: 3; left: 33.04%; right: 5.04%; top: 68.85%; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 1.8vw; }
 .service-card { display: flex; flex-direction: column; text-align: left; border: 1px solid var(--line); border-radius: 14px; padding: 22px; transition: transform 200ms ease, box-shadow 200ms ease; min-width: 0; }
@@ -303,7 +304,7 @@ h2 { font-family: var(--font-display); font-size: clamp(32px, 3.55vw, 60px); let
   .brand { gap: 8px; }
   .brand-monogram { font-size: 24px; }
   .brand-note { font-size: 7px; letter-spacing: .12em; }
-  .brand-rule { display: none; }
+  .brand-spine, .brand-rule { display: none; }
   .hero-eyebrow { margin: 110px 22px 30px; letter-spacing: .17em; font-size: 9px; }
   .hero-copy { width: auto; margin: 0 22px 95px; }
   .hero h1 { width: 100%; }
@@ -312,13 +313,14 @@ h2 { font-family: var(--font-display); font-size: clamp(32px, 3.55vw, 60px); let
   .hero-actions { gap: 12px; margin-top: 28px; }
   .hero-actions .button { min-height: 46px; padding: 14px 19px; font-size: 12px; gap: 18px; }
   .hero-burgundy { height: 485px; }
-  .hero-botanical { width: 88%; max-width: none; top: auto; bottom: 85px; }
+  .hero-botanical { width: 88%; max-width: 360px; top: auto; bottom: 85px; }
   .hero-services { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; margin: 230px 22px 28px; }
   .hero-services .service-card { min-height: 95px; padding: 14px; }
   .hero-services .card-top { font-size: 11px; }
   .hero-services strong { font-size: 10px; margin-top: 12px; }
   .hero-services .card-summary { display: none; }
-  .hero-right-note { bottom: 334px; right: 22px; font-size: 8px; }
+  .hero-right-note { bottom: 450px; left: 22px; right: 22px; display: flex; justify-content: center; gap: 16px; font-size: 10px; letter-spacing: .16em; line-height: 1.6; }
+  .hero-right-note img { display: none; }
   h2 { font-size: clamp(29px, 8vw, 42px); }
   .eyebrow { font-size: 10px; margin-bottom: 26px; }
   .section { padding: 60px 22px; }
