@@ -16,7 +16,7 @@ async function renderHome() {
 test("Worker renders the business card, SEO metadata, stylesheet and all page destinations", async () => {
   const html = await renderHome();
   assert.match(html, /<html[^>]*lang="ru"/);
-  assert.match(html, /<title>Джамиля Шакурова — AI-креативный продюсер/);
+  assert.match(html, /<title>Джамиля Шакурова — ИИ-креативный продюсер/);
   assert.match(html, /<meta[^>]*name="description"/);
   assert.match(html, /<link[^>]*rel="stylesheet"/);
   assert.doesNotMatch(html, /name="codex-preview"/);
@@ -31,7 +31,7 @@ test("public product content keeps strategy private and diagnostics unified", as
   const products = html.split('id="products"')[1].split('id="projects"')[0];
   assert.equal((products.match(/<article\b/g) ?? []).length, 3);
   const strategy = products.split("product-private")[1].split("</article>")[0];
-  assert.match(strategy, /PRIVATE/);
+  assert.match(strategy, /ЗАКРЫТЫЙ ДОСТУП/);
   assert.match(strategy, /Доступ по запросу/);
   assert.doesNotMatch(strategy, /<p\b/);
   assert.doesNotMatch(html, /github\.com\/[^" ]+\/pocket-designer|API_KEY|SECRET_KEY/i);

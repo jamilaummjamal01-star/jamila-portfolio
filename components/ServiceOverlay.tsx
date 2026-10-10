@@ -52,7 +52,7 @@ export default function ServiceOverlay({ active, onSwitch, onClose }: {
       onClick={(event) => { if (event.target === event.currentTarget) requestClose(); }}>
       {service && <div className="service-panel">
         <div className="overlay-topline">
-          <span className="eyebrow">CREATIVE OS / {service.number}</span>
+          <span className="eyebrow">НАПРАВЛЕНИЯ / {service.number}</span>
           <button ref={closeButton} className="icon-button" onClick={requestClose} aria-label="Закрыть направление">×</button>
         </div>
         <div className="service-switcher" role="group" aria-label="Выбрать направление">

@@ -23,8 +23,8 @@ export default function Hero() {
     <p className="hero-eyebrow eyebrow">ИИ · КОНТЕНТ · ДИЗАЙН · РЕШЕНИЯ</p>
     <div className="hero-copy">
       <h1 id="hero-title" aria-label="ДЖАМИЛЯ ШАКУРОВА"><span>ДЖАМИЛЯ</span><span>ШАКУРОВА</span></h1>
-      <p className="hero-role">Мультидисциплинарный<br />AI-креативный продюсер</p>
-      <p className="hero-description">Создаю визуалы, ролики, сайты, презентации, PDF и дизайн-системы. С помощью ИИ нахожу креативные и практичные решения для бизнеса.</p>
+      <p className="hero-role">Мультидисциплинарный<br />ИИ-креативный продюсер</p>
+      <p className="hero-description">Создаю визуалы, ролики, сайты, презентации, документы и дизайн-системы. С помощью ИИ нахожу креативные и практичные решения для бизнеса.</p>
       <div className="hero-actions"><a className="button button-primary" href="#projects">Проекты <span aria-hidden="true">→</span></a>
         <a className="button button-outline" href="#contact">Обсудить проект</a></div>
     </div>
@@ -44,7 +44,7 @@ export default function Hero() {
     </div>
     <div className="hero-footer-role micro" aria-hidden="true">
       {/* eslint-disable-next-line @next/next/no-img-element */}
-      <img src="/images/figma/guide-6.svg" width="80" height="1" alt="" />AI CREATIVE PRODUCER
+      <img src="/images/figma/guide-6.svg" width="80" height="1" alt="" />ИИ-КРЕАТИВНЫЙ ПРОДЮСЕР
     </div>
   </section>;
 }
