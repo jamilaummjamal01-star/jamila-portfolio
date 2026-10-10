@@ -22,11 +22,7 @@ export default function Hero() {
     <div className="hero-text-shield" aria-hidden="true" />
     <p className="hero-eyebrow eyebrow">ИИ · КОНТЕНТ · ДИЗАЙН · РЕШЕНИЯ</p>
     <div className="hero-copy">
-      <h1 id="hero-title"><span className="sr-only">ДЖАМИЛЯ ШАКУРОВА</span>
-        {/* The exact Nauryz outline from Figma preserves the name while font files are pending. */}
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img className="hero-name" src="/images/name-nauryz.svg" alt="" width="500" height="120" aria-hidden="true" />
-      </h1>
+      <h1 id="hero-title" aria-label="ДЖАМИЛЯ ШАКУРОВА"><span>ДЖАМИЛЯ</span><span>ШАКУРОВА</span></h1>
       <p className="hero-role">Мультидисциплинарный<br />AI-креативный продюсер</p>
       <p className="hero-description">Создаю визуалы, ролики, сайты, презентации, PDF и дизайн-системы. С помощью ИИ нахожу креативные и практичные решения для бизнеса.</p>
       <div className="hero-actions"><a className="button button-primary" href="#projects">Проекты <span aria-hidden="true">→</span></a>

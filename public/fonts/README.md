@@ -1,8 +1,15 @@
-# Brand font assets pending
+# Локальные брендовые шрифты
 
-No Nauryz or No Name 37 font binaries were found in the repository or the available Library materials.
-Figma hero text node `8:2` reports the internal family `NauryzRedKeds`, style `Bold`.
-The name is rendered using the exact local outlined SVG exported from Figma node `50:2`, with an accessible real-text h1.
-Other display and interface text temporarily uses Arial/sans-serif, explicitly documented rather than mislabeled as either brand font.
+Файлы предоставлены автором. Name tables и OS/2 проверены fontTools перед подключением.
 
-When licensed font files are supplied: inspect name table IDs 1/2/16/17 and OS/2 `usWeightClass` (e.g. with fontTools), then add @font-face declarations in app/globals.css and update --font-display and --font-ui. Do not assign unverified weight ranges or fabricate files.
+| Файл | Внутреннее семейство (name ID 1) | Стиль (ID 2) | Вес (OS/2 usWeightClass) | PostScript name (ID 6) |
+| --- | --- | --- | --- | --- |
+| NAURYZREDKEDS.ttf | NauryzRedKeds | Bold | 700 | NauryzRedKeds |
+| no_name_37_Regular.otf | no_name_37 | Regular | 400 | no_name_37 |
+| no_name_37_Light.otf | no_name_37 | Light | 350 | no_name_37_Light |
+
+Все файлы статические, normal, поддерживают русский текст. Light имеет вес **350**, а не 300. Других весов не заявлено.
+
+Nauryz используется для живого h1 с именем, display-заголовков и названий продуктов/проектов. No Name 37 Regular — интерфейс, основной текст, карточки и кнопки; Light — вступительные тексты секций. @font-face находится в app/globals.css, font-display: swap. font-synthesis: none предотвращает искусственные начертания. Generic sans-serif остается только системным fallback на время загрузки.
+
+Исходный SVG имени из Figma сохранен как референс; h1 больше не заменяется изображением.
