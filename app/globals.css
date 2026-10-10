@@ -50,6 +50,7 @@ section[id] { scroll-margin-top: 24px; }
 .eyebrow, .micro { font-size: 11px; letter-spacing: .18em; line-height: 1.5; font-weight: 400; }
 .eyebrow { color: var(--mocha); margin-bottom: 32px; }
 .micro { font-size: 10px; }
+.instagram-notice { margin-top: 18px; max-width: 660px; font-size: 13px; line-height: 1.6; overflow-wrap: anywhere; }
 h2 { font-family: var(--font-display); font-size: clamp(32px, 3.55vw, 60px); letter-spacing: -.045em; line-height: 1.09; font-weight: 700; }
 .button { display: inline-flex; align-items: center; justify-content: center; gap: 26px; min-height: 50px; padding: 14px 25px; border-radius: 999px; font-size: 14px; line-height: 1.2; transition: background 200ms ease, color 200ms ease, transform 200ms ease; }
 .button:hover { transform: translateY(-2px); }
