@@ -155,13 +155,17 @@ h2 { font-family: var(--font-display); font-size: clamp(32px, 3.55vw, 60px); let
 .process-list h3 { font-size: 13px; line-height: 1.6; font-weight: 400; }
 .process-list p { font-size: 14px; }
 .about { display: grid; grid-template-columns: .85fr 1.15fr; }
-.about-visual { position: relative; overflow: clip; min-height: 700px; background: var(--burgundy); color: var(--butter); padding: 64px 9%; display: flex; flex-direction: column; justify-content: space-between; }
-.about-visual .eyebrow { position: relative; z-index: 1; color: var(--powder); }
-.about-visual img { position: absolute; width: 85%; height: auto; top: 130px; left: 10%; opacity: .9; }
-.about-quote { position: relative; z-index: 1; font-size: 22px; line-height: 1.45; letter-spacing: -.025em; padding-top: 24px; margin-top: 360px; }
+.about-visual { overflow: clip; min-height: 700px; background: var(--powder); color: var(--mocha); padding: 64px 9%; display: flex; flex-direction: column; justify-content: space-between; gap: 32px; }
+.about-visual .eyebrow { color: var(--mocha); margin-bottom: 0; }
+.about-botanical { flex: 1; display: grid; place-items: center; min-width: 0; }
+.about-botanical img { display: block; width: min(100%, 360px); height: 500px; object-fit: contain; }
+.about-quote { font-size: 22px; line-height: 1.45; letter-spacing: -.025em; border-top: 1px solid var(--line); padding-top: 24px; }
 .about-copy { padding: 100px 8%; background: rgb(255 255 255 / 25%); }
 .about-copy h2 { font-size: clamp(30px, 3vw, 51px); }
 .about-copy > p:not(.eyebrow) { font-size: 16px; margin-top: 32px; max-width: 620px; }
+.about-mission { margin-top: 32px; padding: 24px 0; border-block: 1px solid var(--line); }
+.about-mission .eyebrow { margin-bottom: 12px; }
+.about-mission > p:not(.eyebrow) { font-size: 16px; }
 .about-tags { display: flex; flex-wrap: wrap; gap: 10px; list-style: none; padding: 0; margin: 50px 0 0; }
 .about-tags li { border: 1px solid var(--line); border-radius: 999px; font-size: 10px; line-height: 1.5; letter-spacing: .08em; padding: 12px 16px; }
 .contact { display: grid; grid-template-columns: 1.25fr 1fr; gap: 8%; align-items: center; min-height: 670px; }
@@ -289,8 +293,8 @@ h2 { font-family: var(--font-display); font-size: clamp(32px, 3.55vw, 60px); let
   .process-list li { grid-template-columns: 28px 150px 1fr; min-height: 110px; }
   .about { grid-template-columns: .8fr 1.2fr; }
   .about-visual { padding: 54px 12%; min-height: 640px; }
-  .about-visual img { top: 150px; width: 115%; left: -8%; }
-  .about-quote { font-size: 19px; margin-top: 320px; }
+  .about-botanical img { height: 420px; }
+  .about-quote { font-size: 19px; }
   .about-copy { padding: 64px 8%; }
   .about-copy h2 { font-size: 32px; }
   .contact { grid-template-columns: 1fr; gap: 45px; }
@@ -348,12 +352,13 @@ h2 { font-family: var(--font-display); font-size: clamp(32px, 3.55vw, 60px); let
   .process-list h3 { font-size: 14px; }
   .process-list p { grid-column: 2; }
   .about { grid-template-columns: 1fr; }
-  .about-visual { min-height: 480px; padding: 38px 22px; }
-  .about-visual img { top: 74px; width: 75%; left: 22%; }
-  .about-quote { font-size: 20px; margin-top: 280px; text-shadow: 0 2px 12px var(--burgundy); }
+  .about-visual { min-height: 0; padding: 38px 22px; gap: 24px; }
+  .about-botanical img { width: min(100%, 280px); height: 330px; }
+  .about-quote { font-size: 20px; }
   .about-copy { padding: 60px 22px; }
   .about-copy h2 { font-size: 30px; }
   .about-copy > p:not(.eyebrow) { font-size: 15px; }
+  .about-mission > p:not(.eyebrow) { font-size: 15px; }
   .about-tags { margin-top: 36px; gap: 8px; }
   .about-tags li { font-size: 9px; padding: 10px 12px; }
   .contact h2 { font-size: 34px; }

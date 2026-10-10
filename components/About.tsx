@@ -1,11 +1,14 @@
 import Image from "next/image";
 export default function About() {
   return <section className="about" id="about" aria-labelledby="about-title">
-    <div className="about-visual"><p className="eyebrow">05 / ОБО МНЕ</p><Image src="/images/ranunculus.png" alt="" width={917} height={900} unoptimized />
+    <div className="about-visual"><p className="eyebrow">05 / ОБО МНЕ</p>
+      <div className="about-botanical"><Image src="/images/about-tulips.webp" alt="" width={1024} height={1536} unoptimized sizes="(max-width: 600px) 280px, 360px" /></div>
       <p className="about-quote">Тихая эстетика.<br />Точная система.<br />Этика в каждой детали.</p></div>
     <div className="about-copy" data-reveal><p className="eyebrow">JAMILA SHAKUROVA</p><h2 id="about-title">ТЕХНОЛОГИИ —<br />НЕ РАДИ ТЕХНОЛОГИЙ</h2>
-      <p>Я работаю на стыке AI, визуала, контента, дизайна, digital и бизнес-задач. Мне важно, чтобы красивый образ был связан с тем, что вы хотите сказать и кому он адресован.</p>
-      <p>ИИ не заменяет характер бренда, а помогает точнее его выразить. Поэтому в основе моей работы — смысл, внимательное отношение к людям и этика в каждой детали.</p>
+      <p>Меня зовут Джамиля Шакурова. Я AI-креативный продюсер: создаю анимационные ролики, предметные визуалы и помогаю экспертам и предпринимателям выстроить цельный образ бренда.</p>
+      <p>Я татарка и мусульманка. В моей работе соединяются уважение к традициям, скромность, красота и современные технологии. Мне важно создавать честно, с вниманием к людям и без компромиссов со своими ценностями.</p>
+      <p>Работаю на стыке визуального сторителлинга, контента, дизайна и digital. ИИ не заменяет характер бренда, а помогает точнее его выразить — через образ, историю, сайт или визуальную систему.</p>
+      <div className="about-mission"><p className="eyebrow">МОЯ МИССИЯ</p><p>Делать ИИ понятным и полезным инструментом для бизнеса и экспертов. Соединять эстетику со смыслом, чтобы за красивой формой стояла реальная задача.</p></div>
       <ul className="about-tags" aria-label="Направления экспертизы">{["AI CREATIVE PRODUCER", "DESIGN", "CONTENT PRODUCTION", "VISUAL SYSTEMS", "AI FOR BUSINESS"].map((tag) => <li key={tag}>{tag}</li>)}</ul>
     </div>
   </section>;
